@@ -46,10 +46,14 @@
     <Compile Include="FileOperations\FileErrorsItem.cs" />
     <Compile Include="ErrorManager\NirsError.cs" />
     <Compile Include="ErrorManager\NirsException.cs" />
+    <Compile Include="FileOperations\FileUsers.cs" />
+    <Compile Include="FileOperations\FileUsersItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StackOperations\IOperation.cs" />
+    <Compile Include="StackOperations\NotUnDoneOperation.cs" />
+    <Compile Include="StackOperations\PropertyOperation.cs" />
+    <Compile Include="StackOperations\StackOperations.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="StackOperations\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
