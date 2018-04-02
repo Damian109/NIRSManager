@@ -15,19 +15,19 @@ namespace NIRSCore.StackOperations
         public string Name { get; private set; }
 
         
-        public PropertyOperation(User, string nameProperty, T value)
+        /*public PropertyOperation(User, string nameProperty, T value)
         {
             _prevProperty = prevProperty;
             _postProperty = postProperty;
             IsUnDone = true;
             IsDone = false;
-        }
+        }*/
 
 
 
         public void Done()
         {
-            _propertyObject = _postProperty;
+            //_propertyObject = _postProperty;
         }
 
         public void UnDone()

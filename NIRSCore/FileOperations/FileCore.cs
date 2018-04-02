@@ -5,7 +5,7 @@ namespace NIRSCore.FileOperations
     /// <summary>
     /// Абстрактный класс, предоставляющий потомкам возможности по редактированию файлов
     /// </summary>
-    internal abstract class FileCore
+    public abstract class FileCore
     {
         //Название файла для работы
         protected string _filename;
@@ -22,7 +22,7 @@ namespace NIRSCore.FileOperations
         /// <summary>
         /// Создание файла
         /// </summary>
-        public void Create()
+        public virtual void Create()
         {
             if (!File.Exists(_filename))
                 File.Create(_filename);
