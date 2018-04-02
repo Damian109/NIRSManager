@@ -11,10 +11,15 @@ namespace NIRSServer.Controllers
     [Route("api/Registration")]
     public class RegistrationController : Controller
     {
+        //проверка существует ли такой логин
+        //добавление нового пользователя
+        //-формирование папочной структуры для пользователя
+        
+
     }
 }
 
-
+/*
 [Route("api/[controller]")]
 public class ValuesController : Controller
 {
@@ -48,4 +53,4 @@ public class ValuesController : Controller
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
-    }
+    }*/

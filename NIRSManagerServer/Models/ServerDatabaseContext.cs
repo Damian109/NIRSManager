@@ -1,18 +1,12 @@
 ﻿using System.Data.Entity;
 
-namespace NIRSServer.Database
+namespace NIRSManagerServer.Models
 {
     /// <summary>
     /// Контекст базы данных
     /// </summary>
     public class ServerDatabaseContext : DbContext
     {
-        /// <summary>
-        /// Конструктор класса
-        /// </summary>
-        /// <param name="connectionString">Строка подключения</param>
-        public ServerDatabaseContext(string connectionString) : base(connectionString) { }
-
         /// <summary>
         /// Таблица пользователей
         /// </summary>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NIRSServer.Database
+namespace NIRSManagerServer.Models
 {
     /// <summary>
     /// Класс для представления строки таблицы обмена базами данных
