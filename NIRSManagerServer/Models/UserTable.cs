@@ -31,12 +31,12 @@ namespace NIRSManagerServer.Models
         /// <summary>
         /// Дата последнего изменения настроек
         /// </summary>
-        public DateTime DateEditSetting { get; set; }
+        public DateTime? DateEditSetting { get; set; }
 
         /// <summary>
         /// Дата последнего изменения базы данных
         /// </summary>
-        public DateTime DateEditDatabase { get; set; }
+        public DateTime? DateEditDatabase { get; set; }
 
         /// <summary>
         /// Название основной базы данных
