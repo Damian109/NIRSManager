@@ -11,7 +11,6 @@ namespace NIRSManagerClient.ViewModels
         private string _login;
         private string _password;
         private AuthorizationStatus _status;
-        private bool _isServer;
         #endregion
 
         /// <summary>
@@ -104,9 +103,5 @@ namespace NIRSManagerClient.ViewModels
         //Кнопка ОК
         //Кнопка выход
         //Перейти к регистрации
-
-        //Свойство подключения к серверу
-
-        //Тогда должна начаться синхронизация
     }
 }

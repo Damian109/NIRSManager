@@ -27,11 +27,11 @@ namespace NIRSManagerClient
             InitializeComponent();
             DataContext = new AuthorizationViewModel();
 
-            /*
+            
             FileUsers file = new FileUsers();
-            file.
-           // file.AddNewUsersItem(new FileUsersItem() { Login = "User", Md5 = "sddsffds" });
-            file.Open();*/
+            file.Open();
+            file.AddNewUsersItem(new FileUsersItem() { Login = "1", Md5 = "3134221343232" });
+            file.Save();
         }
     }
 }
