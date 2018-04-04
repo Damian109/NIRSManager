@@ -29,7 +29,7 @@ namespace NIRSCore.FileOperations
         /// <summary>
         /// Метод возвращает логин пользователя в системе, который необходим для загрузки настроек пользователя
         /// </summary>
-        /// <param name="md5">связка логина и пароля</param>
+        /// <param name="input">связка логина и пароля</param>
         /// <returns>В качестве возвращаемого значения - возвращает логин пользователя или пустую строку при несоответствии</returns>
         public string GetFileName(string input)
         {

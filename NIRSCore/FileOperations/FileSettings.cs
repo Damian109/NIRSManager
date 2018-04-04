@@ -31,7 +31,7 @@ namespace NIRSCore.FileOperations
         /// <param name="md5">Md5-сумма логина и пароля</param>
         public FileSettings(string login, string md5)
         {
-            _filename = login + "//Settings.bin";
+            _filename = "data//" + login + "//Settings.bin";
             _login = login;
             _md5 = md5;
             _vector = Encoding.ASCII.GetBytes("12345678");
@@ -44,8 +44,10 @@ namespace NIRSCore.FileOperations
         /// </summary>
         public override void Create()
         {
-            Directory.CreateDirectory(_login);
-            base.Create();
+            Directory.CreateDirectory("data//" + _login);
+            Directory.CreateDirectory("data//" + _login + "//Backups");
+            Directory.CreateDirectory("data//" + _login + "//Documents");
+            Directory.CreateDirectory("data//" + _login + "//Photos");
         }
 
         /// <summary>
@@ -101,10 +103,9 @@ namespace NIRSCore.FileOperations
         {
             if (_user == null)
                 return;
-            Create();
             try
             {
-                using (FileStream fileStream = new FileStream(_filename, FileMode.Open))
+                using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
                 {
                     TripleDESCryptoServiceProvider serviceProvider = new TripleDESCryptoServiceProvider();
                     //Поток шифрования файла
@@ -117,7 +118,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new NirsException("Ошибка при записи файла настроек", "Файл настроек", "Файловая система");
             }
