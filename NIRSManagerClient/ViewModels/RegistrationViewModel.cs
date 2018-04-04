@@ -5,6 +5,8 @@ using System.Windows;
 using System.Net.Http;
 using System.Windows.Media;
 using NIRSCore.FileOperations;
+using NIRSCore.Syncronization;
+using NIRSCore.StackOperations;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -17,9 +19,35 @@ namespace NIRSManagerClient.ViewModels
         private Brush _color;
         private RegistrationStatus _status;
 
+        //Регистрация пользователя на сервере
+        private bool RegistrationToServer()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    HttpResponseMessage message = client.PostAsJsonAsync("http://localhost:61096/Registration/RegistrationUser",
+                        new RegistrationData(_login, HashForSecurity.GetMd5Hash(_login + _password))).Result;
+                    string resultString = message.Content.ReadAsStringAsync().Result;
+                    bool result = Convert.ToBoolean(resultString);
+                    if (result)
+                        return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return false;
+        }
+
+        //Завершение регистрации
         private void DoneRegistration()
         {
-            //Проверка, что регистрация идет не через сервер
+            if (_status != RegistrationStatus.RegOK)
+                return;
+
+            //Проверка, что регистрация идет через сервер
             if (_isServer)
             {
                 //Зарегистрироваться на сервере
@@ -50,16 +78,27 @@ namespace NIRSManagerClient.ViewModels
             FileSettings fileSettings = new FileSettings(Login, hash);
             //Создание рабочего каталога для пользователя
             fileSettings.Create();
+            User user = new User();
+            
+            //При регистрации через сервер нужно сохранить данные для входа
+            if(_isServer)
+            {
+                user.LoginToServer = _login;
+                user.PasswordToServer = _password;
+            }
 
             fileSettings.SetUser(new User());
+
             fileSettings.Save();
 
             _color = Brushes.LimeGreen;
             _status = RegistrationStatus.RegGood;
             OnPropertyChanged("StatusColor");
             OnPropertyChanged("Status");
+            StackOperations.AddOperation(new NotUnDoneOperation("Регистрация"));
         }
 
+        //Добавление пользователя в файл учетных записей
         private bool AddUserToUserFile(string hash)
         {
             FileUsers fileUsers = new FileUsers();
@@ -71,26 +110,93 @@ namespace NIRSManagerClient.ViewModels
             return true;
         }
 
-        private bool RegistrationToServer()
+        //Проверка Логина на пустое значение
+        private bool IsLoginNull()
         {
-            try
+            if (_login == string.Empty)
             {
-                using (var client = new HttpClient())
-                {
-                    HttpResponseMessage message = client.PostAsJsonAsync("http://localhost:61096/Registration/IsLogin", Login).Result;
-                    string resultString = message.Content.ReadAsStringAsync().Result;
-                    bool result = Convert.ToBoolean(resultString);
-                    if (result)
-                        return true;
-                }
-            }
-            catch(Exception)
-            {
-                return false;
+                _status = RegistrationStatus.RegLogin;
+                _color = Brushes.PaleVioletRed;
+                return true;
             }
             return false;
         }
 
+        //Проверка правильности Логина на сервере
+        private bool IsLoginCorrectServer(HttpResponseMessage message)
+        {
+            string resultString = message.Content.ReadAsStringAsync().Result;
+            bool result = Convert.ToBoolean(resultString);
+            if (result)
+            {
+                return false;
+            }
+            else
+            {
+                _status = RegistrationStatus.RegError;
+                _color = Brushes.PaleVioletRed;
+                return true;
+            }
+        }
+
+        //Проверка Логина на сервере
+        private bool IsLoginServer()
+        {
+            if (IsLoginNull())
+                return true;
+            if (!_isServer)
+                return false;
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage message = client.PostAsJsonAsync("http://localhost:61096/Registration/IsLogin",
+                    new LoginData(_login)).Result;
+                bool success = message.IsSuccessStatusCode;
+                if (success)
+                {
+                    return IsLoginCorrectServer(message);
+                }
+                else
+                {
+                    _status = RegistrationStatus.RegServerErr;
+                    _color = Brushes.PaleVioletRed;
+                    return true;
+                }
+            }
+        }
+
+        //Проверка Логина на клиенте
+        private bool IsLoginClient()
+        {
+            if (IsLoginServer())
+                return true;
+            FileUsers fileUsers = new FileUsers();
+            fileUsers.Open();
+            if (fileUsers.GetKey(_login) != string.Empty)
+            {
+                _status = RegistrationStatus.RegError;
+                _color = Brushes.PaleVioletRed;
+                return true;
+            }
+            return false;
+        }
+
+        //Проверка Пароля
+        private bool IsPasswordNull()
+        {
+            if (!IsLoginClient())
+            {
+                if (_password == string.Empty)
+                {
+                    _status = RegistrationStatus.RegPassword;
+                    _color = Brushes.PaleVioletRed;
+                    return true;
+                }
+                _status = RegistrationStatus.RegOK;
+                _color = Brushes.LimeGreen;
+                return false;
+            }
+            return true;
+        }
         #endregion
 
         /// <summary>
@@ -98,9 +204,8 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         enum RegistrationStatus
         {
-            RegNull,      //Данные не вводились
-            RegLogin,     //Введен только логин
-            RegPassword,  //Введен только пароль
+            RegLogin,     //Ввести логин
+            RegPassword,  //Ввести пароль
             RegOK,        //Данные корректны
             RegError,     //Такой пользователь существует
             RegServerErr, //Сервер недоступен
@@ -135,15 +240,9 @@ namespace NIRSManagerClient.ViewModels
             {
                 _login = value;
 
-                if (_status == RegistrationStatus.RegPassword || _status == RegistrationStatus.RegOK)
-                {
-                    _status = RegistrationStatus.RegOK;
-                    _color = Brushes.LimeGreen;
-                    OnPropertyChanged("StatusColor");
-                }
-                else
-                    _status = RegistrationStatus.RegLogin;
+                IsPasswordNull();
 
+                OnPropertyChanged("StatusColor");
                 OnPropertyChanged("Login");
                 OnPropertyChanged("Status");
             }
@@ -159,15 +258,9 @@ namespace NIRSManagerClient.ViewModels
             {
                 _password = value;
 
-                if (_status == RegistrationStatus.RegLogin || _status == RegistrationStatus.RegOK)
-                {
-                    _status = RegistrationStatus.RegOK;
-                    _color = Brushes.LimeGreen;
-                    OnPropertyChanged("StatusColor");
-                }
-                else
-                    _status = RegistrationStatus.RegPassword;
+                IsPasswordNull();
 
+                OnPropertyChanged("StatusColor");
                 OnPropertyChanged("Password");
                 OnPropertyChanged("Status");
             }
@@ -182,16 +275,14 @@ namespace NIRSManagerClient.ViewModels
             {
                 switch (_status)
                 {
+                    case RegistrationStatus.RegLogin:
+                        return "Введите Логин";
                     case RegistrationStatus.RegError:
                         return "Такой логин уже существует";
-                    case RegistrationStatus.RegLogin:
+                    case RegistrationStatus.RegPassword:
                         return "Введите пароль";
-                    case RegistrationStatus.RegNull:
-                        return "Введите необходимые данные";
                     case RegistrationStatus.RegOK:
                         return "Все данные введены";
-                    case RegistrationStatus.RegPassword:
-                        return "Введите Логин";
                     case RegistrationStatus.RegServerErr:
                         return "Сервер недоступен";
                     case RegistrationStatus.RegGood:
