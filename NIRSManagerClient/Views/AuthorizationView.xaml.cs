@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NIRSManagerClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,20 +13,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using NIRSCore.FileOperations;
-using NIRSManagerClient.ViewModels;
 
-namespace NIRSManagerClient
+namespace NIRSManagerClient.Views
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для AuthorizationView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AuthorizationView : UserControl
     {
-        public MainWindow()
+        public AuthorizationView()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+            DataContext = new AuthorizationViewModel();
         }
     }
 }

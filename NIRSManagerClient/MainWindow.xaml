@@ -6,36 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NIRSManagerClient"
         mc:Ignorable="d"
-        Title="{Binding Name}" Height="277.263" Width="482.783">
-    <Grid Margin="0,0,3.6,0.2">
-        <TextBox HorizontalAlignment="Left" 
-                 Height="42" 
-                 Margin="10,74,0,0" 
-                 TextWrapping="Wrap" 
-                 VerticalAlignment="Top" 
-                 Width="199"
-                 materialDesign:HintAssist.Hint="Name">
-            <TextBox.Text>
-                <Binding Path="Login" UpdateSourceTrigger="PropertyChanged" />
-            </TextBox.Text>
-        </TextBox>
-
-        <TextBox HorizontalAlignment="Left" 
-                 Height="53" 
-                 Margin="238,63,0,0" 
-                 TextWrapping="Wrap" 
-                 Text="{Binding Password,UpdateSourceTrigger=PropertyChanged}" 
-                 VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Password"
-                 Width="226"/>
-
-
-        <Label Content="{Binding Status,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="39" Margin="75,10,0,0" VerticalAlignment="Top" Width="245"/>
-
-
-        <Button Content="Button" HorizontalAlignment="Left" Height="40" Margin="10,181,0,0" VerticalAlignment="Top" Width="136"/>
-        <Button Content="Button" HorizontalAlignment="Left" Height="40" Margin="167,181,0,0" VerticalAlignment="Top" Width="136"/>
-        <Button Content="Button" HorizontalAlignment="Left" Height="40" Margin="328,181,0,0" VerticalAlignment="Top" Width="136"/>
-
+        Title="{Binding Name}" Height="310" Width="310" 
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="5" x:Name="mainGrid">
     </Grid>
 </Window>

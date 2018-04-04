@@ -1,4 +1,9 @@
-﻿using NIRSCore;
+﻿using System;
+using NIRSCore;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+using NIRSCore.FileOperations;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -10,7 +15,35 @@ namespace NIRSManagerClient.ViewModels
         #region Private
         private string _login;
         private string _password;
+        private Brush _color;
         private AuthorizationStatus _status;
+
+        //Выполняется вход в приложение
+        private void Enter()
+        {
+            FileUsers file = new FileUsers();
+            file.Open();
+
+            string input = _login + _password;
+            string login = file.GetFileName(input);
+
+            if(login == string.Empty)
+            {
+                _status = AuthorizationStatus.AuthError;
+                _color = Brushes.PaleVioletRed;
+                OnPropertyChanged("StatusColor");
+                OnPropertyChanged("Status");
+            }
+            else
+            {
+                FileSettings settings = new FileSettings(login, HashForSecurity.GetMd5Hash(input));
+                settings.Open();
+                MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                window.Close();
+                ExtensionView extensionView = new ExtensionView(settings.GetUser());
+                extensionView.Show();
+            }
+        }
         #endregion
 
         /// <summary>
@@ -36,7 +69,11 @@ namespace NIRSManagerClient.ViewModels
                 _login = value;
 
                 if (_status == AuthorizationStatus.AuthPassword || _status == AuthorizationStatus.AuthOK)
+                {
                     _status = AuthorizationStatus.AuthOK;
+                    _color = Brushes.LimeGreen;
+                    OnPropertyChanged("StatusColor");
+                }
                 else
                     _status = AuthorizationStatus.AuthLogin;
 
@@ -56,7 +93,11 @@ namespace NIRSManagerClient.ViewModels
                 _password = value;
 
                 if (_status == AuthorizationStatus.AuthLogin || _status == AuthorizationStatus.AuthOK)
+                {
                     _status = AuthorizationStatus.AuthOK;
+                    _color = Brushes.LimeGreen;
+                    OnPropertyChanged("StatusColor");
+                }
                 else
                     _status = AuthorizationStatus.AuthPassword;
 
@@ -75,7 +116,7 @@ namespace NIRSManagerClient.ViewModels
                 switch (_status)
                 {
                     case AuthorizationStatus.AuthError:
-                        return "Такой связки Логин-Пароль не существует";
+                        return "Не удалось авторизоваться";
                     case AuthorizationStatus.AuthLogin:
                         return "Введите пароль";
                     case AuthorizationStatus.AuthNull:
@@ -91,17 +132,46 @@ namespace NIRSManagerClient.ViewModels
         }
 
         /// <summary>
+        /// Цвет текста статуса
+        /// </summary>
+        public Brush StatusColor { get => _color; }
+
+        /// <summary>
         /// Конструктор класса
         /// </summary>
         public AuthorizationViewModel() : base("Форма авторизации")
         {
             _login = _password = string.Empty;
+            _color = Brushes.PaleVioletRed;
         }
 
+        /// <summary>
+        /// Команда выхода из приложения
+        /// </summary>
+        public RelayCommand CommandExit
+        {
+            get => new RelayCommand(obj => Environment.Exit(0));
+        }
 
+        /// <summary>
+        /// Команда входа
+        /// </summary>
+        public RelayCommand CommandEnter
+        {
+            get => new RelayCommand(obj => Enter());
+        }
 
-        //Кнопка ОК
-        //Кнопка выход
-        //Перейти к регистрации
+        /// <summary>
+        /// Команда перехода к регистрации
+        /// </summary>
+        public RelayCommand CommandRegistration
+        {
+            get => new RelayCommand(obj =>
+            {
+                MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                window.mainGrid.Children.Clear();
+                window.mainGrid.Children.Add(new Views.RegistrationView());
+            });
+        }
     }
 }
