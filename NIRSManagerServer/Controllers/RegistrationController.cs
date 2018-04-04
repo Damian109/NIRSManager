@@ -40,7 +40,7 @@ namespace NIRSManagerServer.Controllers
         /// </summary>
         /// <param name="login">Логин</param>
         /// <returns>Есть ли пользователь в базе данных</returns>
-        [HttpGet]
+        [HttpPost]
         public bool IsLogin(string login)
         {
             return IsLoginFromBase(login);
@@ -52,7 +52,7 @@ namespace NIRSManagerServer.Controllers
         /// <param name="login">Логин</param>
         /// <param name="md5">Md5-сумма логина и пароля</param>
         /// <returns>Получилось ли зарегистрировать пользователя</returns>
-        [HttpGet]
+        [HttpPost]
         public bool RegistrationUser(string login, string md5)
         {
             if (IsLoginFromBase(login))
