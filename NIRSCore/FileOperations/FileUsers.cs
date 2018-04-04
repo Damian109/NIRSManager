@@ -29,11 +29,11 @@ namespace NIRSCore.FileOperations
         /// <summary>
         /// Метод возвращает логин пользователя в системе, который необходим для загрузки настроек пользователя
         /// </summary>
-        /// <param name="md5">md5-хеш логина и пароля</param>
+        /// <param name="md5">связка логина и пароля</param>
         /// <returns>В качестве возвращаемого значения - возвращает логин пользователя или пустую строку при несоответствии</returns>
-        public string GetFileName(string md5)
+        public string GetFileName(string input)
         {
-            FileUsersItem usersItem = _usersItems.Where(u => u.Md5 == md5).FirstOrDefault();
+            FileUsersItem usersItem = _usersItems.Where(u => HashForSecurity.VerifyMd5Hash(input, u.Md5)).FirstOrDefault();
             if (usersItem == null)
                 return string.Empty;
             else
@@ -92,10 +92,9 @@ namespace NIRSCore.FileOperations
         {
             if (_usersItems.Count < 1)
                 return;
-            Create();
             try
             {
-                using (FileStream fileStream = new FileStream(_filename, FileMode.Open))
+                using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
                 {
                     TripleDESCryptoServiceProvider serviceProvider = new TripleDESCryptoServiceProvider();
                     //Поток шифрования файла
