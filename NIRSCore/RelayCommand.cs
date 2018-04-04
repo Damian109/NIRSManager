@@ -7,7 +7,7 @@ namespace NIRSCore
     /// Класс, определяющий команды для связывания графического интерфейса 
     /// с моделями представления
     /// </summary>
-    class RelayCommand : ICommand
+    public sealed class RelayCommand : ICommand
     {
         private Action<object> execute;
         private Func<object, bool> canExecute;
