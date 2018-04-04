@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using NIRSCore.Syncronization;
 using NIRSManagerServer.Models;
 
 namespace NIRSManagerServer.Controllers
@@ -27,10 +28,11 @@ namespace NIRSManagerServer.Controllers
         //Создать структуру файлов и папок для пользователя
         private void GenerateStructDirectoryes(string login)
         {
-            Directory.CreateDirectory(login);
-            Directory.CreateDirectory(login + "//Backups");
-            Directory.CreateDirectory(login + "//Documents");
-            Directory.CreateDirectory(login + "//Photos");
+            DirectoryInfo Dir = new DirectoryInfo(Request.MapPath("..//data"));
+            Dir.CreateSubdirectory(login);
+            Dir.CreateSubdirectory(login + "//Backups");
+            Dir.CreateSubdirectory(login + "//Documents");
+            Dir.CreateSubdirectory(login + "//Photos");
         }
 
         #endregion
@@ -41,9 +43,9 @@ namespace NIRSManagerServer.Controllers
         /// <param name="login">Логин</param>
         /// <returns>Есть ли пользователь в базе данных</returns>
         [HttpPost]
-        public bool IsLogin(string login)
+        public bool IsLogin(LoginData data)
         {
-            return IsLoginFromBase(login);
+            return IsLoginFromBase(data.Login);
         }
 
         /// <summary>
@@ -53,22 +55,22 @@ namespace NIRSManagerServer.Controllers
         /// <param name="md5">Md5-сумма логина и пароля</param>
         /// <returns>Получилось ли зарегистрировать пользователя</returns>
         [HttpPost]
-        public bool RegistrationUser(string login, string md5)
+        public bool RegistrationUser(RegistrationData data)
         {
-            if (IsLoginFromBase(login))
+            if (!IsLoginFromBase(data.Login))
                 return false;
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
                 databaseContext.AddUser(new UserTable()
                 {
-                    Login = login,
-                    Md5 = md5,
+                    Login = data.Login,
+                    Md5 = data.Md5,
                     DateEditDatabase = null,
                     DateEditSetting = null,
                     NameDatabase = null
                 });
 
-                GenerateStructDirectoryes(login);
+                GenerateStructDirectoryes(data.Login);
             }
             return true;
         }
