@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using NIRSCore.FileOperations;
+using NIRSCore.ErrorManager;
+using NIRSCore.StackOperations;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -21,28 +23,83 @@ namespace NIRSManagerClient.ViewModels
         //Выполняется вход в приложение
         private void Enter()
         {
-            FileUsers file = new FileUsers();
-            file.Open();
-
             string input = _login + _password;
-            string login = file.GetFileName(input);
-
-            if(login == string.Empty)
+            LoginInFile(input);
+            if (_status == AuthorizationStatus.AuthError)
+                return;
+            try
             {
-                _status = AuthorizationStatus.AuthError;
-                _color = Brushes.PaleVioletRed;
-                OnPropertyChanged("StatusColor");
-                OnPropertyChanged("Status");
-            }
-            else
-            {
-                FileSettings settings = new FileSettings(login, HashForSecurity.GetMd5Hash(input));
+                FileSettings settings = new FileSettings(_login, HashForSecurity.GetMd5Hash(input));
                 settings.Open();
                 ExtensionView extensionView = new ExtensionView(settings.GetUser());
                 extensionView.Show();
+                StackOperations.AddOperation(new NotUnDoneOperation("Вход в систему"));
+            }
+            catch (NirsException exception)
+            {
+                ErrorManager.ExecuteException(exception);
+            }
+            finally
+            {
                 MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 window.Close();
             }
+        }
+
+        //Проверка есть ли логин в файле пользователей
+        private void LoginInFile(string input)
+        {
+            string login = string.Empty;
+            try
+            {
+                FileUsers file = new FileUsers();
+                file.Open();
+                login = file.GetFileName(input);
+            }
+            catch(NirsException exception)
+            {
+                ErrorManager.ExecuteException(exception);
+            }
+            finally
+            {
+                if (login == string.Empty)
+                {
+                    _status = AuthorizationStatus.AuthError;
+                    _color = Brushes.PaleVioletRed;
+                    OnPropertyChanged("StatusColor");
+                    OnPropertyChanged("Status");
+                }
+            }
+        }
+
+        //Проверка логина для статуса
+        private bool IsStatusLoginNull()
+        {
+            if (_login == string.Empty)
+            {
+                _status = AuthorizationStatus.AuthLogin;
+                _color = Brushes.PaleVioletRed;
+                return true;
+            }
+            return false;
+        }
+
+        //Проверка пароля для статуса
+        private bool IsStatusPasswordNull()
+        {
+            if (!IsStatusLoginNull())
+            {
+                if (_password == string.Empty)
+                {
+                    _status = AuthorizationStatus.AuthPassword;
+                    _color = Brushes.PaleVioletRed;
+                    return true;
+                }
+                _status = AuthorizationStatus.AuthOK;
+                _color = Brushes.LimeGreen;
+                return false;
+            }
+            return true;
         }
         #endregion
 
@@ -51,11 +108,10 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         enum AuthorizationStatus
         {
-            AuthNull,      //Данные не вводились
-            AuthLogin,     //Введен только логин
-            AuthPassword,  //Введен только пароль
-            AuthOK,        //Данные корректны
-            AuthError      //Данные введены неверно
+            AuthLogin,     //Необходимо ввести логин
+            AuthPassword,  //Необходимо ввести пароль
+            AuthOK,        //Все данные введены
+            AuthError      //Авторизация не удалась
         }
 
         /// <summary>
@@ -68,15 +124,9 @@ namespace NIRSManagerClient.ViewModels
             {
                 _login = value;
 
-                if (_status == AuthorizationStatus.AuthPassword || _status == AuthorizationStatus.AuthOK)
-                {
-                    _status = AuthorizationStatus.AuthOK;
-                    _color = Brushes.LimeGreen;
-                    OnPropertyChanged("StatusColor");
-                }
-                else
-                    _status = AuthorizationStatus.AuthLogin;
+                IsStatusPasswordNull();
 
+                OnPropertyChanged("StatusColor");
                 OnPropertyChanged("Login");
                 OnPropertyChanged("Status");
             }
@@ -92,16 +142,10 @@ namespace NIRSManagerClient.ViewModels
             {
                 _password = value;
 
-                if (_status == AuthorizationStatus.AuthLogin || _status == AuthorizationStatus.AuthOK)
-                {
-                    _status = AuthorizationStatus.AuthOK;
-                    _color = Brushes.LimeGreen;
-                    OnPropertyChanged("StatusColor");
-                }
-                else
-                    _status = AuthorizationStatus.AuthPassword;
+                IsStatusPasswordNull();
 
-                OnPropertyChanged("Password");
+                OnPropertyChanged("StatusColor");
+                OnPropertyChanged("Login");
                 OnPropertyChanged("Status");
             }
         }
@@ -115,16 +159,14 @@ namespace NIRSManagerClient.ViewModels
             {
                 switch (_status)
                 {
-                    case AuthorizationStatus.AuthError:
-                        return "Не удалось авторизоваться";
                     case AuthorizationStatus.AuthLogin:
-                        return "Введите пароль";
-                    case AuthorizationStatus.AuthNull:
-                        return "Введите данные для входа";
+                        return "Необходимо ввести логин";
+                    case AuthorizationStatus.AuthPassword:
+                        return "Необходимо ввести пароль";
                     case AuthorizationStatus.AuthOK:
                         return "Все данные введены";
-                    case AuthorizationStatus.AuthPassword:
-                        return "Введите Логин";
+                    case AuthorizationStatus.AuthError:
+                        return "Авторизация не удалась";
                     default:
                         return "Ошибка авторизации";
                 }
@@ -143,6 +185,7 @@ namespace NIRSManagerClient.ViewModels
         {
             _login = _password = string.Empty;
             _color = Brushes.PaleVioletRed;
+            _status = AuthorizationStatus.AuthLogin;
         }
 
         /// <summary>
