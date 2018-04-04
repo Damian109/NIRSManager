@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace NIRSManagerServer.Models
 {
@@ -7,6 +8,16 @@ namespace NIRSManagerServer.Models
     /// </summary>
     public class ServerDatabaseContext : DbContext
     {
+        /// <summary>
+        /// Функция-некий костыль, чтобы избежать миграций
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer<ServerDatabaseContext>(null);
+            base.OnModelCreating(modelBuilder);
+        }
+
         /// <summary>
         /// Таблица пользователей
         /// </summary>
@@ -19,7 +30,16 @@ namespace NIRSManagerServer.Models
         public void AddUser(UserTable user)
         {
             Users.Add(user);
-            SaveChanges();
+            try
+            {
+
+                SaveChanges();
+
+            }
+            catch (DbEntityValidationException ex)
+            {
+            }
+            
         }
 
         /// <summary>

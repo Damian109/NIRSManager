@@ -25,7 +25,7 @@ namespace NIRSManagerServer.Models
         /// <summary>
         /// Md5-сумма логина и пароля
         /// </summary>
-        [StringLength(30)]
+        [StringLength(80)]
         public string Md5 { get; set; }
 
         /// <summary>
