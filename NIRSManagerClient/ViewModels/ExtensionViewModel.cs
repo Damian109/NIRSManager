@@ -11,9 +11,9 @@ namespace NIRSManagerClient.ViewModels
 
         public ExtensionViewModel(User user) : base("Главная форма")
         {
-            MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
             window.mainGrid.Children.Clear();
-            window.mainGrid.Children.Add(new AuthorizationView());
+            //window.mainGrid.Children.Add(new AuthorizationView());
             _user = user;
         }
     }

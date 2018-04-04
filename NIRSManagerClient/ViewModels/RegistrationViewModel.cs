@@ -1,11 +1,10 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using System;
 using NIRSCore;
-using NIRSCore.FileOperations;
-using System;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows;
+using System.Net.Http;
 using System.Windows.Media;
+using NIRSCore.FileOperations;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -20,7 +19,76 @@ namespace NIRSManagerClient.ViewModels
 
         private void DoneRegistration()
         {
+            //Проверка, что регистрация идет не через сервер
+            if (_isServer)
+            {
+                //Зарегистрироваться на сервере
+                if (!RegistrationToServer())
+                {
+                    _status = RegistrationStatus.RegServerErr;
+                    OnPropertyChanged("Status");
+                    _color = Brushes.PaleVioletRed;
+                    OnPropertyChanged("StatusColor");
+                    return;
+                }
+            }
 
+            string input = _login + _password;
+            string hash = HashForSecurity.GetMd5Hash(input);
+
+            //Добаление пользователя в каталог учетных записей
+            if(!AddUserToUserFile(hash))
+            {
+                _status = RegistrationStatus.RegError;
+                OnPropertyChanged("Status");
+                _color = Brushes.PaleVioletRed;
+                OnPropertyChanged("StatusColor");
+                return;
+            }
+
+            //Создание Файла настроек
+            FileSettings fileSettings = new FileSettings(Login, hash);
+            //Создание рабочего каталога для пользователя
+            fileSettings.Create();
+
+            fileSettings.SetUser(new User());
+            fileSettings.Save();
+
+            _color = Brushes.LimeGreen;
+            _status = RegistrationStatus.RegGood;
+            OnPropertyChanged("StatusColor");
+            OnPropertyChanged("Status");
+        }
+
+        private bool AddUserToUserFile(string hash)
+        {
+            FileUsers fileUsers = new FileUsers();
+            fileUsers.Open();
+            if (fileUsers.GetFileName(hash) != string.Empty)
+                return false;
+            fileUsers.AddNewUsersItem(new FileUsersItem() { Login = _login, Md5 = hash });
+            fileUsers.Save();
+            return true;
+        }
+
+        private bool RegistrationToServer()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    HttpResponseMessage message = client.PostAsJsonAsync("http://localhost:61096/Registration/IsLogin", Login).Result;
+                    string resultString = message.Content.ReadAsStringAsync().Result;
+                    bool result = Convert.ToBoolean(resultString);
+                    if (result)
+                        return true;
+                }
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+            return false;
         }
 
         #endregion
@@ -34,8 +102,9 @@ namespace NIRSManagerClient.ViewModels
             RegLogin,     //Введен только логин
             RegPassword,  //Введен только пароль
             RegOK,        //Данные корректны
-            RegError,     //Данные введены неверно
-            RegServerErr  //Сервер недоступен
+            RegError,     //Такой пользователь существует
+            RegServerErr, //Сервер недоступен
+            RegGood       //Регистрация успешна
         }
 
         /// <summary>
@@ -125,6 +194,8 @@ namespace NIRSManagerClient.ViewModels
                         return "Введите Логин";
                     case RegistrationStatus.RegServerErr:
                         return "Сервер недоступен";
+                    case RegistrationStatus.RegGood:
+                        return "Регистрация успешна";
                     default:
                         return "Ошибка регистрации";
                 }

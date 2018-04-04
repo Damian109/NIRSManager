@@ -38,10 +38,10 @@ namespace NIRSManagerClient.ViewModels
             {
                 FileSettings settings = new FileSettings(login, HashForSecurity.GetMd5Hash(input));
                 settings.Open();
-                MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                window.Close();
                 ExtensionView extensionView = new ExtensionView(settings.GetUser());
                 extensionView.Show();
+                MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                window.Close();
             }
         }
         #endregion
