@@ -13,7 +13,7 @@ namespace NIRSManagerClient.ViewModels
         {
             ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
             window.mainGrid.Children.Clear();
-            //window.mainGrid.Children.Add(new AuthorizationView());
+            window.mainGrid.Children.Add(new MenuPanelView(user));
             _user = user;
         }
     }
