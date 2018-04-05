@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NIRSManagerClient"
         mc:Ignorable="d"
-        Title="ExtensionView" Height="450" Width="800">
-    <Grid x:Name="mainGrid">
-        
+        Title="ExtensionView" Height="800" Width="1100"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" x:Name="menuGrid">
+        </Grid>
+        <Grid x:Name="mainGrid" Grid.Column="1">
+        </Grid>
     </Grid>
+    
 </Window>
