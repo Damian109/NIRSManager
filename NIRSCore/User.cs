@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace NIRSCore
 {
@@ -147,10 +144,57 @@ namespace NIRSCore
         /// </summary>
         public bool IsShowNotifications { get; set; }
         #endregion
-
         #region InterfacePropertyes
+        /// <summary>
+        /// Тема приложения
+        /// </summary>
+        public bool IsDarkTheme { get; set; }
+
+        /// <summary>
+        /// Позиция основного меню
+        /// </summary>
+        public bool IsLeftPosition { get; set; }
+
+        /// <summary>
+        /// Основные цвета
+        /// </summary>
+        public int MainColors { get; set; }
+
+        /// <summary>
+        /// Дополнительные цвета
+        /// </summary>
+        public int AdditionalColors { get; set; }
         #endregion
         #region EditorPropertyes
+        /// <summary>
+        /// Цвет чисел в редакторе
+        /// </summary>
+        public Color EditorNumberColor { get; set; }
+
+        /// <summary>
+        /// Цвет строк в редакторе
+        /// </summary>
+        public Color EditorStringColor { get; set; }
+
+        /// <summary>
+        /// Цвет Ключевых слов в редакторе
+        /// </summary>
+        public Color EditorKeywordColor { get; set; }
+
+        /// <summary>
+        /// Включен ли лексический анализатор
+        /// </summary>
+        public bool EditorIsLexic { get; set; }
+
+        /// <summary>
+        /// Включен ли синтаксический анализатор
+        /// </summary>
+        public bool EditorIsSyntax { get; set; }
+
+        /// <summary>
+        /// Включено ли автодополнение
+        /// </summary>
+        public bool EditorIsAddition { get; set; }
         #endregion
 
         /// <summary>
@@ -177,17 +221,15 @@ namespace NIRSCore
             DateLastEditSettings = DateLastEditDatabase = DateTime.MinValue;
             IsStartFromWindows = IsMinimizeToTray = IsShowNotifications = false;
 
+            //Настройки редактора
+            EditorIsAddition = EditorIsLexic = EditorIsSyntax = true;
+            EditorKeywordColor = Colors.Blue;
+            EditorNumberColor = Colors.OrangeRed;
+            EditorStringColor = Colors.SandyBrown;
+
+            //Настройки интерфейса
+            IsDarkTheme = IsLeftPosition = true;
+            MainColors = AdditionalColors = 0;
         }
     }
 }
-
-//Добавить свойства редактора
-//Добавить свойства интерфейса
-
-
-//Функция формирования строки подключения
-//Определять по имени или по пути базы данных, что приоритетнее
-
-
-    //Функция определения не пора ли делать новый бэкап
-
