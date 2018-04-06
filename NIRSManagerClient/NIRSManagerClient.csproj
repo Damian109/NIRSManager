@@ -72,6 +72,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="CoreModels\MainMenuItem.cs" />
     <Compile Include="DataBaseModels\AcademicDegree.cs" />
     <Compile Include="DataBaseModels\Author.cs" />
     <Compile Include="DataBaseModels\ClientDatabaseContext.cs" />
