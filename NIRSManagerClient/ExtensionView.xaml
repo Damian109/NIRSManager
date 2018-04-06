@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NIRSManagerClient"
         mc:Ignorable="d"
@@ -14,14 +15,168 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{StaticResource MaterialDesignFont}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Column="0" x:Name="menuGrid">
-            <Grid x:Name="mainGrid" Grid.Column="1">
+        <materialDesign:DrawerHost 
+            Grid.Column="0"
+            IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel 
+                    MinWidth="212">
+                    <ToggleButton 
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                        DockPanel.Dock="Top"
+                        HorizontalAlignment="Right" 
+                        Margin="16"
+                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" 
+                    />
+                    <ListBox x:Name="DemoItemsListBox"
+                        Margin="0 16 0 16" 
+                        SelectedIndex="0"                         
+                        ItemsSource="{Binding MainMenuItems}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate 
+                                DataType="domain:DemoItem">
+                                <TextBlock 
+                                    Text="{Binding Name}" 
+                                    Margin="32 0 32 0" 
+                                    FontSize="14"
+                                />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <Grid>
+                <materialDesign:ColorZone>
+                    <Grid>
+                        <materialDesign:ColorZone 
+                Padding="16" 
+                materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                Mode="PrimaryMid" 
+                DockPanel.Dock="Top">
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="9*" />
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0">
+                                    <ToggleButton 
+                            Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                            IsChecked="False"
+                            x:Name="MenuToggleButton"
+                        />
+                                    <TextBlock 
+                            Text="{Binding FIO}" 
+                            Margin="30 0 0 0"
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Background="Transparent" 
+                            Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"                      
+                        />
+                                </DockPanel>
+                                <Grid x:Name="mainGrid" Grid.Column="1">
+                                </Grid>
+                            </Grid>
+                        </materialDesign:ColorZone>
+                        <materialDesign:Flipper 
+                        Style="{StaticResource MaterialDesignCardFlipper}" 
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Grid.RowSpan="2"
+                        Padding="10">
+                            <materialDesign:Flipper.FrontContent>
+                                <Button
+                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                        Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                        Content="{Binding LastOperation}"
+                                        Width="auto">
+                                </Button>
+                            </materialDesign:Flipper.FrontContent>
+                            <materialDesign:Flipper.BackContent>
+                                <Grid
+                                        Height="400" 
+                                        Width="650">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition
+                                                Height="Auto" />
+                                        <RowDefinition
+                                                Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <materialDesign:ColorZone
+                                            Mode="Accent"
+                                            Padding="6">
+                                        <StackPanel
+                                                Orientation="Horizontal">
+                                            <Button
+                                                    Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                    Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                                    HorizontalAlignment="Left">
+                                                <materialDesign:PackIcon
+                                                        Kind="ArrowLeft"
+                                                        HorizontalAlignment="Right" 
+                                                    />
+                                            </Button>
+                                        </StackPanel>
+                                    </materialDesign:ColorZone>
+                                    <ListView Margin="5 40 0 0"
+                                            SelectedIndex="0" 
+                                            ItemsSource="{Binding Operations}">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn 
+                                                DisplayMemberBinding="{Binding Name}"
+                                                Header="Название операции">
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="Отмена операции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Margin="6,2,6,2">
+                                                                <Button  
+                                                                IsEnabled="{Binding IsUnDone}"
+                                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                                Background="{DynamicResource PrimaryHueLightBrush}"
+                                                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                                                                    Отменить операцию
+                                                                </Button>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="Применение операции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Margin="6,2,6,2">
+                                                                <Button  
+                                                                IsEnabled="{Binding IsDone}"
+                                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                                Background="{DynamicResource PrimaryHueDarkBrush}"
+                                                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                                                    Применить операцию
+                                                                </Button>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </Grid>
+                            </materialDesign:Flipper.BackContent>
+                        </materialDesign:Flipper>
+                    </Grid>
+                </materialDesign:ColorZone>
             </Grid>
-        </Grid>
+        </materialDesign:DrawerHost>
     </Grid>
 </Window>
