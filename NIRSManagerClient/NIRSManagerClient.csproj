@@ -72,7 +72,6 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="CoreModels\MainMenuItem.cs" />
     <Compile Include="DataBaseModels\AcademicDegree.cs" />
     <Compile Include="DataBaseModels\Author.cs" />
     <Compile Include="DataBaseModels\ClientDatabaseContext.cs" />
@@ -88,6 +87,7 @@
     <Compile Include="ViewModels\ExtensionViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\MainSettingsViewModel.cs" />
     <Compile Include="Views\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
     </Compile>

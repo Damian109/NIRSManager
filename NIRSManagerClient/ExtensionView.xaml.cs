@@ -1,18 +1,9 @@
 ﻿using NIRSCore;
-using NIRSManagerClient.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Controls;
+using NIRSManagerClient.ViewModels;
 
 namespace NIRSManagerClient
 {
@@ -25,6 +16,23 @@ namespace NIRSManagerClient
         {
             InitializeComponent();
             DataContext = new ExtensionViewModel(user);
+        }
+
+        /// <summary>
+        /// Происходит в промежутке между нажатием и отпусканием мыши
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DemoItemsListBox_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var dependencyObject = Mouse.Captured as DependencyObject;
+            while (dependencyObject != null)
+            {
+                if (dependencyObject is Expander)
+                    return;
+                dependencyObject = VisualTreeHelper.GetParent(dependencyObject);
+            }
+            MenuToggleButton.IsChecked = false;
         }
     }
 }
