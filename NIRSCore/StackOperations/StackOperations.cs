@@ -24,10 +24,7 @@ namespace NIRSCore.StackOperations
         /// Добавление операции
         /// </summary>
         /// <param name="operation">Операция</param>
-        public static void AddOperation(Operation operation)
-        {
-            int count = Operations.Count;
-            Operations.Insert(count, operation);
-        }
+        public static void AddOperation(Operation operation) =>
+            Operations.Insert(0, operation);
     }
 }

@@ -2,15 +2,41 @@
 {
     public sealed class Operation
     {
+        #region Private
+        private bool _isUnDone, _isDone;
+        #endregion
+
+        /// <summary>
+        /// Реализация события - изменение состояния операции
+        /// </summary>
+        public delegate void eventSender();
+        public event eventSender ChangeStatusEvent;
+
         /// <summary>
         /// Может ли операция отменяться
         /// </summary>
-        public bool IsUnDone { get; private set; }
+        public bool IsUnDone
+        {
+            get => _isUnDone;
+            set
+            {
+                _isUnDone = value;
+                ChangeStatusEvent();
+            }
+        }
 
         /// <summary>
         /// Может ли операция применяться
         /// </summary>
-        public bool IsDone { get; private set; }
+        public bool IsDone
+        {
+            get => _isDone;
+            set
+            {
+                _isDone = value;
+                ChangeStatusEvent();
+            }
+        }
 
         /// <summary>
         /// Название операции
