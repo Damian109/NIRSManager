@@ -21,7 +21,7 @@
             set
             {
                 _isUnDone = value;
-                ChangeStatusEvent();
+                ChangeStatusEvent?.Invoke();
             }
         }
 
@@ -34,7 +34,7 @@
             set
             {
                 _isDone = value;
-                ChangeStatusEvent();
+                ChangeStatusEvent?.Invoke();
             }
         }
 
