@@ -85,8 +85,8 @@ namespace NIRSCore.FileOperations
                         _user = (User)serializer.Deserialize(cryptoStream);
 
                         //Добавить операцию в стек операций
-                        NotUnDoneOperation operation = new NotUnDoneOperation("Файл настроек загружен");
-                        StackOperations.StackOperations.AddOperation((IOperation)operation);
+                        Operation operation = new Operation("Файл настроек загружен", null, null);
+                        StackOperations.StackOperations.AddOperation(operation);
                     }
                 }
             }

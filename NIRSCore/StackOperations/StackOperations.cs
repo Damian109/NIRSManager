@@ -10,23 +10,24 @@ namespace NIRSCore.StackOperations
         /// <summary>
         /// Список всех выполненных операций
         /// </summary>
-        public static List<IOperation> Operations { get; private set; }
+        public static List<Operation> Operations { get; private set; }
 
         /// <summary>
         /// Статический конструктор
         /// </summary>
         static StackOperations()
         {
-            Operations = new List<IOperation>();
+            Operations = new List<Operation>();
         }
 
         /// <summary>
         /// Добавление операции
         /// </summary>
         /// <param name="operation">Операция</param>
-        public static void AddOperation(IOperation operation)
+        public static void AddOperation(Operation operation)
         {
-            Operations.Add(operation);
+            int count = Operations.Count;
+            Operations.Insert(count, operation);
         }
     }
 }
