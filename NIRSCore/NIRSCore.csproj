@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorManager\ErrorManager.cs" />
-    <Compile Include="FileOperations\FileCore.cs" />
+    <Compile Include="FileCore.cs" />
     <Compile Include="FileOperations\FileErrors.cs" />
     <Compile Include="FileOperations\FileErrorsItem.cs" />
     <Compile Include="ErrorManager\NirsError.cs" />

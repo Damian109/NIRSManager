@@ -21,6 +21,7 @@ namespace NIRSCore.FileOperations
         public FileErrors()
         {
             _filename = "Errors.log";
+            ErrorsItems = new List<FileErrorsItem>();
         }
 
         /// <summary>
@@ -28,8 +29,8 @@ namespace NIRSCore.FileOperations
         /// </summary>
         public override void Open()
         {
-            Create();
-
+            if (!File.Exists(_filename))
+                return;
             //Выполняется десериализация в список объектов
             using (FileStream fileStream = new FileStream(_filename, FileMode.Open))
             {
@@ -44,10 +45,8 @@ namespace NIRSCore.FileOperations
         /// </summary>
         public override void Save()
         {
-            Create();
-
             //Выполняется десериализация в список объектов
-            using (FileStream fileStream = new FileStream(_filename, FileMode.Open))
+            using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(FileErrorsItem[]));
                 serializer.Serialize(fileStream, ErrorsItems.ToArray());

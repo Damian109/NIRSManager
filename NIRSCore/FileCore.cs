@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace NIRSCore.FileOperations
+namespace NIRSCore
 {
     /// <summary>
     /// Абстрактный класс, предоставляющий потомкам возможности по редактированию файлов
