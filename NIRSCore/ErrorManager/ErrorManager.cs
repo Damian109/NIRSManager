@@ -6,16 +6,16 @@ namespace NIRSCore.ErrorManager
     /// <summary>
     /// Статический класс, для управления системой отлова ошибок в программе
     /// </summary>
-    public static class ErrorManager
+    public class ErrorManager
     {
         #region Private
-        private static List<NirsError> _nirsErrors;
+        private List<NirsError> _nirsErrors;
         #endregion
 
         /// <summary>
         /// Статический конструктор
         /// </summary>
-        static ErrorManager()
+        public ErrorManager()
         {
             _nirsErrors = new List<NirsError>();
             FileErrors file = new FileErrors();
@@ -28,7 +28,7 @@ namespace NIRSCore.ErrorManager
         /// <summary>
         /// Сохранение лога ошибок
         /// </summary>
-        public static void SaveErrors()
+        public void SaveErrors()
         {
             FileErrors file = new FileErrors();
             List<FileErrorsItem> items = new List<FileErrorsItem>();
@@ -47,14 +47,13 @@ namespace NIRSCore.ErrorManager
         /// Добавление нового исключения в стек системы ошибок
         /// </summary>
         /// <param name="exception">Исключение</param>
-        public static void ExecuteException(NirsException exception) =>
+        public void ExecuteException(NirsException exception) =>
             _nirsErrors.Add(new NirsError(exception.NameSource, exception.NameSystem, exception.Message));
 
         /// <summary>
         /// Получение всех ошибок, полученных в результате работы программы и не отправленных на сервер
         /// </summary>
         /// <returns>Список ошибок</returns>
-        public static List<NirsError> GetErrors() => _nirsErrors;
-
+        public List<NirsError> GetErrors() => _nirsErrors;
     }
 }

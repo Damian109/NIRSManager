@@ -5,14 +5,14 @@ namespace NIRSCore.StackOperations
     /// <summary>
     /// Класс - стек операций
     /// </summary>
-    public static class StackOperations
+    public class StackOperations
     {
         #region Private
         //Список операций
-        private static List<Operation> _operations;
+        private List<Operation> _operations;
 
         //Изменение операции
-        private static void OperationEventExecuter() => ChangeStatusEvent?.Invoke();
+        private void OperationEventExecuter() => ChangeStatusEvent?.Invoke();
 
         #endregion
 
@@ -20,12 +20,12 @@ namespace NIRSCore.StackOperations
         /// Реализация события - изменение состояния операции
         /// </summary>
         public delegate void eventSender();
-        public static event eventSender ChangeStatusEvent;
+        public event eventSender ChangeStatusEvent;
 
         /// <summary>
         /// Список всех выполненных операций
         /// </summary>
-        public static List<Operation> Operations
+        public List<Operation> Operations
         {
             get => _operations;
             private set
@@ -38,16 +38,13 @@ namespace NIRSCore.StackOperations
         /// <summary>
         /// Статический конструктор
         /// </summary>
-        static StackOperations()
-        {
-            _operations = new List<Operation>();
-        }
+        public StackOperations() => _operations = new List<Operation>();
 
         /// <summary>
         /// Добавление операции
         /// </summary>
         /// <param name="operation">Операция</param>
-        public static void AddOperation(Operation operation)
+        public void AddOperation(Operation operation)
         {
             operation.ChangeStatusEvent += OperationEventExecuter;
             Operations.Insert(0, operation);
