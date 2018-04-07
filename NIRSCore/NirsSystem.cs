@@ -50,11 +50,21 @@
         }
 
         /// <summary>
+        /// Открыть пользовательские настройки
+        /// </summary>
+        public static void OpenUserSettings()
+        {
+            FileOperations.FileSettings fileSettings = new FileOperations.FileSettings(Login, Md5);
+            fileSettings.Open();
+            User = fileSettings.GetUser();
+        }
+
+        /// <summary>
         /// Синхронизация с сервером
         /// </summary>
         private static void Synchronization()
         {
-
+            
         }
 
         /// <summary>
@@ -64,6 +74,7 @@
         {
             ErrorManager.SaveErrors();
             FileOperations.FileSettings fileSettings = new FileOperations.FileSettings(Login, Md5);
+            fileSettings.SetUser(User);
             fileSettings.Save();
             FileUsers.Save();
             Synchronization();
