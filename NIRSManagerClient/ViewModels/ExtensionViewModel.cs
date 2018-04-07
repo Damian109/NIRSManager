@@ -1,10 +1,10 @@
 ﻿using NIRSCore;
 using NIRSCore.StackOperations;
-using NIRSManagerClient.CoreModels;
 using NIRSManagerClient.Views;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace NIRSManagerClient.ViewModels
@@ -34,6 +34,12 @@ namespace NIRSManagerClient.ViewModels
                 FIO = $"{_user.SurName} {_user.Name} {_user.SecondName}";
         }
 
+        private void LoadChild(UserControl view)
+        {
+            ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+            window.mainGrid.Children.Clear();
+            window.mainGrid.Children.Add(view);
+        }
 
         #endregion
 
@@ -63,12 +69,14 @@ namespace NIRSManagerClient.ViewModels
 
 
 
+
         public ExtensionViewModel(User user) : base("Главная форма")
         {
             _user = user;
             GetFio();
             IsLeftPosition = _user.IsLeftPosition;
             GetLastOperation();
+            LoadChild(new MainSettingsView(_user));
         }
     }
 }
