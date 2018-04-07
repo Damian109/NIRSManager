@@ -3,7 +3,6 @@ using NIRSCore;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using NIRSCore.FileOperations;
 using NIRSCore.ErrorManager;
 using NIRSCore.StackOperations;
 
@@ -29,19 +28,22 @@ namespace NIRSManagerClient.ViewModels
                 return;
             try
             {
-                FileSettings settings = new FileSettings(_login, HashForSecurity.GetMd5Hash(input));
-                settings.Open();
-                ExtensionView extensionView = new ExtensionView(settings.GetUser());
+                NirsSystem.Login = _login;
+                NirsSystem.Md5 = input;
+                NirsSystem.OpenUserSettings();
+                NirsSystem.StackOperations.AddOperation(new Operation("Вход в систему", null, null));
+
+                ExtensionView extensionView = new ExtensionView();
                 extensionView.Show();
-                StackOperations.AddOperation(new Operation("Вход в систему", null, null));
             }
             catch (NirsException exception)
             {
-                ErrorManager.ExecuteException(exception);
+                NirsSystem.ErrorManager.ExecuteException(exception);
             }
             finally
             {
                 MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                NirsSystem.Close();
                 window.Close();
             }
         }
@@ -50,25 +52,14 @@ namespace NIRSManagerClient.ViewModels
         private void LoginInFile(string input)
         {
             string login = string.Empty;
-            try
+            login = NirsSystem.FileUsers.GetFileName(input);
+
+            if (login == string.Empty)
             {
-                FileUsers file = new FileUsers();
-                file.Open();
-                login = file.GetFileName(input);
-            }
-            catch(NirsException exception)
-            {
-                ErrorManager.ExecuteException(exception);
-            }
-            finally
-            {
-                if (login == string.Empty)
-                {
-                    _status = AuthorizationStatus.AuthError;
-                    _color = Brushes.PaleVioletRed;
-                    OnPropertyChanged("StatusColor");
-                    OnPropertyChanged("Status");
-                }
+                _status = AuthorizationStatus.AuthError;
+                _color = Brushes.PaleVioletRed;
+                OnPropertyChanged("StatusColor");
+                OnPropertyChanged("Status");
             }
         }
 

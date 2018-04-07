@@ -73,40 +73,27 @@ namespace NIRSManagerClient.ViewModels
                 OnPropertyChanged("StatusColor");
                 return;
             }
-
-            //Создание Файла настроек
-            FileSettings fileSettings = new FileSettings(Login, hash);
-            //Создание рабочего каталога для пользователя
-            fileSettings.Create();
-            User user = new User();
             
             //При регистрации через сервер нужно сохранить данные для входа
             if(_isServer)
             {
-                user.LoginToServer = _login;
-                user.PasswordToServer = _password;
+                NirsSystem.User.LoginToServer = _login;
+                NirsSystem.User.PasswordToServer = _password;
             }
-
-            fileSettings.SetUser(new User());
-
-            fileSettings.Save();
 
             _color = Brushes.LimeGreen;
             _status = RegistrationStatus.RegGood;
             OnPropertyChanged("StatusColor");
             OnPropertyChanged("Status");
-            StackOperations.AddOperation(new Operation("Регистрация", null, null));
+            NirsSystem.StackOperations.AddOperation(new Operation("Регистрация", null, null));
         }
 
         //Добавление пользователя в файл учетных записей
         private bool AddUserToUserFile(string hash)
         {
-            FileUsers fileUsers = new FileUsers();
-            fileUsers.Open();
-            if (fileUsers.GetFileName(hash) != string.Empty)
+            if (NirsSystem.FileUsers.GetFileName(hash) != string.Empty)
                 return false;
-            fileUsers.AddNewUsersItem(new FileUsersItem() { Login = _login, Md5 = hash });
-            fileUsers.Save();
+            NirsSystem.FileUsers.AddNewUsersItem(new FileUsersItem() { Login = _login, Md5 = hash });
             return true;
         }
 
@@ -169,9 +156,7 @@ namespace NIRSManagerClient.ViewModels
         {
             if (IsLoginServer())
                 return true;
-            FileUsers fileUsers = new FileUsers();
-            fileUsers.Open();
-            if (fileUsers.GetKey(_login) != string.Empty)
+            if (NirsSystem.FileUsers.GetKey(_login) != string.Empty)
             {
                 _status = RegistrationStatus.RegError;
                 _color = Brushes.PaleVioletRed;

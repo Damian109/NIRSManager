@@ -1,25 +1,17 @@
-﻿using NIRSCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using NIRSCore;
 
 namespace NIRSManagerClient.ViewModels.SettingsViewModels
 {
     public sealed class MainSettingsViewModel : ViewModel
     {
-        #region Private
-        private User _user;
-        #endregion
-
         /// <summary>
         /// Фамилия пользователя
         /// </summary>
         public string SurName
         {
-            get => _user.SurName;
-            set => _user.SurName = value;
+            get => NirsSystem.User.SurName;
+            set => NirsSystem.User.SurName = value;
         }
 
         /// <summary>
@@ -27,8 +19,8 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// </summary>
         public string NName
         {
-            get => _user.Name;
-            set => _user.Name = value;
+            get => NirsSystem.User.Name;
+            set => NirsSystem.User.Name = value;
         }
 
         /// <summary>
@@ -36,8 +28,8 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// </summary>
         public string SecondName
         {
-            get => _user.SecondName;
-            set => _user.SecondName = value;
+            get => NirsSystem.User.SecondName;
+            set => NirsSystem.User.SecondName = value;
         }
 
         /// <summary>
@@ -45,8 +37,8 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// </summary>
         public DateTime DateOfBirth
         {
-            get => _user.DateOfBirth;
-            set => _user.DateOfBirth = value;
+            get => NirsSystem.User.DateOfBirth;
+            set => NirsSystem.User.DateOfBirth = value;
         }
 
         /// <summary>
@@ -54,10 +46,10 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// </summary>
         public string Position
         {
-            get => _user.Position;
-            set => _user.Position = value;
+            get => NirsSystem.User.Position;
+            set => NirsSystem.User.Position = value;
         }
 
-        public MainSettingsViewModel(User user) : base("Главная форма") => _user = user;
+        public MainSettingsViewModel() : base("Главная форма") { }
     }
 }

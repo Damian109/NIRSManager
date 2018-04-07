@@ -1,39 +1,64 @@
 ﻿using NIRSCore;
-using NIRSCore.StackOperations;
-using NIRSManagerClient.Views;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.ComponentModel;
+using NIRSManagerClient.Views;
 using System.Windows.Controls;
-using System.Windows.Input;
+using NIRSCore.StackOperations;
+using System.Collections.Generic;
 
 namespace NIRSManagerClient.ViewModels
 {
     public sealed class ExtensionViewModel : ViewModel
     {
         #region Private
-        private User _user;
 
         /// <summary>
         /// Получение последней выполненной операции
         /// </summary>
-        private void GetLastOperation()
+        private void GetLastOperation() =>
+            LastOperation = NirsSystem.StackOperations.Operations.LastOrDefault().Name;
+
+        /// <summary>
+        /// Обработка закрытия окна
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            LastOperation = StackOperations.Operations.LastOrDefault().Name;
+            if(NirsSystem.User.IsMinimizeToTray)
+            {
+                e.Cancel = true;
+                return;
+            }
+            NirsSystem.Close();
         }
+
+        /// <summary>
+        /// Обработка события изменения ФИО
+        /// </summary>
+        private void _user_ChangeFIOEvent() => GetFio();
+
+        //
+        private void StackOperations_ChangeStatusEvent() => OnPropertyChanged("Operations");
 
         /// <summary>
         /// Получение ФИО пользователя
         /// </summary>
         private void GetFio()
         {
-            if (_user.SurName == string.Empty && _user.Name == string.Empty &&
-                _user.SecondName == string.Empty)
+            if (NirsSystem.User.SurName == string.Empty && NirsSystem.User.Name == string.Empty &&
+                NirsSystem.User.SecondName == string.Empty)
                 FIO = "(ФИО не указано)";
             else
-                FIO = $"{_user.SurName} {_user.Name} {_user.SecondName}";
+                FIO = $"{NirsSystem.User.SurName} {NirsSystem.User.Name} {NirsSystem.User.SecondName}";
+            OnPropertyChanged("FIO");
         }
 
+        /// <summary>
+        /// Загрузка нового элемента в основное окно
+        /// </summary>
+        /// <param name="view"></param>
         private void LoadChild(UserControl view)
         {
             ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
@@ -61,22 +86,21 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Список операций
         /// </summary>
-        public List<IOperation> Operations
+        public List<Operation> Operations
         {
-            get => StackOperations.Operations;
+            get => NirsSystem.StackOperations.Operations;
         }
 
-
-
-
-
-        public ExtensionViewModel(User user) : base("Главная форма")
+        public ExtensionViewModel() : base("Главная форма")
         {
-            _user = user;
+            NirsSystem.User.ChangeFIOEvent += _user_ChangeFIOEvent;
+            NirsSystem.StackOperations.ChangeStatusEvent += StackOperations_ChangeStatusEvent;
             GetFio();
-            IsLeftPosition = _user.IsLeftPosition;
+            IsLeftPosition = NirsSystem.User.IsLeftPosition;
             GetLastOperation();
-            LoadChild(new MainSettingsView(_user));
+
+            ///
+            LoadChild(new MainSettingsView());
         }
     }
 }
