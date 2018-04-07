@@ -48,7 +48,7 @@
                     Width="100"
                     materialDesign:HintAssist.Hint="Дата рождения"
                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-                        Text="{Binding DateOfBirth}" FontSize="20" MinHeight="50" MinWidth="250"
+                        Text="{Binding DateOfBirth, Mode=TwoWay}" FontSize="20" MinHeight="50" MinWidth="250"
                         Margin="50"/>
                 </StackPanel>
             </GroupBox>

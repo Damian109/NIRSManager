@@ -43,7 +43,6 @@ namespace NIRSManagerClient.ViewModels
             finally
             {
                 MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                NirsSystem.Close();
                 window.Close();
             }
         }
