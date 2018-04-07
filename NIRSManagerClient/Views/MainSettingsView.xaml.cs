@@ -9,10 +9,10 @@ namespace NIRSManagerClient.Views
     /// </summary>
     public partial class MainSettingsView : UserControl
     {
-        public MainSettingsView(User user)
+        public MainSettingsView()
         {
             InitializeComponent();
-            DataContext = new MainSettingsViewModel(user);
+            DataContext = new MainSettingsViewModel();
         }
     }
 }

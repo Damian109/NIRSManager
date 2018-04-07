@@ -84,7 +84,7 @@
         <TextBox Grid.Row="3" Grid.Column="0"
                  materialDesign:HintAssist.Hint="Введите фамилию"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding SurName, Mode=TwoWay}">
+                 Text="{Binding SurName}">
         </TextBox>
 
         <TextBox Grid.Row="5" Grid.Column="0"

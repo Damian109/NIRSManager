@@ -29,7 +29,7 @@ namespace NIRSManagerClient.ViewModels
             try
             {
                 NirsSystem.Login = _login;
-                NirsSystem.Md5 = input;
+                NirsSystem.Md5 = HashForSecurity.GetMd5Hash(input);
                 NirsSystem.OpenUserSettings();
                 NirsSystem.StackOperations.AddOperation(new Operation("Вход в систему", null, null));
 

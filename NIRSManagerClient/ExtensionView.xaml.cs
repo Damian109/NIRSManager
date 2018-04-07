@@ -1,5 +1,4 @@
-﻿using NIRSCore;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls;
@@ -15,7 +14,7 @@ namespace NIRSManagerClient
         public ExtensionView()
         {
             InitializeComponent();
-            ExtensionViewModel viewModel = new ExtensionViewModel(user);
+            ExtensionViewModel viewModel = new ExtensionViewModel();
             DataContext = viewModel;
             Closing += viewModel.OnWindowClosing;
         }

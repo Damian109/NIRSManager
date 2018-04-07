@@ -86,7 +86,7 @@ namespace NIRSCore.FileOperations
 
                         //Добавить операцию в стек операций
                         Operation operation = new Operation("Файл настроек загружен", null, null);
-                        StackOperations.StackOperations.AddOperation(operation);
+                        NirsSystem.StackOperations.AddOperation(operation);
                     }
                 }
             }
