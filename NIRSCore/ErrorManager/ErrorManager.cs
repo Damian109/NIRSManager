@@ -1,9 +1,5 @@
 ﻿using NIRSCore.FileOperations;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NIRSCore.ErrorManager
 {
@@ -24,8 +20,27 @@ namespace NIRSCore.ErrorManager
             _nirsErrors = new List<NirsError>();
             FileErrors file = new FileErrors();
             file.Open();
-            foreach (var elem in file.ErrorsItems)
-                _nirsErrors.Add(new NirsError(elem.NameSource, elem.NameSystem, elem.Message));
+            if(file.ErrorsItems.Count > 0)
+                foreach (var elem in file.ErrorsItems)
+                    _nirsErrors.Add(new NirsError(elem.NameSource, elem.NameSystem, elem.Message));
+        }
+
+        /// <summary>
+        /// Сохранение лога ошибок
+        /// </summary>
+        public static void SaveErrors()
+        {
+            FileErrors file = new FileErrors();
+            List<FileErrorsItem> items = new List<FileErrorsItem>();
+            foreach (var elem in _nirsErrors)
+                items.Add(new FileErrorsItem()
+                {
+                    Message = elem.Message,
+                    NameSource = elem.NameSource,
+                    NameSystem = elem.NameSystem
+                });
+            file.ErrorsItems = items;
+            file.Save();
         }
 
         /// <summary>
