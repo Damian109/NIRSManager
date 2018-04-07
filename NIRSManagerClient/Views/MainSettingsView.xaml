@@ -7,102 +7,51 @@
         xmlns:local="clr-namespace:NIRSManagerClient"
         mc:Ignorable="d">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.RowSpan="2"
-                   Grid.Column="0" Grid.ColumnSpan="2"
-                   Style="{StaticResource MaterialDesignDisplay3TextBlock}"
-                   Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                   Background="{DynamicResource PrimaryHueMidBrush}"
-                   TextAlignment="Center"
-                   Padding="0 20 0 0">
-            Основные настройки
-        </TextBlock>
-
-        <TextBlock Grid.Row="2" Grid.Column="0" 
-                   Margin="80 10 80 10"
-                   TextAlignment="Center"
-                   Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                   Style="{StaticResource MaterialDesignHeadlineTextBlock}"
-                   Background="{DynamicResource PrimaryHueLightBrush}"
-        >
-            Фамилия
-        </TextBlock>
-
-        <TextBlock Grid.Row="4" Grid.Column="0" 
-                   Margin="80 10 80 10"
-                   TextAlignment="Center"
-                   Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                   Style="{StaticResource MaterialDesignHeadlineTextBlock}"
-                   Background="{DynamicResource PrimaryHueLightBrush}"
-        >
-            Имя
-        </TextBlock>
-
-        <TextBlock Grid.Row="6" Grid.Column="0" 
-                   Margin="80 10 80 10"
-                   TextAlignment="Center"
-                   Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                   Style="{StaticResource MaterialDesignHeadlineTextBlock}"
-                   Background="{DynamicResource PrimaryHueLightBrush}"
-        >
-            Отчество
-        </TextBlock>
-
-        <TextBlock Grid.Row="2" Grid.Column="1" 
-                   Margin="80 10 80 10"
-                   TextAlignment="Center"
-                   Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                   Style="{StaticResource MaterialDesignHeadlineTextBlock}"
-                   Background="{DynamicResource PrimaryHueLightBrush}"
-        >
-            Должность
-        </TextBlock>
-
-        <TextBlock Grid.Row="4" Grid.Column="1" 
-                   Margin="80 10 80 10"
-                   TextAlignment="Center"
-                   Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                   Style="{StaticResource MaterialDesignHeadlineTextBlock}"
-                   Background="{DynamicResource PrimaryHueLightBrush}"
-        >
-            Дата рождения
-        </TextBlock>
-
-        <TextBox Grid.Row="3" Grid.Column="0"
-                 materialDesign:HintAssist.Hint="Введите фамилию"
+        <Border
+                Background="{DynamicResource MaterialDesignBackground}">
+            <GroupBox
+                Header="Основные настройки" HorizontalAlignment="Center" MinHeight="500" MinWidth="450"
+                VerticalAlignment="Center" Margin="20"
+                 Style="{DynamicResource MaterialDesignGroupBox}"
+                    UseLayoutRounding="True"
+                    SnapsToDevicePixels="True">
+                <StackPanel Orientation="Vertical">
+                    <TextBox
+                materialDesign:HintAssist.Hint="Введите фамилию"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding SurName}">
-        </TextBox>
+                 Text="{Binding SurName}" FontSize="20" MinHeight="50" TextAlignment="Right"
+                        Margin="50 5 50 5">
+                    </TextBox>
 
-        <TextBox Grid.Row="5" Grid.Column="0"
+                    <TextBox
                  materialDesign:HintAssist.Hint="Введите имя"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding NName}">
-        </TextBox>
+                 Text="{Binding NName}" FontSize="20" MinHeight="50" TextAlignment="Right"
+                        Margin="50 5 50 5">
+                    </TextBox>
 
-        <TextBox Grid.Row="7" Grid.Column="0"
+                    <TextBox
                  materialDesign:HintAssist.Hint="Введите отчество"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding SecondName}">
-        </TextBox>
+                 Text="{Binding SecondName}" FontSize="20" MinHeight="50" TextAlignment="Right"
+                        Margin="50 5 50 5">
+                    </TextBox>
 
-        <TextBox Grid.Row="3" Grid.Column="1"
+                    <TextBox Grid.Row="3" Grid.Column="1"
                  materialDesign:HintAssist.Hint="Введите должность"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding Position}">
-        </TextBox>
+                 Text="{Binding Position}" FontSize="20" MinHeight="50" TextAlignment="Right"
+                        Margin="50 5 50 5">
+                    </TextBox>
+
+                    <DatePicker
+                    Width="100"
+                    materialDesign:HintAssist.Hint="Дата рождения"
+                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                        Text="{Binding DateOfBirth}" FontSize="20" MinHeight="50" MinWidth="250"
+                        Margin="50"/>
+                </StackPanel>
+            </GroupBox>
+        </Border>
     </Grid>
 </UserControl>
