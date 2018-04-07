@@ -9,21 +9,74 @@ namespace NIRSCore
     [Serializable]
     public sealed class User
     {
+        [NonSerialized]
+        public string _login_;
+        [NonSerialized]
+        public string _md5_;
+        #region SettingsChanger
+
+        //Показывает был ли документ уже загружен
+        private bool _colsChanger = false;
+
+        //Событие изменения ФИО
+        public delegate void eventSender();
+        public event eventSender ChangeFIOEvent;
+
+        private string _surName, _name, _secondName;
+
+        #endregion
         #region MainPropertyes
         /// <summary>
         /// Фамилия пользователя
         /// </summary>
-        public string SurName { get; set; }
+        public string SurName
+        {
+            get => _surName;
+            set
+            {
+                _surName = value;
+                if(_colsChanger)
+                {
+                    ChangeFIOEvent?.Invoke();
+                    DateLastEditSettings = DateTime.Now;
+                }
+                _colsChanger = true;
+            }
+        }
 
         /// <summary>
         /// Имя пользователя
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                if (_colsChanger)
+                {
+                    ChangeFIOEvent?.Invoke();
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Отчество пользователя
         /// </summary>
-        public string SecondName { get; set; }
+        public string SecondName
+        {
+            get => _secondName;
+            set
+            {
+                _secondName = value;
+                if (_colsChanger)
+                {
+                    ChangeFIOEvent?.Invoke();
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Дата рождения
