@@ -33,7 +33,7 @@ namespace NIRSManagerClient.ViewModels
                 settings.Open();
                 ExtensionView extensionView = new ExtensionView(settings.GetUser());
                 extensionView.Show();
-                StackOperations.AddOperation(new NotUnDoneOperation("Вход в систему"));
+                StackOperations.AddOperation(new Operation("Вход в систему", null, null));
             }
             catch (NirsException exception)
             {

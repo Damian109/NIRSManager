@@ -95,7 +95,7 @@ namespace NIRSManagerClient.ViewModels
             _status = RegistrationStatus.RegGood;
             OnPropertyChanged("StatusColor");
             OnPropertyChanged("Status");
-            StackOperations.AddOperation(new NotUnDoneOperation("Регистрация"));
+            StackOperations.AddOperation(new Operation("Регистрация", null, null));
         }
 
         //Добавление пользователя в файл учетных записей
