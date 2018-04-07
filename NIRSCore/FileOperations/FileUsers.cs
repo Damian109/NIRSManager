@@ -92,6 +92,8 @@ namespace NIRSCore.FileOperations
         {
             if (_usersItems.Count < 1)
                 return;
+            if (!Directory.Exists("data//"))
+                Directory.CreateDirectory("data//");
             try
             {
                 using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))

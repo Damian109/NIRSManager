@@ -44,10 +44,14 @@ namespace NIRSCore.FileOperations
         /// </summary>
         public override void Create()
         {
-            Directory.CreateDirectory("data//" + _login);
-            Directory.CreateDirectory("data//" + _login + "//Backups");
-            Directory.CreateDirectory("data//" + _login + "//Documents");
-            Directory.CreateDirectory("data//" + _login + "//Photos");
+            if(!Directory.Exists("data//" + _login))
+                Directory.CreateDirectory("data//" + _login);
+            if (!Directory.Exists("data//" + _login + "//Backups"))
+                Directory.CreateDirectory("data//" + _login + "//Backups");
+            if (!Directory.Exists("data//" + _login + "//Documents"))
+                Directory.CreateDirectory("data//" + _login + "//Documents");
+            if (!Directory.Exists("data//" + _login + "//Photos"))
+                Directory.CreateDirectory("data//" + _login + "//Photos");
         }
 
         /// <summary>
@@ -90,7 +94,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new NirsException("Ошибка при загрузке файла настроек", "Файл настроек", "Файловая система");
             }
@@ -105,6 +109,7 @@ namespace NIRSCore.FileOperations
                 return;
             try
             {
+                Create();
                 using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
                 {
                     TripleDESCryptoServiceProvider serviceProvider = new TripleDESCryptoServiceProvider();
@@ -118,7 +123,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new NirsException("Ошибка при записи файла настроек", "Файл настроек", "Файловая система");
             }

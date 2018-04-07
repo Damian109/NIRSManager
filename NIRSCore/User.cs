@@ -9,23 +9,23 @@ namespace NIRSCore
     [Serializable]
     public sealed class User
     {
-        [NonSerialized]
-        public string _login_;
-        [NonSerialized]
-        public string _md5_;
         #region SettingsChanger
-
-        //Показывает был ли документ уже загружен
-        private bool _colsChanger = false;
 
         //Событие изменения ФИО
         public delegate void eventSender();
         public event eventSender ChangeFIOEvent;
 
         private string _surName, _name, _secondName;
+        private string _position;
+        private DateTime _dateOfBirth;
 
         #endregion
         #region MainPropertyes
+        /// <summary>
+        /// Показывает был ли документ уже загружен
+        /// </summary>
+        public bool Changer { get; set; }
+
         /// <summary>
         /// Фамилия пользователя
         /// </summary>
@@ -35,12 +35,11 @@ namespace NIRSCore
             set
             {
                 _surName = value;
-                if(_colsChanger)
+                if(Changer)
                 {
                     ChangeFIOEvent?.Invoke();
                     DateLastEditSettings = DateTime.Now;
                 }
-                _colsChanger = true;
             }
         }
 
@@ -53,7 +52,7 @@ namespace NIRSCore
             set
             {
                 _name = value;
-                if (_colsChanger)
+                if (Changer)
                 {
                     ChangeFIOEvent?.Invoke();
                     DateLastEditSettings = DateTime.Now;
@@ -70,7 +69,7 @@ namespace NIRSCore
             set
             {
                 _secondName = value;
-                if (_colsChanger)
+                if (Changer)
                 {
                     ChangeFIOEvent?.Invoke();
                     DateLastEditSettings = DateTime.Now;
@@ -81,12 +80,32 @@ namespace NIRSCore
         /// <summary>
         /// Дата рождения
         /// </summary>
-        public DateTime DateOfBirth { get; set; }
+        public DateTime DateOfBirth {
+            get => _dateOfBirth;
+            set
+            {
+                _dateOfBirth = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Должность пользователя
         /// </summary>
-        public string Position { get; set; }
+        public string Position {
+            get => _position;
+            set
+            {
+                _position = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
         #endregion
         #region ConnectionPropertyes
         /// <summary>
@@ -255,6 +274,7 @@ namespace NIRSCore
         /// </summary>
         public User()
         {
+            Changer = false;
             //Основные настройки
             Name = SurName = SecondName = Position = string.Empty;
             DateOfBirth = DateTime.MinValue;

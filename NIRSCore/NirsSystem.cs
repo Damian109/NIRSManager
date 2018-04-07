@@ -57,6 +57,9 @@
             FileOperations.FileSettings fileSettings = new FileOperations.FileSettings(Login, Md5);
             fileSettings.Open();
             User = fileSettings.GetUser();
+            if (User == null)
+                User = new User();
+            User.Changer = true;
         }
 
         /// <summary>
