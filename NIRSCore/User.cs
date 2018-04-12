@@ -17,7 +17,6 @@ namespace NIRSCore
 
         private string _surName, _name, _secondName;
         private string _position;
-        private DateTime _dateOfBirth;
 
         #endregion
         #region MainPropertyes
@@ -72,21 +71,6 @@ namespace NIRSCore
                 if (Changer)
                 {
                     ChangeFIOEvent?.Invoke();
-                    DateLastEditSettings = DateTime.Now;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Дата рождения
-        /// </summary>
-        public DateTime DateOfBirth {
-            get => _dateOfBirth;
-            set
-            {
-                _dateOfBirth = value;
-                if (Changer)
-                {
                     DateLastEditSettings = DateTime.Now;
                 }
             }
@@ -230,12 +214,12 @@ namespace NIRSCore
         /// <summary>
         /// Основные цвета
         /// </summary>
-        public int MainColors { get; set; }
+        public string MainColors { get; set; }
 
         /// <summary>
         /// Дополнительные цвета
         /// </summary>
-        public int AdditionalColors { get; set; }
+        public string AdditionalColors { get; set; }
         #endregion
         #region EditorPropertyes
         /// <summary>
@@ -277,7 +261,6 @@ namespace NIRSCore
             Changer = false;
             //Основные настройки
             Name = SurName = SecondName = Position = string.Empty;
-            DateOfBirth = DateTime.MinValue;
 
             //Настройки подключения
             DatabaseName = DatabaseLogin = DatabasePassword = DatabasePath = DBMSName = DatabaseProviderName = string.Empty;
@@ -302,7 +285,7 @@ namespace NIRSCore
 
             //Настройки интерфейса
             IsDarkTheme = IsLeftPosition = true;
-            MainColors = AdditionalColors = 0;
+            MainColors = AdditionalColors = string.Empty;
         }
     }
 }

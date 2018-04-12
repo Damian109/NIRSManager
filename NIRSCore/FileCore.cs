@@ -40,11 +40,11 @@ namespace NIRSCore
         /// <summary>
         /// Открытие и десериализация файла
         /// </summary>
-        public virtual void Open() { }
+        public abstract void Open();
 
         /// <summary>
         /// Сериализация файла
         /// </summary>
-        public virtual void Save() { }
+        public abstract void Save();
     }
 }
