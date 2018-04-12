@@ -46,18 +46,19 @@
                         <Expander Margin="5" FontSize="16"
                             Header="Мои данные">
                             <StackPanel Orientation="Vertical">
-                                <MenuItem Header="Мои данные" FontSize="16" Margin="5"/>
-                                <MenuItem Header="Мои данные" FontSize="16" Margin="5"/>
-                                <MenuItem Header="Мои данные" FontSize="16" Margin="5"/>
-                                <MenuItem Header="Мои данные" FontSize="16" Margin="5"/>
-
+                                <MenuItem Header="Авторы" FontSize="16" Margin="5"/>
+                                <MenuItem Header="Работы" FontSize="16" Margin="5"/>
                             </StackPanel>
                         </Expander>
-                        <MenuItem Header="Мои данные" FontSize="16" Margin="5"/>
                         <MenuItem Header="Запросы к БД" FontSize="16" Margin="5"/>
                         <MenuItem Header="Резервные копии" FontSize="16" Margin="5"/>
-                        <MenuItem Header="Диспетчер ошибок" FontSize="16" Margin="5"/>
-                        <MenuItem Header="Настройки" FontSize="16" Margin="5"/>
+                        <Expander Margin="5" FontSize="16"
+                            Header="Настройки">
+                            <StackPanel Orientation="Vertical">
+                                <MenuItem Header="Настройки профиля" FontSize="16" Margin="5" Command="{Binding CommandMainSettingsLoad}"/>
+                                <MenuItem Header="Настройки интерфейса" FontSize="16" Margin="5" Command="{Binding CommandUserInterfaceSettingsLoad}"/>
+                            </StackPanel>
+                        </Expander>
                         <MenuItem Header="О программе" FontSize="16" Margin="5"/>
                         <MenuItem Header="Выход" FontSize="16" Margin="5"/>
                     </StackPanel>

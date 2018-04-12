@@ -6,6 +6,8 @@ using NIRSManagerClient.Views;
 using System.Windows.Controls;
 using NIRSCore.StackOperations;
 using System.Collections.Generic;
+using MaterialDesignThemes.Wpf;
+using MaterialDesignColors;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -17,7 +19,7 @@ namespace NIRSManagerClient.ViewModels
         /// Получение последней выполненной операции
         /// </summary>
         private void GetLastOperation() =>
-            LastOperation = NirsSystem.StackOperations.Operations.LastOrDefault().Name;
+            LastOperation = NirsSystem.StackOperations.Operations.FirstOrDefault().Name;
 
         /// <summary>
         /// Обработка закрытия окна
@@ -99,8 +101,36 @@ namespace NIRSManagerClient.ViewModels
             IsLeftPosition = NirsSystem.User.IsLeftPosition;
             GetLastOperation();
 
+            //Настройки интерфейса
+            new PaletteHelper().SetLightDark(NirsSystem.User.IsDarkTheme);
+            Swatch swatch = new SwatchesProvider().Swatches.Where(u => u.Name == NirsSystem.User.MainColors).FirstOrDefault();
+            if(swatch != null)
+                new PaletteHelper().ReplacePrimaryColor(swatch);
+            Swatch swatchAc = new SwatchesProvider().Swatches.Where(u => u.Name == NirsSystem.User.AdditionalColors).FirstOrDefault();
+            if(swatchAc != null)
+                new PaletteHelper().ReplaceAccentColor(swatchAc);
+
             ///
-            LoadChild(new MainSettingsView());
+            //LoadChild(new MainSettingsView());
+            LoadChild(new UserInterfaceSettingsView());
+        }
+
+        //Команды переходов по меню
+
+        /// <summary>
+        /// Команда Настройки профиля
+        /// </summary>
+        public RelayCommand CommandMainSettingsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new MainSettingsView()));
+        }
+
+        /// <summary>
+        /// Команда Настройки графического интерфейса
+        /// </summary>
+        public RelayCommand CommandUserInterfaceSettingsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new UserInterfaceSettingsView()));
         }
     }
 }
