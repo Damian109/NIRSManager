@@ -88,14 +88,21 @@
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\MainSettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\UserInterfaceSettingsViewModel.cs" />
     <Compile Include="Views\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainSettingsView.xaml.cs">
       <DependentUpon>MainSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PaletteView.xaml.cs">
+      <DependentUpon>PaletteView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RegistrationView.xaml.cs">
       <DependentUpon>RegistrationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserInterfaceSettingsView.xaml.cs">
+      <DependentUpon>UserInterfaceSettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="ExtensionView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -118,7 +125,13 @@
     <Page Include="Views\MainSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PaletteView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RegistrationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserInterfaceSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
