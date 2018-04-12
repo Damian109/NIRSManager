@@ -1,5 +1,4 @@
-﻿using System;
-using NIRSCore;
+﻿using NIRSCore;
 
 namespace NIRSManagerClient.ViewModels.SettingsViewModels
 {
@@ -30,15 +29,6 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         {
             get => NirsSystem.User.SecondName;
             set => NirsSystem.User.SecondName = value;
-        }
-
-        /// <summary>
-        /// Дата рождения
-        /// </summary>
-        public DateTime DateOfBirth
-        {
-            get => NirsSystem.User.DateOfBirth;
-            set => NirsSystem.User.DateOfBirth = value;
         }
 
         /// <summary>

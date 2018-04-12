@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NIRSManagerClient"
         mc:Ignorable="d">
     <Grid>
         <Border
@@ -20,36 +19,29 @@
                 materialDesign:HintAssist.Hint="Введите фамилию"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  Text="{Binding SurName}" FontSize="20" MinHeight="50" TextAlignment="Right"
-                        Margin="50 5 50 5">
+                        Margin="50 5 50 40">
                     </TextBox>
 
                     <TextBox
                  materialDesign:HintAssist.Hint="Введите имя"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  Text="{Binding NName}" FontSize="20" MinHeight="50" TextAlignment="Right"
-                        Margin="50 5 50 5">
+                        Margin="50 5 50 40">
                     </TextBox>
 
                     <TextBox
                  materialDesign:HintAssist.Hint="Введите отчество"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  Text="{Binding SecondName}" FontSize="20" MinHeight="50" TextAlignment="Right"
-                        Margin="50 5 50 5">
+                        Margin="50 5 50 40">
                     </TextBox>
 
                     <TextBox Grid.Row="3" Grid.Column="1"
                  materialDesign:HintAssist.Hint="Введите должность"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  Text="{Binding Position}" FontSize="20" MinHeight="50" TextAlignment="Right"
-                        Margin="50 5 50 5">
+                        Margin="50 5 50 40">
                     </TextBox>
-
-                    <DatePicker
-                    Width="100"
-                    materialDesign:HintAssist.Hint="Дата рождения"
-                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-                        Text="{Binding DateOfBirth, Mode=TwoWay}" FontSize="20" MinHeight="50" MinWidth="250"
-                        Margin="50"/>
                 </StackPanel>
             </GroupBox>
         </Border>
