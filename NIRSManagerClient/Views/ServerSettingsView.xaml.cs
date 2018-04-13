@@ -1,5 +1,4 @@
-﻿using NIRSManagerClient.ViewModels.SettingsViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,15 +16,13 @@ using System.Windows.Shapes;
 namespace NIRSManagerClient.Views
 {
     /// <summary>
-    /// Логика взаимодействия для ConnectionSettingsView.xaml
+    /// Логика взаимодействия для ServerSettingsView.xaml
     /// </summary>
-    public partial class ConnectionSettingsView : UserControl
+    public partial class ServerSettingsView : UserControl
     {
-        public ConnectionSettingsView()
+        public ServerSettingsView()
         {
             InitializeComponent();
-            DataContext = new ConnectionSettingsViewModel();
         }
     }
 }
-

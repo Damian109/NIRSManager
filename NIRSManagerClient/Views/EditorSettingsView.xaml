@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="NIRSManagerClient.Views.EditorSettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d">
+    <Grid>
+        <Border
+                Background="{DynamicResource MaterialDesignBackground}">
+            <GroupBox
+                Header="Настройки редактора кода" HorizontalAlignment="Center" MinHeight="500" MinWidth="600"
+                VerticalAlignment="Center" Margin="20"
+                 Style="{DynamicResource MaterialDesignGroupBox}"
+                    UseLayoutRounding="True"
+                    SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            FontSize="24" 
+                            MinHeight="50" 
+                            TextAlignment="Center"
+                            Margin="40"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Цвет цифр
+                    </TextBlock>
+                    <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            FontSize="24" 
+                            MinHeight="50" 
+                            TextAlignment="Center"
+                            Margin="40"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Цвет строк
+                    </TextBlock>
+                    <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            FontSize="24" 
+                            MinHeight="50" 
+                            TextAlignment="Center"
+                            Margin="40"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Цвет команд
+                    </TextBlock>
+                    <xctk:ColorPicker 
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        MinWidth="150"
+                        MinHeight="40"
+                        Margin="10 40 10 70"
+                        Name="ClrPcker_Background">
+                    </xctk:ColorPicker>
+                    <xctk:ColorPicker 
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        MinWidth="150"
+                        MinHeight="40"
+                        Margin="10 40 10 70"
+                        Name="ClrPcker_Background2">
+                    </xctk:ColorPicker>
+                    <xctk:ColorPicker 
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        MinWidth="150"
+                        MinHeight="40"
+                        Margin="10 40 10 70"
+                        Name="ClrPcker_Background3">
+                    </xctk:ColorPicker>
+                    <CheckBox
+                        Style="{StaticResource MaterialDesignCheckBox}"
+                        Background="Transparent"
+                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        FontSize="20" 
+                        MinHeight="50" 
+                        Margin="50 20 50 20"
+                        IsChecked="{Binding IntegratedSecurity}">
+                        Лексический анализатор
+                    </CheckBox>
+                    <CheckBox
+                        Style="{StaticResource MaterialDesignCheckBox}"
+                        Background="Transparent"
+                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        FontSize="20" 
+                        MinHeight="50" 
+                        Margin="50 20 50 20"
+                        IsChecked="{Binding IntegratedSecurity}">
+                        Синтаксический анализатор
+                    </CheckBox>
+                    <CheckBox
+                        Style="{StaticResource MaterialDesignCheckBox}"
+                        Background="Transparent"
+                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        FontSize="20" 
+                        MinHeight="50" 
+                        Margin="50 20 50 20"
+                        IsChecked="{Binding IntegratedSecurity}">
+                        Автодополнение
+                    </CheckBox>
+                </Grid>
+            </GroupBox>
+        </Border>
+    </Grid>
+</UserControl>

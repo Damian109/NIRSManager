@@ -56,7 +56,7 @@
                             Grid.Column="1"
                             Margin="50 20 50 20">
                     </TextBox>
-                    
+
                     <ComboBox ItemsSource="{Binding DBSNames}"
                             materialDesign:ComboBoxAssist.ShowSelectedItem="True"
                             Margin="20" 
@@ -75,7 +75,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    
+
                     <TextBox
                             materialDesign:HintAssist.Hint="Название СУБД"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -90,7 +90,7 @@
                             Grid.Column="1"
                             Margin="50 20 50 20">
                     </TextBox>
-                    
+
                     <TextBox
                             materialDesign:HintAssist.Hint="Поставщик данных"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -105,7 +105,7 @@
                             Grid.Column="1"
                             Margin="50 20 50 20">
                     </TextBox>
-                    
+
                     <CheckBox
                         Style="{StaticResource MaterialDesignCheckBox}"
                         Background="Transparent"
@@ -118,7 +118,7 @@
                         IsChecked="{Binding IntegratedSecurity}">
                         Проверка подлинности
                     </CheckBox>
-                    
+
                     <TextBox
                             materialDesign:HintAssist.Hint="Строка подключения"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -207,3 +207,4 @@
         </Border>
     </Grid>
 </UserControl>
+
