@@ -1,4 +1,5 @@
-﻿using NIRSCore.FileOperations;
+﻿using System;
+using NIRSCore.FileOperations;
 using System.Collections.Generic;
 
 namespace NIRSCore.ErrorManager
@@ -22,7 +23,7 @@ namespace NIRSCore.ErrorManager
             file.Open();
             if(file.ErrorsItems.Count > 0)
                 foreach (var elem in file.ErrorsItems)
-                    _nirsErrors.Add(new NirsError(elem.NameSource, elem.NameSystem, elem.Message));
+                    _nirsErrors.Add(new NirsError(elem.NameSource, elem.NameSystem, elem.Message, elem.DateError));
         }
 
         /// <summary>
@@ -48,12 +49,36 @@ namespace NIRSCore.ErrorManager
         /// </summary>
         /// <param name="exception">Исключение</param>
         public void ExecuteException(NirsException exception) =>
-            _nirsErrors.Add(new NirsError(exception.NameSource, exception.NameSystem, exception.Message));
+            _nirsErrors.Add(new NirsError(exception.NameSource, exception.NameSystem, exception.Message, DateTime.Now));
 
         /// <summary>
         /// Получение всех ошибок, полученных в результате работы программы и не отправленных на сервер
         /// </summary>
         /// <returns>Список ошибок</returns>
         public List<NirsError> GetErrors() => _nirsErrors;
+
+        /// <summary>
+        /// Отправить ошибки на сервер и очистка списка
+        /// </summary>
+        public void SetToServer()
+        {
+            //
+            //
+            //
+            //
+            //
+            //
+            Clear();
+        }
+
+        /// <summary>
+        /// Удаление списка ошибок
+        /// </summary>
+        public void Clear()
+        {
+            _nirsErrors.Clear();
+            FileErrors file = new FileErrors();
+            file.Delete();
+        }
     }
 }

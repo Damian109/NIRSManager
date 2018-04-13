@@ -24,6 +24,11 @@ namespace NIRSCore.FileOperations
         public string Message { get; set; }
 
         /// <summary>
+        /// Дата возникновения ошибки
+        /// </summary>
+        public DateTime DateError { get; set; }
+
+        /// <summary>
         /// Пустой конструктор для сериализации
         /// </summary>
         public FileErrorsItem() { }
