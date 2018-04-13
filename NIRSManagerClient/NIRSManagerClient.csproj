@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="HelpfulModels\DatabaseSelection.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
+    <Compile Include="ViewModels\ErrorsViewModel.cs" />
     <Compile Include="ViewModels\ExtensionViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
@@ -144,6 +145,9 @@
     </Compile>
     <Compile Include="Views\EditorSettingsView.xaml.cs">
       <DependentUpon>EditorSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ErrorsView.xaml.cs">
+      <DependentUpon>ErrorsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainSettingsView.xaml.cs">
       <DependentUpon>MainSettingsView.xaml</DependentUpon>
@@ -185,6 +189,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditorSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ErrorsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainSettingsView.xaml">
@@ -231,7 +238,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NIRSCore\NIRSCore.csproj">
