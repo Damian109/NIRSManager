@@ -18,6 +18,12 @@ namespace NIRSCore
         private string _surName, _name, _secondName;
         private string _position;
 
+        private string _databaseName, _databaseLogin, _databasePassword, _databasePath, _dBMSName;
+        private string _databaseProviderName, _connectionString;
+        private bool _integratedSecurity;
+        private TimeSpan _backupIntervals;
+        private DateTime _lastBackup;
+
         #endregion
         #region MainPropertyes
         /// <summary>
@@ -95,47 +101,155 @@ namespace NIRSCore
         /// <summary>
         /// Название базы данных, представленное в папке пользователя
         /// </summary>
-        public string DatabaseName { get; set; }
+        public string DatabaseName
+        {
+            get => _databaseName;
+            set
+            {
+                _databaseName = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Абсолютный путь к базе данных
         /// </summary>
-        public string DatabasePath { get; set; }
+        public string DatabasePath
+        {
+            get => _databasePath;
+            set
+            {
+                _databasePath = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Название СУБД, под управлением которой находится база данных
         /// </summary>
-        public string DBMSName { get; set; }
+        public string DBMSName
+        {
+            get => _dBMSName;
+            set
+            {
+                _dBMSName = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Логин пользователя базы данных
         /// </summary>
-        public string DatabaseLogin { get; set; }
+        public string DatabaseLogin
+        {
+            get => _databaseLogin;
+            set
+            {
+                _databaseLogin = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Пароль пользователя базы данных
         /// </summary>
-        public string DatabasePassword { get; set; }
+        public string DatabasePassword
+        {
+            get => _databasePassword;
+            set
+            {
+                _databasePassword = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Проверка подлинности
         /// </summary>
-        public bool IntegratedSecurity { get; set; }
+        public bool IntegratedSecurity
+        {
+            get => _integratedSecurity;
+            set
+            {
+                _integratedSecurity = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Название провайдера данных
         /// </summary>
-        public string DatabaseProviderName { get; set; }
+        public string DatabaseProviderName
+        {
+            get => _databaseProviderName;
+            set
+            {
+                _databaseProviderName = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Интервалы между бекапами
         /// </summary>
-        public TimeSpan BackupIntervals { get; set; }
+        public TimeSpan BackupIntervals
+        {
+            get => _backupIntervals;
+            set
+            {
+                _backupIntervals = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
 
         /// <summary>
         /// Последняя дата создания резервной копии
         /// </summary>
-        public DateTime LastBackup { get; set; }
+        public DateTime LastBackup
+        {
+            get => _lastBackup;
+            set
+            {
+                _lastBackup = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Строка подключения
+        /// </summary>
+        public string ConnectionString
+        {
+            get => _connectionString;
+            set => _connectionString = value;
+        }
 
         #endregion
         #region ServerPropertyes
@@ -260,13 +374,14 @@ namespace NIRSCore
         {
             Changer = false;
             //Основные настройки
-            Name = SurName = SecondName = Position = string.Empty;
+            _name = _surName = _secondName = _position = string.Empty;
 
             //Настройки подключения
-            DatabaseName = DatabaseLogin = DatabasePassword = DatabasePath = DBMSName = DatabaseProviderName = string.Empty;
-            IntegratedSecurity = true;
-            BackupIntervals = TimeSpan.MinValue;
-            LastBackup = DateTime.MinValue;
+            _databaseName = _databaseLogin = _databasePassword = _databasePath = _dBMSName = _databaseProviderName = string.Empty;
+            _connectionString = string.Empty;
+            _integratedSecurity = true;
+            _backupIntervals = TimeSpan.MinValue;
+            _lastBackup = DateTime.MinValue;
 
             //Настройки синхронизации
             IsConnectToServer = IsSynchronizeSettingsWithServer = IsSynchronizeDatabaseWithServer = false;
