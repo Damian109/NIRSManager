@@ -135,14 +135,23 @@ namespace NIRSManagerClient.ViewModels
                 return false;
             using (var client = new HttpClient())
             {
-                HttpResponseMessage message = client.PostAsJsonAsync("http://localhost:61096/Registration/IsLogin",
-                    new LoginData(_login)).Result;
-                bool success = message.IsSuccessStatusCode;
-                if (success)
+                try
                 {
-                    return IsLoginCorrectServer(message);
+                    HttpResponseMessage message = client.PostAsJsonAsync("http://localhost:61096/Registration/IsLogin",
+                    new LoginData(_login)).Result;
+                    bool success = message.IsSuccessStatusCode;
+                    if (success)
+                    {
+                        return IsLoginCorrectServer(message);
+                    }
+                    else
+                    {
+                        _status = RegistrationStatus.RegServerErr;
+                        _color = Brushes.PaleVioletRed;
+                        return true;
+                    }
                 }
-                else
+                catch(Exception)
                 {
                     _status = RegistrationStatus.RegServerErr;
                     _color = Brushes.PaleVioletRed;

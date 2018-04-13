@@ -48,15 +48,27 @@
                             <StackPanel Orientation="Vertical">
                                 <MenuItem Header="Авторы" FontSize="16" Margin="5"/>
                                 <MenuItem Header="Работы" FontSize="16" Margin="5"/>
+                                <MenuItem Header="Руководители" FontSize="16" Margin="5"/>
                             </StackPanel>
                         </Expander>
-                        <MenuItem Header="Запросы к БД" FontSize="16" Margin="5"/>
+                        <Expander Margin="5" FontSize="16"
+                            Header="Запросы к БД">
+                            <StackPanel Orientation="Vertical">
+                                <MenuItem Header="Конструктор" FontSize="16" Margin="5"/>
+                                <MenuItem Header="Редактор кода" FontSize="16" Margin="5"/>
+                                <MenuItem Header="Слияние БД" FontSize="16" Margin="5"/>
+                            </StackPanel>
+                        </Expander>
                         <MenuItem Header="Резервные копии" FontSize="16" Margin="5"/>
                         <Expander Margin="5" FontSize="16"
                             Header="Настройки">
                             <StackPanel Orientation="Vertical">
                                 <MenuItem Header="Настройки профиля" FontSize="16" Margin="5" Command="{Binding CommandMainSettingsLoad}"/>
+                                <MenuItem Header="Настройки подключения" FontSize="16" Margin="5" Command="{Binding CommandConnectionSettingsLoad}"/>
                                 <MenuItem Header="Настройки интерфейса" FontSize="16" Margin="5" Command="{Binding CommandUserInterfaceSettingsLoad}"/>
+                                <MenuItem Header="Настройки редактора" FontSize="16" Margin="5" Command="{Binding CommandEditorSettingsLoad}"/>
+                                <MenuItem Header="Настройки синхронизации" FontSize="16" Margin="5" Command="{Binding CommandServerSettingsLoad}"/>
+                                <MenuItem Header="Настройки поведения" FontSize="16" Margin="5" Command="{Binding CommandProgramSettingsLoad}"/>
                             </StackPanel>
                         </Expander>
                         <MenuItem Header="О программе" FontSize="16" Margin="5"/>
@@ -91,6 +103,23 @@
                             Background="Transparent" 
                             Foreground="{DynamicResource SecondaryAccentForegroundBrush}"                      
                         />
+                        <materialDesign:Badged
+                            Badge="0"
+                            Margin="20 10 20 10">
+                            <Button
+                                Content="{materialDesign:PackIcon HumanGreeting}"
+                                ToolTip="Запросы на обмен БД">
+                            </Button>
+                        </materialDesign:Badged>
+                        <materialDesign:Badged
+                            Badge="5"
+                            Margin="20 10 20 10">
+                            <Button
+                                Content="{materialDesign:PackIcon InformationOutline}"
+                                Command="{Binding CommandErrorsLoad}"
+                                ToolTip="Информация об ошибках">
+                            </Button>
+                        </materialDesign:Badged>
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <Grid x:Name="mainGrid" Grid.Row="1"

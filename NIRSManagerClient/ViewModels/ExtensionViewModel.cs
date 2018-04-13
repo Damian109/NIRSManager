@@ -111,8 +111,7 @@ namespace NIRSManagerClient.ViewModels
                 new PaletteHelper().ReplaceAccentColor(swatchAc);
 
             ///
-            //LoadChild(new MainSettingsView());
-            LoadChild(new UserInterfaceSettingsView());
+            LoadChild(new ConnectionSettingsView());
         }
 
         //Команды переходов по меню
@@ -131,6 +130,46 @@ namespace NIRSManagerClient.ViewModels
         public RelayCommand CommandUserInterfaceSettingsLoad
         {
             get => new RelayCommand(obj => LoadChild(new UserInterfaceSettingsView()));
+        }
+
+        /// <summary>
+        /// Команда Настройки подключения
+        /// </summary>
+        public RelayCommand CommandConnectionSettingsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new ConnectionSettingsView()));
+        }
+
+        /// <summary>
+        /// Команда Настройки редактора кода
+        /// </summary>
+        public RelayCommand CommandEditorSettingsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new EditorSettingsView()));
+        }
+
+        /// <summary>
+        /// Команда Настройки синхронизации
+        /// </summary>
+        public RelayCommand CommandServerSettingsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new ServerSettingsView()));
+        }
+
+        /// <summary>
+        /// Команда Настройки поведения программы
+        /// </summary>
+        public RelayCommand CommandProgramSettingsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new ProgramSettingsView()));
+        }
+
+        /// <summary>
+        /// Команда Диспетчер ошибок
+        /// </summary>
+        public RelayCommand CommandErrorsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new ErrorsView()));
         }
     }
 }
