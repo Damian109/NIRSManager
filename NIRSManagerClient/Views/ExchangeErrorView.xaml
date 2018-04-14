@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="NIRSManagerClient.Views.ExchangeErrorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <!-- throw in some extra colour for our floating action button -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Green.Named.Primary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                            FontSize="32" 
+                            MinHeight="50" 
+                            TextAlignment="Center"
+                            Margin="40"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Сервис недоступен
+        </TextBlock>
+        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                            FontSize="24" 
+                            MinHeight="50" 
+                            TextAlignment="Center"
+                            Margin="40"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Возможно недоступно соединение с сервером
+        </TextBlock>
+
+    </Grid>
+</UserControl>
