@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 
 namespace NIRSCore.FileOperations
 {
-    public sealed class FileUsers : FileCore
+    internal sealed class FileUsers : FileCore
     {
         private List<FileUsersItem> _usersItems;
         private byte[] _key;
@@ -27,37 +27,9 @@ namespace NIRSCore.FileOperations
         }
 
         /// <summary>
-        /// Метод возвращает логин пользователя в системе, который необходим для загрузки настроек пользователя
-        /// </summary>
-        /// <param name="input">связка логина и пароля</param>
-        /// <returns>В качестве возвращаемого значения - возвращает логин пользователя или пустую строку при несоответствии</returns>
-        public string GetFileName(string input)
-        {
-            FileUsersItem usersItem = _usersItems.Where(u => HashForSecurity.VerifyMd5Hash(input, u.Md5)).FirstOrDefault();
-            if (usersItem == null)
-                return string.Empty;
-            else
-                return usersItem.Login;
-        }
-
-        /// <summary>
-        /// Метод возвращает ключ, для дешифровки файла настроек
-        /// </summary>
-        /// <param name="login">логин пользователя</param>
-        /// <returns>Ключ дешифрования в форме Md5-суммы логина и пароля</returns>
-        public string GetKey(string login)
-        {
-            FileUsersItem usersItem = _usersItems.Where(u => u.Login == login).FirstOrDefault();
-            if (usersItem == null)
-                return string.Empty;
-            else
-                return usersItem.Md5;
-        }
-
-        /// <summary>
         /// Открыть файл учетных данных пользователей
         /// </summary>
-        public override void Open()
+        public sealed override void Read()
         {
             if (!File.Exists(_filename))
                 return;
@@ -69,7 +41,7 @@ namespace NIRSCore.FileOperations
                     TripleDESCryptoServiceProvider serviceProvider = new TripleDESCryptoServiceProvider();
 
                     //Поток дешифровки файла
-                    using (Stream cryptoStream = new CryptoStream(fileStream, serviceProvider.CreateDecryptor(_key, _vector), 
+                    using (Stream cryptoStream = new CryptoStream(fileStream, serviceProvider.CreateDecryptor(_key, _vector),
                         CryptoStreamMode.Read))
                     {
                         //Выполняется десериализация в список объектов
@@ -79,7 +51,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw new NirsException("Ошибка при загрузке файла учетных записей", "Файл учетных записей", "Файловая система");
             }
@@ -88,7 +60,7 @@ namespace NIRSCore.FileOperations
         /// <summary>
         /// Сохранить файл учетных данных пользователя
         /// </summary>
-        public override void Save()
+        public sealed override void Write()
         {
             if (_usersItems.Count < 1)
                 return;
@@ -122,6 +94,29 @@ namespace NIRSCore.FileOperations
         public void AddNewUsersItem(FileUsersItem item)
         {
             _usersItems.Add(item);
+        }
+
+        /// <summary>
+        /// Проверка существования пользователя с таким логином
+        /// </summary>
+        /// <param name="login">Логин пользователя</param>
+        /// <returns></returns>
+        public bool IsUserCreated(string login)
+        {
+            FileUsersItem usersItem = _usersItems.Where(u => u.Login == login).FirstOrDefault();
+            if (usersItem == null)
+                return false;
+            else
+                return true;
+        }
+
+        /// <summary>
+        /// Получить пользователя по умолчанию
+        /// </summary>
+        /// <returns></returns>
+        public FileUsersItem GetMainUser()
+        {
+            return _usersItems.Where(u => u.IsMain).FirstOrDefault();
         }
     }
 }

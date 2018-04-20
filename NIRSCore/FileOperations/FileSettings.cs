@@ -11,13 +11,16 @@ namespace NIRSCore.FileOperations
     /// <summary>
     /// Класс для работы с файлом пользовательских настроек
     /// </summary>
-    public sealed class FileSettings : FileCore
+    internal sealed class FileSettings : FileCore
     {
         private byte[] _key;
         private byte[] _vector;
-
         private string _login, _md5;
-        private User _user;
+
+        /// <summary>
+        /// Данные пользователя
+        /// </summary>
+        public User User { get; set; }
 
         /// <summary>
         /// Формирование ключа
@@ -36,40 +39,13 @@ namespace NIRSCore.FileOperations
             _md5 = md5;
             _vector = Encoding.ASCII.GetBytes("12345678");
             FormKey();
-            _user = null;
+            User = null;
         }
-
-        /// <summary>
-        /// Создать файл настроек
-        /// </summary>
-        public override void Create()
-        {
-            if(!Directory.Exists("data//" + _login))
-                Directory.CreateDirectory("data//" + _login);
-            if (!Directory.Exists("data//" + _login + "//Backups"))
-                Directory.CreateDirectory("data//" + _login + "//Backups");
-            if (!Directory.Exists("data//" + _login + "//Documents"))
-                Directory.CreateDirectory("data//" + _login + "//Documents");
-            if (!Directory.Exists("data//" + _login + "//Photos"))
-                Directory.CreateDirectory("data//" + _login + "//Photos");
-        }
-
-        /// <summary>
-        /// Установить пользователя и сохранить настройки
-        /// </summary>
-        /// <param name="user">Настройки пользователя</param>
-        public void SetUser(User user) => _user = user;
-
-        /// <summary>
-        /// Получить настройки пользователя
-        /// </summary>
-        /// <returns>Настройки пользователя</returns>
-        public User GetUser() => _user;
 
         /// <summary>
         /// Открыть файл учетных данных пользователей
         /// </summary>
-        public override void Open()
+        public sealed override void Read()
         {
             if (!File.Exists(_filename))
                 return;
@@ -86,7 +62,7 @@ namespace NIRSCore.FileOperations
                     {
                         //Выполняется десериализация в список объектов
                         XmlSerializer serializer = new XmlSerializer(typeof(User));
-                        _user = (User)serializer.Deserialize(cryptoStream);
+                        User = (User)serializer.Deserialize(cryptoStream);
 
                         //Добавить операцию в стек операций
                         Operation operation = new Operation("Файл настроек загружен", null, null);
@@ -94,7 +70,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new NirsException("Ошибка при загрузке файла настроек", "Файл настроек", "Файловая система");
             }
@@ -103,9 +79,9 @@ namespace NIRSCore.FileOperations
         /// <summary>
         /// Сохранить файл учетных данных пользователя
         /// </summary>
-        public override void Save()
+        public sealed override void Write()
         {
-            if (_user == null)
+            if (User == null)
                 return;
             try
             {
@@ -119,11 +95,11 @@ namespace NIRSCore.FileOperations
                     {
                         //Выполняется сериализация в список объектов
                         XmlSerializer serializer = new XmlSerializer(typeof(User));
-                        serializer.Serialize(cryptoStream, _user);
+                        serializer.Serialize(cryptoStream, User);
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new NirsException("Ошибка при записи файла настроек", "Файл настроек", "Файловая система");
             }

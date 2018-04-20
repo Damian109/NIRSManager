@@ -27,7 +27,7 @@ namespace NIRSCore.FileOperations
         /// <summary>
         /// Открыть файл Лог ошибок
         /// </summary>
-        public override void Open()
+        public sealed override void Read()
         {
             if (!File.Exists(_filename))
                 return;
@@ -43,7 +43,7 @@ namespace NIRSCore.FileOperations
         /// <summary>
         /// Сохранить файл Лог ошибок
         /// </summary>
-        public override void Save()
+        public sealed override void Write()
         {
             //Выполняется десериализация в список объектов
             using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))

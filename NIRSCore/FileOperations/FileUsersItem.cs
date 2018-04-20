@@ -6,7 +6,7 @@ namespace NIRSCore.FileOperations
     /// Класс, для хранения информации о пользовательских данных для входа
     /// </summary>
     [Serializable]
-    public sealed class FileUsersItem
+    internal sealed class FileUsersItem
     {
         /// <summary>
         /// Логин пользователя
@@ -17,6 +17,11 @@ namespace NIRSCore.FileOperations
         /// Md5-сумма логина и пароля
         /// </summary>
         public string Md5 { get; set; }
+
+        /// <summary>
+        /// Является ли пользователем по умолчанию
+        /// </summary>
+        public bool IsMain { get; set; }
 
         /// <summary>
         /// Стандартный конструктор без параметров

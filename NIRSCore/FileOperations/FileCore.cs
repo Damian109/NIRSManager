@@ -5,7 +5,7 @@ namespace NIRSCore
     /// <summary>
     /// Абстрактный класс, предоставляющий потомкам возможности по редактированию файлов
     /// </summary>
-    public abstract class FileCore
+    internal abstract class FileCore
     {
         //Название файла для работы
         protected string _filename;
@@ -22,7 +22,7 @@ namespace NIRSCore
         /// <summary>
         /// Создание файла
         /// </summary>
-        public virtual void Create()
+        public void Create()
         {
             if (!File.Exists(_filename))
                 File.Create(_filename);
@@ -34,17 +34,17 @@ namespace NIRSCore
         public void Close()
         {
             Create();
-            Save();
+            Write();
         }
 
         /// <summary>
         /// Открытие и десериализация файла
         /// </summary>
-        public abstract void Open();
+        public abstract void Read();
 
         /// <summary>
         /// Сериализация файла
         /// </summary>
-        public abstract void Save();
+        public abstract void Write();
     }
 }

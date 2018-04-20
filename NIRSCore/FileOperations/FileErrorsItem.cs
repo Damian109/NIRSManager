@@ -6,7 +6,7 @@ namespace NIRSCore.FileOperations
     /// Класс служит для хранения информации о строке файла с ошибками
     /// </summary>
     [Serializable]
-    public sealed class FileErrorsItem
+    internal sealed class FileErrorsItem
     {
         /// <summary>
         /// Название класса, вызвавшего исключение
