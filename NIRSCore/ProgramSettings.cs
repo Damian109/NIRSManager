@@ -1,13 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NIRSCore
 {
+    /// <summary>
+    /// Настройки программы
+    /// </summary>
+    [Serializable]
     public sealed class ProgramSettings
     {
+        /// <summary>
+        /// Запускаться при запуске Windows? 
+        /// </summary>
+        public bool IsStartFromWindows { get; set; }
 
+        /// <summary>
+        /// При закрытии сворачивать в трей?
+        /// </summary>
+        public bool IsMinimizeToTray { get; set; }
+
+        /// <summary>
+        /// Показывать уведомления?
+        /// </summary>
+        public bool IsShowNotifications { get; set; }
+
+        /// <summary>
+        /// Адрес сервера
+        /// </summary>
+        public string AdressServer { get; set; }
+
+        /// <summary>
+        /// Стандартный конструктор
+        /// </summary>
+        public ProgramSettings()
+        {
+            IsMinimizeToTray = IsShowNotifications = IsStartFromWindows = false;
+            AdressServer = $"http://localhost:61096/";
+        }
     }
 }

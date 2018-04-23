@@ -299,20 +299,6 @@ namespace NIRSCore
         /// </summary>
         public DateTime DateLastEditDatabase { get; set; }
 
-        /// <summary>
-        /// Запускаться при запуске Windows? 
-        /// </summary>
-        public bool IsStartFromWindows { get; set; }
-
-        /// <summary>
-        /// При закрытии сворачивать в трей?
-        /// </summary>
-        public bool IsMinimizeToTray { get; set; }
-
-        /// <summary>
-        /// Показывать уведомления?
-        /// </summary>
-        public bool IsShowNotifications { get; set; }
         #endregion
         #region InterfacePropertyes
         /// <summary>
@@ -390,7 +376,6 @@ namespace NIRSCore
 
             //Настройки приложения
             DateLastEditSettings = DateLastEditDatabase = DateTime.MinValue;
-            IsStartFromWindows = IsMinimizeToTray = IsShowNotifications = false;
 
             //Настройки редактора
             EditorIsAddition = EditorIsLexic = EditorIsSyntax = true;
