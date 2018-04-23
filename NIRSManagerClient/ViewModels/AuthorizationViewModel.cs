@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using NIRSCore.ErrorManager;
 using NIRSCore.StackOperations;
+using NIRSCore.HelpfulEnumsStructs;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -22,14 +23,11 @@ namespace NIRSManagerClient.ViewModels
         //Выполняется вход в приложение
         private void Enter()
         {
-            string input = _login + _password;
-            LoginInFile(input);
-            if (_status == AuthorizationStatus.AuthError)
+            if (_status != AuthorizationStatus.AuthOK)
                 return;
             try
             {
-                NirsSystem.Login = _login;
-                NirsSystem.Md5 = HashForSecurity.GetMd5Hash(input);
+                NirsSystem.Authorization(Login, Password, true);
                 NirsSystem.OpenUserSettings();
                 NirsSystem.StackOperations.AddOperation(new Operation("Вход в систему", null, null));
 
@@ -47,62 +45,7 @@ namespace NIRSManagerClient.ViewModels
             }
         }
 
-        //Проверка есть ли логин в файле пользователей
-        private void LoginInFile(string input)
-        {
-            string login = string.Empty;
-            login = NirsSystem.FileUsers.GetFileName(input);
-
-            if (login == string.Empty)
-            {
-                _status = AuthorizationStatus.AuthError;
-                _color = Brushes.PaleVioletRed;
-                OnPropertyChanged("StatusColor");
-                OnPropertyChanged("Status");
-            }
-        }
-
-        //Проверка логина для статуса
-        private bool IsStatusLoginNull()
-        {
-            if (_login == string.Empty)
-            {
-                _status = AuthorizationStatus.AuthLogin;
-                _color = Brushes.PaleVioletRed;
-                return true;
-            }
-            return false;
-        }
-
-        //Проверка пароля для статуса
-        private bool IsStatusPasswordNull()
-        {
-            if (!IsStatusLoginNull())
-            {
-                if (_password == string.Empty)
-                {
-                    _status = AuthorizationStatus.AuthPassword;
-                    _color = Brushes.PaleVioletRed;
-                    return true;
-                }
-                _status = AuthorizationStatus.AuthOK;
-                _color = Brushes.LimeGreen;
-                return false;
-            }
-            return true;
-        }
         #endregion
-
-        /// <summary>
-        /// Перечисление, описывающее статус авторизации
-        /// </summary>
-        enum AuthorizationStatus
-        {
-            AuthLogin,     //Необходимо ввести логин
-            AuthPassword,  //Необходимо ввести пароль
-            AuthOK,        //Все данные введены
-            AuthError      //Авторизация не удалась
-        }
 
         /// <summary>
         /// Логин пользователя
@@ -113,9 +56,7 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _login = value;
-
-                IsStatusPasswordNull();
-
+                _status = NirsSystem.Authorization(Login, Password, false);
                 OnPropertyChanged("StatusColor");
                 OnPropertyChanged("Login");
                 OnPropertyChanged("Status");
@@ -131,9 +72,7 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _password = value;
-
-                IsStatusPasswordNull();
-
+                _status = NirsSystem.Authorization(Login, Password, false);
                 OnPropertyChanged("StatusColor");
                 OnPropertyChanged("Login");
                 OnPropertyChanged("Status");
@@ -150,14 +89,19 @@ namespace NIRSManagerClient.ViewModels
                 switch (_status)
                 {
                     case AuthorizationStatus.AuthLogin:
+                        _color = Brushes.PaleVioletRed;
                         return "Необходимо ввести логин";
                     case AuthorizationStatus.AuthPassword:
+                        _color = Brushes.PaleVioletRed;
                         return "Необходимо ввести пароль";
                     case AuthorizationStatus.AuthOK:
+                        _color = Brushes.LimeGreen;
                         return "Все данные введены";
                     case AuthorizationStatus.AuthError:
+                        _color = Brushes.PaleVioletRed;
                         return "Авторизация не удалась";
                     default:
+                        _color = Brushes.PaleVioletRed;
                         return "Ошибка авторизации";
                 }
             }
