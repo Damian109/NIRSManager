@@ -20,7 +20,7 @@ namespace NIRSCore.ErrorManager
         {
             _nirsErrors = new List<NirsError>();
             FileErrors file = new FileErrors();
-            file.Open();
+            file.Read();
             if(file.ErrorsItems.Count > 0)
                 foreach (var elem in file.ErrorsItems)
                     _nirsErrors.Add(new NirsError(elem.NameSource, elem.NameSystem, elem.Message, elem.DateError));
@@ -41,7 +41,7 @@ namespace NIRSCore.ErrorManager
                     NameSystem = elem.NameSystem
                 });
             file.ErrorsItems = items;
-            file.Save();
+            file.Write();
         }
 
         /// <summary>
