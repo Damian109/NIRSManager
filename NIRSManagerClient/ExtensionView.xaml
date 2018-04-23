@@ -42,7 +42,6 @@
                     <StackPanel Orientation="Vertical" 
                                     PreviewMouseLeftButtonUp="DemoItemsListBox_PreviewMouseLeftButtonUp"
                                     MinHeight="300" Margin="0 16 0 16">
-                        <MenuItem Header="Главная страница" FontSize="16" Margin="5"/>
                         <Expander Margin="5" FontSize="16"
                             Header="Мои данные">
                             <StackPanel Orientation="Vertical">
@@ -59,7 +58,7 @@
                                 <MenuItem Header="Слияние БД" FontSize="16" Margin="5"/>
                             </StackPanel>
                         </Expander>
-                        <MenuItem Header="Резервные копии" FontSize="16" Margin="5"/>
+                        <MenuItem Header="Резервные копии" FontSize="16" Margin="5" Command="{Binding CommandBackupsLoad}"/>
                         <Expander Margin="5" FontSize="16"
                             Header="Настройки">
                             <StackPanel Orientation="Vertical">
@@ -71,7 +70,7 @@
                                 <MenuItem Header="Настройки поведения" FontSize="16" Margin="5" Command="{Binding CommandProgramSettingsLoad}"/>
                             </StackPanel>
                         </Expander>
-                        <MenuItem Header="О программе" FontSize="16" Margin="5"/>
+                        <MenuItem Header="О программе" FontSize="16" Margin="5" Command="{Binding CommandAboutLoad}"/>
                         <MenuItem Header="Выход" FontSize="16" Margin="5"/>
                     </StackPanel>
                 </DockPanel>
@@ -108,7 +107,8 @@
                             Margin="20 10 20 10">
                             <Button
                                 Content="{materialDesign:PackIcon HumanGreeting}"
-                                ToolTip="Запросы на обмен БД">
+                                ToolTip="Запросы на обмен БД"
+                                Command="{Binding CommandExchangeLoad}">
                             </Button>
                         </materialDesign:Badged>
                         <materialDesign:Badged

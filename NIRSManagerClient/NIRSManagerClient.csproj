@@ -137,8 +137,20 @@
     <Compile Include="ViewModels\SettingsViewModels\ConnectionSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\MainSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\UserInterfaceSettingsViewModel.cs" />
+    <Compile Include="Views\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AuthorsView.xaml.cs">
+      <DependentUpon>AuthorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AuthorView.xaml.cs">
+      <DependentUpon>AuthorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BackupView.xaml.cs">
+      <DependentUpon>BackupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectionSettingsView.xaml.cs">
       <DependentUpon>ConnectionSettingsView.xaml</DependentUpon>
@@ -146,11 +158,32 @@
     <Compile Include="Views\EditorSettingsView.xaml.cs">
       <DependentUpon>EditorSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditorView.xaml.cs">
+      <DependentUpon>EditorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ErrorsView.xaml.cs">
       <DependentUpon>ErrorsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ExchangeErrorView.xaml.cs">
+      <DependentUpon>ExchangeErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExchangeSuccessView.xaml.cs">
+      <DependentUpon>ExchangeSuccessView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExchangeView.xaml.cs">
+      <DependentUpon>ExchangeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HeadsView.xaml.cs">
+      <DependentUpon>HeadsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HeadView.xaml.cs">
+      <DependentUpon>HeadView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainSettingsView.xaml.cs">
       <DependentUpon>MainSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MergerView.xaml.cs">
+      <DependentUpon>MergerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PaletteView.xaml.cs">
       <DependentUpon>PaletteView.xaml</DependentUpon>
@@ -167,6 +200,12 @@
     <Compile Include="Views\UserInterfaceSettingsView.xaml.cs">
       <DependentUpon>UserInterfaceSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WorksView.xaml.cs">
+      <DependentUpon>WorksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WorkView.xaml.cs">
+      <DependentUpon>WorkView.xaml</DependentUpon>
+    </Compile>
     <Page Include="ExtensionView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,7 +221,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AboutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AuthorizationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AuthorsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AuthorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BackupView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConnectionSettingsView.xaml">
@@ -191,10 +242,31 @@
     <Page Include="Views\EditorSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\EditorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ErrorsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ExchangeErrorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExchangeSuccessView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExchangeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HeadsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HeadView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MergerView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PaletteView.xaml">
@@ -210,6 +282,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserInterfaceSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorksView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
