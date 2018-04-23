@@ -118,5 +118,16 @@ namespace NIRSCore.FileOperations
         {
             return _usersItems.Where(u => u.IsMain).FirstOrDefault();
         }
+
+        /// <summary>
+        /// Задать пользователя по умолчанию
+        /// </summary>
+        /// <param name="login">Логин пользователя</param>
+        public void SetMainUser(string login)
+        {
+            foreach (var elem in _usersItems)
+                elem.IsMain = false;
+            var user = _usersItems.Where(u => u.Login == login).FirstOrDefault().IsMain = true;
+        }
     }
 }
