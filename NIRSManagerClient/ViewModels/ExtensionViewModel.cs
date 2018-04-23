@@ -171,5 +171,29 @@ namespace NIRSManagerClient.ViewModels
         {
             get => new RelayCommand(obj => LoadChild(new ErrorsView()));
         }
+
+        /// <summary>
+        /// Команда О программе
+        /// </summary>
+        public RelayCommand CommandAboutLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new AboutView()));
+        }
+
+        /// <summary>
+        /// Команда Резервные копии
+        /// </summary>
+        public RelayCommand CommandBackupsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new BackupView()));
+        }
+
+        /// <summary>
+        /// Команда Обмен БД
+        /// </summary>
+        public RelayCommand CommandExchangeLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new ExchangeView()));
+        }
     }
 }
