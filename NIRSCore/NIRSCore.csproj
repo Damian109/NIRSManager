@@ -65,6 +65,7 @@
     <Compile Include="FileOperations\UserDirectory.cs" />
     <Compile Include="HashForSecurity.cs" />
     <Compile Include="HelpfulEnumsStructs\AuthorizationStatus.cs" />
+    <Compile Include="HelpfulEnumsStructs\RegistrationStatus.cs" />
     <Compile Include="NirsSystem.cs" />
     <Compile Include="ProgramSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
