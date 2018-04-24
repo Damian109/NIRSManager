@@ -81,7 +81,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new NirsException("Ошибка при записи файла учетных записей", "Файл учетных записей", "Файловая система");
             }
@@ -129,5 +129,12 @@ namespace NIRSCore.FileOperations
                 elem.IsMain = false;
             var user = _usersItems.Where(u => u.Login == login).FirstOrDefault().IsMain = true;
         }
+
+        /// <summary>
+        /// Возвращает md5-хеш
+        /// </summary>
+        /// <param name="login">Логин пользователя</param>
+        /// <returns></returns>
+        public string GetMd5(string login) => _usersItems.FirstOrDefault(u => u.Login == login)?.Md5;
     }
 }

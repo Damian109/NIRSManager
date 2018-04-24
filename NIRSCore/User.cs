@@ -259,16 +259,6 @@ namespace NIRSCore
         public bool IsConnectToServer { get; set; }
 
         /// <summary>
-        /// Логин для подключения
-        /// </summary>
-        public string LoginToServer { get; set; }
-
-        /// <summary>
-        /// Пароль для подключения
-        /// </summary>
-        public string PasswordToServer { get; set; }
-
-        /// <summary>
         /// Синхронизировать ли настройки с сервером?
         /// </summary>
         public bool IsSynchronizeSettingsWithServer { get; set; }
@@ -372,7 +362,6 @@ namespace NIRSCore
             //Настройки синхронизации
             IsConnectToServer = IsSynchronizeSettingsWithServer = IsSynchronizeDatabaseWithServer = false;
             IsSynchronizeBackupWithServer = IsSynchronizeDocumentsWithServer = false;
-            LoginToServer = PasswordToServer = string.Empty;
 
             //Настройки приложения
             DateLastEditSettings = DateLastEditDatabase = DateTime.MinValue;

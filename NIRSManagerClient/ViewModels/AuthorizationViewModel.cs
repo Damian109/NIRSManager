@@ -23,11 +23,13 @@ namespace NIRSManagerClient.ViewModels
         //Выполняется вход в приложение
         private void Enter()
         {
+            _status = NirsSystem.Authorization(Login, Password, true);
+            OnPropertyChanged("Status");
+            OnPropertyChanged("StatusColor");
             if (_status != AuthorizationStatus.AuthOK)
                 return;
             try
             {
-                NirsSystem.Authorization(Login, Password, true);
                 NirsSystem.OpenUserSettings();
                 NirsSystem.StackOperations.AddOperation(new Operation("Вход в систему", null, null));
 

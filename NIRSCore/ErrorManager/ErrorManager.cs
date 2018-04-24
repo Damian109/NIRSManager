@@ -31,6 +31,8 @@ namespace NIRSCore.ErrorManager
         /// </summary>
         public void SaveErrors()
         {
+            if (_nirsErrors.Count < 1)
+                return;
             FileErrors file = new FileErrors();
             List<FileErrorsItem> items = new List<FileErrorsItem>();
             foreach (var elem in _nirsErrors)

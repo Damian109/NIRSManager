@@ -115,7 +115,8 @@ namespace NIRSCore
         private static void RegistrationFunc(bool isServer)
         {
             //Регистраия на сервере
-            AsyncRegistrationToServer();
+            if (isServer && IsServer)
+                AsyncRegistrationToServer();
 
             //Регистрация на клиенте
             AsyncRegistrationToClient();
@@ -260,6 +261,7 @@ namespace NIRSCore
         public static void Close()
         {
             ErrorManager.SaveErrors();
+            _fileUsers.Write();
             FileSettings fileSettings = new FileSettings(_login, _md5)
             {
                 User = User
@@ -283,6 +285,9 @@ namespace NIRSCore
                     return AuthorizationStatus.AuthError;
                 _login = login;
                 _md5 = HashForSecurity.GetMd5Hash(login + password);
+                string md5 = _fileUsers.GetMd5(login);
+                if(md5 != _md5)
+                    return AuthorizationStatus.AuthError;
                 StackOperations.AddOperation(new Operation("Вход в систему", null, null));
             }
             if (login == string.Empty)

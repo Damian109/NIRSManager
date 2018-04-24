@@ -85,7 +85,8 @@ namespace NIRSCore.FileOperations
                 return;
             try
             {
-                Create();
+                if(!UserDirectory.IsValid(_login))
+                    UserDirectory.CreateDirectoryes(_login);
                 using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
                 {
                     TripleDESCryptoServiceProvider serviceProvider = new TripleDESCryptoServiceProvider();
@@ -99,7 +100,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new NirsException("Ошибка при записи файла настроек", "Файл настроек", "Файловая система");
             }

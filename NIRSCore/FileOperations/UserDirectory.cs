@@ -14,8 +14,8 @@ namespace NIRSCore.FileOperations
         /// <returns>Все ли каталоги присутствуют</returns>
         public static bool IsValid(string login)
         {
-            if ((!Directory.Exists("data//" + login)) && (!Directory.Exists("data//" + login + "//Backups")) &&
-                (!Directory.Exists("data//" + login + "//Documents")) && (!Directory.Exists("data//" + login + "//Photos")))
+            if ((!Directory.Exists("data//" + login)) || (!Directory.Exists("data//" + login + "//Backups")) ||
+                (!Directory.Exists("data//" + login + "//Documents")) || (!Directory.Exists("data//" + login + "//Photos")))
                 return false;
             return true;
         }

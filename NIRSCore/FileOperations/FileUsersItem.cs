@@ -6,7 +6,7 @@ namespace NIRSCore.FileOperations
     /// Класс, для хранения информации о пользовательских данных для входа
     /// </summary>
     [Serializable]
-    internal sealed class FileUsersItem
+    public sealed class FileUsersItem
     {
         /// <summary>
         /// Логин пользователя
