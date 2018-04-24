@@ -67,14 +67,22 @@ namespace NIRSCore
             {
                 using (var client = new HttpClient())
                 {
-                    HttpResponseMessage message = client.GetAsync(ProgramSettings.AdressServer + "Server/Ping").Result;
-                    bool result = false;
-                    if (message.StatusCode == System.Net.HttpStatusCode.OK)
+                    try
                     {
-                        string resultString = message.Content.ReadAsStringAsync().Result;
-                        result = Convert.ToBoolean(resultString);
+                        HttpResponseMessage message = client.GetAsync(ProgramSettings.AdressServer + "Server/Ping").Result;
+                        bool result = false;
+                        if (message.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            string resultString = message.Content.ReadAsStringAsync().Result;
+                            result = Convert.ToBoolean(resultString);
+                        }
+                        return result;
                     }
-                    return result;
+                    catch(Exception)
+                    {
+                        return false;
+                    }
+                    
                 }
             });
         }
@@ -105,6 +113,8 @@ namespace NIRSCore
         /// <returns></returns>
         private static bool TaskRegistrationFindUser(string login)
         {
+            if (!IsServer)
+                return false;
             using (var client = new HttpClient())
             {
                 HttpResponseMessage message = client.PostAsJsonAsync(ProgramSettings.AdressServer + "Registration/IsLogin",
@@ -312,7 +322,7 @@ namespace NIRSCore
         {
             if(isDone)
             {
-                if (RegistrationFindUser(login))
+                if (isServer && RegistrationFindUser(login))
                     return RegistrationStatus.RegError;
                 _login = login;
                 _md5 = HashForSecurity.GetMd5Hash(login + password);
