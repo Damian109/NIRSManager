@@ -3,7 +3,7 @@
     /// <summary>
     /// Перечисление, описывающее статус регистрации
     /// </summary>
-    enum RegistrationStatus
+    public enum RegistrationStatus
     {
         RegLogin,     //Ввести логин
         RegPassword,  //Ввести пароль

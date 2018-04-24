@@ -125,7 +125,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
             set
             {
                 NirsSystem.User.DatabaseName = value;
-                DbPath = NirsSystem.Login + "//" + value + ".db";
+                //DbPath = NirsSystem.Login + "//" + value + ".db";
                 OnPropertyChanged("DbName");
             }
         }

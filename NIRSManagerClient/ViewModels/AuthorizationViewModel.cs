@@ -57,9 +57,9 @@ namespace NIRSManagerClient.ViewModels
             {
                 _login = value;
                 _status = NirsSystem.Authorization(Login, Password, false);
-                OnPropertyChanged("StatusColor");
                 OnPropertyChanged("Login");
                 OnPropertyChanged("Status");
+                OnPropertyChanged("StatusColor");
             }
         }
 
@@ -73,9 +73,9 @@ namespace NIRSManagerClient.ViewModels
             {
                 _password = value;
                 _status = NirsSystem.Authorization(Login, Password, false);
-                OnPropertyChanged("StatusColor");
-                OnPropertyChanged("Login");
+                OnPropertyChanged("Password");
                 OnPropertyChanged("Status");
+                OnPropertyChanged("StatusColor");
             }
         }
 

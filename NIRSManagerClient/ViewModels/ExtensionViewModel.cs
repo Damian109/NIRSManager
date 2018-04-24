@@ -28,11 +28,11 @@ namespace NIRSManagerClient.ViewModels
         /// <param name="e"></param>
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            if(NirsSystem.User.IsMinimizeToTray)
+           /* if(NirsSystem.User.IsMinimizeToTray)
             {
                 e.Cancel = true;
                 return;
-            }
+            }*/
             NirsSystem.Close();
         }
 
