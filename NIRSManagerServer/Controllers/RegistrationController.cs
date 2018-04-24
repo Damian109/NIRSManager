@@ -19,7 +19,7 @@ namespace NIRSManagerServer.Controllers
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
                 var query = databaseContext.Users.FirstOrDefault(u => u.Login == login);
-                if (query == null)
+                if (query != null)
                     return true;
             }
             return false;
@@ -43,10 +43,7 @@ namespace NIRSManagerServer.Controllers
         /// <param name="login">Логин</param>
         /// <returns>Есть ли пользователь в базе данных</returns>
         [HttpPost]
-        public bool IsLogin(LoginData data)
-        {
-            return IsLoginFromBase(data.Login);
-        }
+        public bool IsLogin(LoginData data) => IsLoginFromBase(data.Login);
 
         /// <summary>
         /// Регистрация пользователя
@@ -57,7 +54,7 @@ namespace NIRSManagerServer.Controllers
         [HttpPost]
         public bool RegistrationUser(RegistrationData data)
         {
-            if (!IsLoginFromBase(data.Login))
+            if (IsLoginFromBase(data.Login))
                 return false;
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {

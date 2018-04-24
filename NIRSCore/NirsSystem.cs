@@ -83,6 +83,12 @@ namespace NIRSCore
         //Проверка есть ли логин в файле пользователей
         private static bool AuthLoginInFile(string input) => _fileUsers.IsUserCreated(input);
 
+
+
+
+
+
+
         //Регистрация пользователя
         
         /// <summary>
@@ -90,26 +96,23 @@ namespace NIRSCore
         /// </summary>
         /// <param name="login">Логин пользователя</param>
         /// <returns></returns>
-        private async static Task<bool> AsyncRegistrationFindUser(string login) => await TaskRegistrationFindUser(login);
+        private static bool RegistrationFindUser(string login) => TaskRegistrationFindUser(login);
 
         /// <summary>
-        /// Асинхронный запрос на сервер с целью установления существования логина
+        /// Запрос на сервер с целью установления существования логина
         /// </summary>
         /// <param name="login">Логин пользователя</param>
         /// <returns></returns>
-        private static Task<bool> TaskRegistrationFindUser(string login)
+        private static bool TaskRegistrationFindUser(string login)
         {
-            return Task.Run(() =>
+            using (var client = new HttpClient())
             {
-                using (var client = new HttpClient())
-                {
-                    HttpResponseMessage message = client.PostAsJsonAsync(ProgramSettings.AdressServer + "Registration/IsLogin",
-                        new LoginData(login)).Result;
-                    string resultString = message.Content.ReadAsStringAsync().Result;
-                    bool result = Convert.ToBoolean(resultString);
-                    return result;
-                }
-            });
+                HttpResponseMessage message = client.PostAsJsonAsync(ProgramSettings.AdressServer + "Registration/IsLogin",
+                    new LoginData(login)).Result;
+                string resultString = message.Content.ReadAsStringAsync().Result;
+                bool result = Convert.ToBoolean(resultString);
+                return result;
+            }
         }
 
         private static void RegistrationFunc(bool isServer)
@@ -309,6 +312,8 @@ namespace NIRSCore
         {
             if(isDone)
             {
+                if (RegistrationFindUser(login))
+                    return RegistrationStatus.RegError;
                 _login = login;
                 _md5 = HashForSecurity.GetMd5Hash(login + password);
                 RegistrationFunc(isServer);
@@ -324,7 +329,7 @@ namespace NIRSCore
             {
                 if (IsServer)
                 {
-                    bool isQuery = AsyncRegistrationFindUser(login).Result;
+                    bool isQuery = RegistrationFindUser(login);
                     if (isQuery)
                         return RegistrationStatus.RegError;
                 }
