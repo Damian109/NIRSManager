@@ -28,11 +28,11 @@ namespace NIRSManagerClient.ViewModels
         /// <param name="e"></param>
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-           /* if(NirsSystem.User.IsMinimizeToTray)
+            if(NirsSystem.ProgramSettings.IsMinimizeToTray)
             {
                 e.Cancel = true;
                 return;
-            }*/
+            }
             NirsSystem.Close();
         }
 
@@ -40,6 +40,18 @@ namespace NIRSManagerClient.ViewModels
         /// Обработка события изменения ФИО
         /// </summary>
         private void _user_ChangeFIOEvent() => GetFio();
+
+        /// <summary>
+        /// Обработка события - изменение статуса доступности сервера
+        /// </summary>
+        private void StatusServer_changed()
+        {
+            if (NirsSystem.IsServer)
+                ServerStatus = "Подключение к серверу успешно";
+            else
+                ServerStatus = "Сервер недоступен";
+            OnPropertyChanged("ServerStatus");
+        }
 
         //
         private void StackOperations_ChangeStatusEvent() => OnPropertyChanged("Operations");
@@ -86,6 +98,11 @@ namespace NIRSManagerClient.ViewModels
         public string LastOperation { get; private set; }
 
         /// <summary>
+        /// Статус доступности сервера
+        /// </summary>
+        public string ServerStatus { get; private set; }
+
+        /// <summary>
         /// Список операций
         /// </summary>
         public List<Operation> Operations
@@ -110,8 +127,14 @@ namespace NIRSManagerClient.ViewModels
             if(swatchAc != null)
                 new PaletteHelper().ReplaceAccentColor(swatchAc);
 
-            ///
-            LoadChild(new ConnectionSettingsView());
+            //Загрузка статуса сервера
+            StatusServer_changed();
+            NirsSystem.ChangeStatusServer += StatusServer_changed;
+
+            if (NirsSystem.IsDatabaseContextCreated)
+                LoadChild(new AuthorsView());
+            else
+                LoadChild(new ConnectionSettingsView());
         }
 
         //Команды переходов по меню

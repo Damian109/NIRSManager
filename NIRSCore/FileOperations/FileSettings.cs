@@ -114,6 +114,8 @@ namespace NIRSCore.FileOperations
         {
             if (File.Exists("data//" + _login + "//Database.db"))
                 return true;
+            if (File.Exists("data//" + _login + "//Database.mdf"))
+                return true;
             return false;
         }
     }

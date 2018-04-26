@@ -102,6 +102,15 @@
                             Background="Transparent" 
                             Foreground="{DynamicResource SecondaryAccentForegroundBrush}"                      
                         />
+                        <TextBlock 
+                            Text="{Binding ServerStatus}" 
+                            Margin="30 0 0 0"
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Background="Transparent" 
+                            Foreground="{DynamicResource SecondaryAccentForegroundBrush}"                      
+                        />
                         <materialDesign:Badged
                             Badge="0"
                             Margin="20 10 20 10">
