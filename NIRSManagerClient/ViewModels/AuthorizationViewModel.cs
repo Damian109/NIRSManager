@@ -31,8 +31,6 @@ namespace NIRSManagerClient.ViewModels
             try
             {
                 NirsSystem.OpenUserSettings();
-                NirsSystem.StackOperations.AddOperation(new Operation("Вход в систему", null, null));
-
                 ExtensionView extensionView = new ExtensionView();
                 extensionView.Show();
             }

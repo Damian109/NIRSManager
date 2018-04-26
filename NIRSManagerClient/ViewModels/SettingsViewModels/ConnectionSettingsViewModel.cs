@@ -55,7 +55,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// <returns></returns>
         private string FormConnectionString()
         {
-            string str = @"Data Source=.\" + NirsSystem.User.DatabasePath + ";Integrated Security = " +
+            string str = @"Data Source=.\data\\" + NirsSystem.User.DatabaseLogin + "\\Database" + ";Integrated Security = " +
                 NirsSystem.User.IntegratedSecurity.ToString();
             return str;
         }
@@ -113,34 +113,6 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
                 NirsSystem.User.IntegratedSecurity = value;
                 ConnectionString = FormConnectionString();
                 OnPropertyChanged("IntegratedSecurity");
-            }
-        }
-
-        /// <summary>
-        /// Название Базы данных
-        /// </summary>
-        public string DbName
-        {
-            get => NirsSystem.User.DatabaseName;
-            set
-            {
-                NirsSystem.User.DatabaseName = value;
-                //DbPath = NirsSystem.Login + "//" + value + ".db";
-                OnPropertyChanged("DbName");
-            }
-        }
-
-        /// <summary>
-        /// Путь к базе данных
-        /// </summary>
-        public string DbPath
-        {
-            get => NirsSystem.User.DatabasePath;
-            set
-            {
-                NirsSystem.User.DatabasePath = value;
-                ConnectionString = FormConnectionString();
-                OnPropertyChanged("DbPath");
             }
         }
 

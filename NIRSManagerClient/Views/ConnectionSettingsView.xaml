@@ -27,37 +27,170 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Название базы данных"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding DbName}" 
-                            FontSize="20" 
-                            MinHeight="50" 
-                            TextAlignment="Right"
+                    <TextBlock
                             Grid.Row="0"
                             Grid.Column="0"
-                            Margin="50 20 50 20">
-                    </TextBox>
-
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Путь к базе данных"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding DbPath}" 
-                            IsEnabled="False"
-                            FontSize="20" 
+                            FontSize="30" 
                             MinHeight="50" 
-                            TextAlignment="Right"
+                            TextAlignment="Center"
+                            Margin="50 20 50 0"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Существующая БД
+                    </TextBlock>
+                    <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
-                            Margin="50 20 50 20">
-                    </TextBox>
+                            FontSize="30" 
+                            MinHeight="50" 
+                            TextAlignment="Center"
+                            Margin="50 20 50 0"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Новая БД
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="1"
+                                Grid.Column="0">
+                        <TextBlock
+                            FontSize="24" 
+                            TextAlignment="Center"
+                            Margin="40 20"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            СУБД:
+                        </TextBlock>
+                        <TextBlock
+                            FontSize="20" 
+                            TextAlignment="Center"
+                            Margin="20 20"
+                            Background="Transparent"
+                            Text="{Binding DBSName, UpdateSourceTrigger=PropertyChanged}"
+                            Foreground="{DynamicResource PrimaryHueLightBrush}">
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="2"
+                                Grid.Column="0">
+                        <TextBlock
+                            FontSize="24" 
+                            TextAlignment="Center"
+                            Margin="40 20"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Поставщик:
+                        </TextBlock>
+                        <TextBlock
+                            FontSize="20" 
+                            TextAlignment="Center"
+                            Margin="20 20"
+                            Background="Transparent"
+                            Text="{Binding DatabaseProviderName, UpdateSourceTrigger=PropertyChanged}"
+                            Foreground="{DynamicResource PrimaryHueLightBrush}">
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="3"
+                                Grid.Column="0">
+                        <TextBlock
+                            FontSize="24" 
+                            TextAlignment="Center"
+                            Margin="40 20"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Логин:
+                        </TextBlock>
+                        <TextBlock
+                            FontSize="20" 
+                            TextAlignment="Center"
+                            Margin="20 20"
+                            Background="Transparent"
+                            Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"
+                            Foreground="{DynamicResource PrimaryHueLightBrush}">
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="4"
+                                Grid.Column="0">
+                        <TextBlock
+                            FontSize="24" 
+                            TextAlignment="Center"
+                            Margin="40 20"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Пароль:
+                        </TextBlock>
+                        <TextBlock
+                            FontSize="20" 
+                            TextAlignment="Center"
+                            Margin="20 20"
+                            Background="Transparent"
+                            Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                            Foreground="{DynamicResource PrimaryHueLightBrush}">
+                        </TextBlock>
+                    </StackPanel>
 
-                    <ComboBox ItemsSource="{Binding DBSNames}"
+                    <CheckBox
+                        Style="{StaticResource MaterialDesignCheckBox}"
+                        Background="Transparent"
+                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        FontSize="24" 
+                        IsEnabled="False"
+                        Margin="20 20"
+                        IsChecked="{Binding IntegratedSecurity}">
+                        Проверка подлинности
+                    </CheckBox>
+
+                    <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            FontSize="20" 
+                            TextAlignment="Center"
+                            Margin="20 20"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            Период создания резервных копий (дней)
+                    </TextBlock>
+                    <Slider
+                            Grid.Row="7"
+                            Grid.Column="0"
+                            Minimum="0"
+                            Maximum="100"
+                            IsEnabled="False"
+                            Width="350"
+                            Margin="0 0 0 20"
+                            Style="{StaticResource MaterialDesignDiscreteSlider}"
+                            ToolTip="От 0 до 100"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            Value="{Binding BackupIntervals}"
+                            FontSize="20" 
+                            MinHeight="50" 
+                    />
+                    
+                    
+                    
+                    
+                    
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="1"
+                                Grid.Column="1">
+                        <TextBlock
+                            FontSize="24" 
+                            TextAlignment="Center"
+                            Margin="40 20"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                            СУБД:
+                        </TextBlock>
+                        <ComboBox ItemsSource="{Binding DBSNames}"
                             materialDesign:ComboBoxAssist.ShowSelectedItem="True"
                             Margin="20" 
                             Background="Transparent"
@@ -67,30 +200,15 @@
                             Grid.Column="0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=Name}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Название СУБД"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding DBMSName}" 
-                            IsEnabled="False"
-                            FontSize="20" 
-                            MinHeight="50" 
-                            TextAlignment="Right"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="50 20 50 20">
-                    </TextBox>
-
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=Name}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
                     <TextBox
                             materialDesign:HintAssist.Hint="Поставщик данных"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -99,42 +217,11 @@
                             Text="{Binding DatabaseProviderName}" 
                             IsEnabled="False"
                             FontSize="20" 
-                            MinHeight="50" 
                             TextAlignment="Right"
                             Grid.Row="2"
                             Grid.Column="1"
-                            Margin="50 20 50 20">
+                            Margin="20">
                     </TextBox>
-
-                    <CheckBox
-                        Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        FontSize="20" 
-                        MinHeight="50" 
-                        Margin="50 20 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
-                        Проверка подлинности
-                    </CheckBox>
-
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Строка подключения"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding ConnectionString}" 
-                            IsEnabled="False"
-                            FontSize="20" 
-                            MinHeight="50" 
-                            TextAlignment="Right"
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="50 20 50 20">
-                    </TextBox>
-
                     <TextBox
                             materialDesign:HintAssist.Hint="Логин для подключения"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -142,11 +229,10 @@
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             Text="{Binding Login}" 
                             FontSize="20" 
-                            MinHeight="50" 
                             TextAlignment="Right"
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            Margin="50 20 50 20">
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="20">
                     </TextBox>
 
                     <TextBox
@@ -156,44 +242,39 @@
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             Text="{Binding Password}" 
                             FontSize="20" 
-                            MinHeight="50" 
                             TextAlignment="Right"
                             Grid.Row="4"
                             Grid.Column="1"
-                            Margin="50 20 50 20">
+                            Margin="20">
                     </TextBox>
 
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Дата создания последней резервной копии"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding LastBackup, Mode=OneWay}" 
-                            IsEnabled="False"
-                            FontSize="20" 
-                            MinHeight="50" 
-                            TextAlignment="Right"
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Margin="50 20 50 20">
-                    </TextBox>
+                    <CheckBox
+                        Style="{StaticResource MaterialDesignCheckBox}"
+                        Background="Transparent"
+                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        FontSize="24" 
+                        Margin="20"
+                        IsChecked="{Binding IntegratedSecurity}">
+                        Проверка подлинности
+                    </CheckBox>
                     <TextBlock
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.Column="1"
                             FontSize="20" 
-                            MinHeight="50" 
-                            TextAlignment="Right"
-                            Margin="50 20 50 0"
+                            TextAlignment="Center"
+                            Margin="20"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}">
                             Период создания резервных копий (дней)
                     </TextBlock>
                     <Slider
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Grid.Column="1"
                             Minimum="0"
                             Maximum="100"
-                            Width="260"
+                            Width="350"
                             Margin="0 0 0 20"
                             Style="{StaticResource MaterialDesignDiscreteSlider}"
                             ToolTip="От 0 до 100"
@@ -202,6 +283,18 @@
                             FontSize="20" 
                             MinHeight="50" 
                     />
+                    <Button
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            Margin="20"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            ToolTip="Сохранить измененияи обновить"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
+                            FontSize="16" 
+                            MinHeight="50">
+                        Сохранить
+                    </Button>
                 </Grid>
             </GroupBox>
         </Border>
