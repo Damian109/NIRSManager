@@ -6,6 +6,7 @@ using NIRSCore.FileOperations;
 using NIRSCore.HelpfulEnumsStructs;
 using NIRSCore.StackOperations;
 using NIRSCore.Syncronization;
+using NIRSManagerClient.DataBaseModels;
 
 namespace NIRSCore
 {
@@ -91,12 +92,6 @@ namespace NIRSCore
         //Проверка есть ли логин в файле пользователей
         private static bool AuthLoginInFile(string input) => _fileUsers.IsUserCreated(input);
 
-
-
-
-
-
-
         //Регистрация пользователя
         
         /// <summary>
@@ -157,7 +152,6 @@ namespace NIRSCore
                 _fileUsers.AddNewUsersItem(new FileUsersItem() { Login = _login, Md5 = _md5, IsMain = false });
             });
 
-
         /// <summary>
         /// Синхронизация с сервером
         /// </summary>
@@ -212,6 +206,16 @@ namespace NIRSCore
         }
 
         /// <summary>
+        /// Клиентская база данных
+        /// </summary>
+        public static ClientDatabaseContext ClientDatabaseContext { get; set; }
+
+        /// <summary>
+        /// Существует ли клиентская БД
+        /// </summary>
+        public static bool IsDatabaseContextCreated { get; private set; }
+
+        /// <summary>
         /// Статический конструктор
         /// </summary>
         static NirsSystem()
@@ -248,6 +252,8 @@ namespace NIRSCore
             //Создаем таймер
             _timer = new Timer(_timerCallback, 0, 0, MSTOTIMER);
 
+            IsDatabaseContextCreated = false;
+
             //Выполнение синхронизации
             Synchronization();
         }
@@ -265,6 +271,13 @@ namespace NIRSCore
             if (User == null)
                 User = new User();
             User.Changer = true;
+            if (User.DateLastEditDatabase != DateTime.MinValue)
+                IsDatabaseContextCreated = true;
+
+            //Проверка существования базы данных в виде файла
+            if (fileSettings.FindDatabaseFile())
+                IsDatabaseContextCreated = true;
+
             return true;
         }
 

@@ -91,6 +91,7 @@
     <Compile Include="DataBaseModels\Author.cs" />
     <Compile Include="DataBaseModels\ClientDatabaseContext.cs" />
     <Compile Include="DataBaseModels\CoAuthor.cs" />
+    <Compile Include="DataBaseModels\ContextConfiguration.cs" />
     <Compile Include="DataBaseModels\Direction.cs" />
     <Compile Include="DataBaseModels\Organization.cs" />
     <Compile Include="DataBaseModels\Position.cs" />

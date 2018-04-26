@@ -105,5 +105,16 @@ namespace NIRSCore.FileOperations
                 throw new NirsException("Ошибка при записи файла настроек", "Файл настроек", "Файловая система");
             }
         }
+
+        /// <summary>
+        /// Проверка существования базы данных в виде файла
+        /// </summary>
+        /// <returns></returns>
+        public bool FindDatabaseFile()
+        {
+            if (File.Exists("data//" + _login + "//Database.db"))
+                return true;
+            return false;
+        }
     }
 }

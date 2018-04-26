@@ -1,10 +1,12 @@
-﻿using System.Data.Entity;
+﻿using NIRSCore.DataBaseModels;
+using System.Data.Entity;
 
 namespace NIRSManagerClient.DataBaseModels
 {
     /// <summary>
     /// Контекст базы данных
     /// </summary>
+    //[DbConfigurationType(typeof(ContextConfiguration))]
     public class ClientDatabaseContext : DbContext
     {
         /// <summary>
@@ -21,7 +23,10 @@ namespace NIRSManagerClient.DataBaseModels
         /// Конструктор контекста
         /// </summary>
         /// <param name="connectionString">Строка подключения</param>
-        public ClientDatabaseContext(string connectionString) : base(connectionString) { }
+        public ClientDatabaseContext(string connectionString) : base(connectionString)
+        {
+            //Изменение конфигурации в зависимости от провайдера
+        }
 
         /// <summary>
         /// Таблица ученых степеней
