@@ -18,7 +18,7 @@ namespace NIRSCore
         private string _surName, _name, _secondName;
         private string _position;
 
-        private string _databaseName, _databaseLogin, _databasePassword, _databasePath, _dBMSName;
+        private string _databaseLogin, _databasePassword, _dBMSName;
         private string _databaseProviderName, _connectionString;
         private bool _integratedSecurity;
         private TimeSpan _backupIntervals;
@@ -97,39 +97,8 @@ namespace NIRSCore
             }
         }
         #endregion
+
         #region ConnectionPropertyes
-        /// <summary>
-        /// Название базы данных, представленное в папке пользователя
-        /// </summary>
-        public string DatabaseName
-        {
-            get => _databaseName;
-            set
-            {
-                _databaseName = value;
-                if (Changer)
-                {
-                    DateLastEditSettings = DateTime.Now;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Абсолютный путь к базе данных
-        /// </summary>
-        public string DatabasePath
-        {
-            get => _databasePath;
-            set
-            {
-                _databasePath = value;
-                if (Changer)
-                {
-                    DateLastEditSettings = DateTime.Now;
-                }
-            }
-        }
-
         /// <summary>
         /// Название СУБД, под управлением которой находится база данных
         /// </summary>
@@ -353,7 +322,7 @@ namespace NIRSCore
             _name = _surName = _secondName = _position = string.Empty;
 
             //Настройки подключения
-            _databaseName = _databaseLogin = _databasePassword = _databasePath = _dBMSName = _databaseProviderName = string.Empty;
+            _databaseLogin = _databasePassword = _dBMSName = _databaseProviderName = string.Empty;
             _connectionString = string.Empty;
             _integratedSecurity = true;
             _backupIntervals = TimeSpan.MinValue;
