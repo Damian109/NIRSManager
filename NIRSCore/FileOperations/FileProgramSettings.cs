@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using NIRSCore.ErrorManager;
 using System.Xml.Serialization;
 
 namespace NIRSCore.FileOperations
@@ -29,11 +31,18 @@ namespace NIRSCore.FileOperations
         {
             if (!File.Exists(_filename))
                 return;
-            //Выполняется десериализация в список объектов
-            using (FileStream fileStream = new FileStream(_filename, FileMode.Open))
+            try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ProgramSettings));
-                ProgramSettings = (ProgramSettings)serializer.Deserialize(fileStream);
+                //Выполняется десериализация в список объектов
+                using (FileStream fileStream = new FileStream(_filename, FileMode.Open))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(ProgramSettings));
+                    ProgramSettings = (ProgramSettings)serializer.Deserialize(fileStream);
+                }
+            }
+            catch (Exception)
+            {
+                throw new NirsException("Ошибка при загрузке файла настроек программы", "Файл настроек программы", "Файловая система");
             }
         }
 
@@ -42,11 +51,18 @@ namespace NIRSCore.FileOperations
         /// </summary>
         public sealed override void Write()
         {
-            //Выполняется десериализация в список объектов
-            using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
+            try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ProgramSettings));
-                serializer.Serialize(fileStream, ProgramSettings);
+                //Выполняется десериализация в список объектов
+                using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(ProgramSettings));
+                    serializer.Serialize(fileStream, ProgramSettings);
+                }
+            }
+            catch (Exception)
+            {
+                throw new NirsException("Ошибка при сохранении файла настроек программы", "Файл настроек программы", "Файловая система");
             }
         }
     }
