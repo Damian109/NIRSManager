@@ -111,6 +111,8 @@
     <Compile Include="HelpfulEnumsStructs\AuthorizationStatus.cs" />
     <Compile Include="HelpfulEnumsStructs\RegistrationStatus.cs" />
     <Compile Include="NirsSystem.cs" />
+    <Compile Include="NirsSystem_partial\NirsSystem_registration.cs" />
+    <Compile Include="NirsSystem_partial\NirsSystem_syncronization.cs" />
     <Compile Include="ProgramSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayCommand.cs" />

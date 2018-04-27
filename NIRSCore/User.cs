@@ -211,16 +211,8 @@ namespace NIRSCore
             }
         }
 
-        /// <summary>
-        /// Строка подключения
-        /// </summary>
-        public string ConnectionString
-        {
-            get => _connectionString;
-            set => _connectionString = value;
-        }
-
         #endregion
+
         #region ServerPropertyes
         /// <summary>
         /// Подключаться ли к серверу или работать автономно?
