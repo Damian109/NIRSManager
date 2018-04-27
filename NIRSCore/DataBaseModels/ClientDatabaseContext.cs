@@ -1,5 +1,7 @@
-﻿using NIRSCore.DataBaseModels;
+﻿using NIRSCore;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Data.Entity.Core.EntityClient;
 
 namespace NIRSManagerClient.DataBaseModels
 {
@@ -20,13 +22,36 @@ namespace NIRSManagerClient.DataBaseModels
         }
 
         /// <summary>
-        /// Конструктор контекста
+        /// Формирование строки подключения
+        /// </summary>
+        /// <param name="user">Пользовательские настройки</param>
+        /// <param name="path">Путь к базе данных пользователя</param>
+        /// <returns>Строка подключения</returns>
+        public static string FormConnectionString(User user, string path)
+        {
+            SqlConnectionStringBuilder sqlConnection = new SqlConnectionStringBuilder()
+            {
+                DataSource = ".",
+                InitialCatalog = path,
+                IntegratedSecurity = user.IntegratedSecurity,
+                Password = user.DatabasePassword,
+                UserID = user.DatabaseLogin,
+                Authentication = SqlAuthenticationMethod.SqlPassword
+            };
+
+            EntityConnectionStringBuilder entityConnection = new EntityConnectionStringBuilder()
+            {
+                Provider = user.DatabaseProviderName,
+                ProviderConnectionString = sqlConnection.ToString()
+            };
+            return entityConnection.ToString();
+        }
+
+        /// <summary>
+        /// Создание контекста данных
         /// </summary>
         /// <param name="connectionString">Строка подключения</param>
-        public ClientDatabaseContext(string connectionString) : base(connectionString)
-        {
-            //Изменение конфигурации в зависимости от провайдера
-        }
+        public ClientDatabaseContext(string connectionString) : base(connectionString) { }
 
         /// <summary>
         /// Таблица ученых степеней
