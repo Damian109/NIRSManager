@@ -13,6 +13,12 @@ namespace NIRSCore
         private Func<object, bool> canExecute;
 
         /// <summary>
+        /// Реализация события - изменение состояния операции
+        /// </summary>
+        public delegate void eventSender();
+        public event eventSender ChangeStatusEvent;
+
+        /// <summary>
         /// Изменение условий выполнения команды
         /// </summary>
         public event EventHandler CanExecuteChanged
@@ -43,6 +49,10 @@ namespace NIRSCore
         /// Выполнение команды
         /// </summary>
         /// <param name="param"></param>
-        public void Execute(object param) => execute(param);
+        public void Execute(object param)
+        {
+            execute(param);
+            ChangeStatusEvent?.Invoke();
+        }
     }
 }

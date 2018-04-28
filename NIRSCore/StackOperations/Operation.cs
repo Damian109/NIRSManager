@@ -57,7 +57,7 @@
         public Operation(string name, RelayCommand doneCommand, RelayCommand undoneCommand)
         {
             Name = name;
-            if(doneCommand == null)
+            if (doneCommand == null)
                 IsDone = false;
             else
             {
@@ -70,6 +70,26 @@
             {
                 UnDoneCommand = undoneCommand;
                 IsUnDone = true;
+            }
+
+            if (DoneCommand != null)
+            {
+                DoneCommand.ChangeStatusEvent += () =>
+                {
+                    if (UnDoneCommand != null)
+                        IsUnDone = true;
+                    IsDone = false;
+                };
+            }
+
+            if (UnDoneCommand != null)
+            {
+                UnDoneCommand.ChangeStatusEvent += () =>
+                {
+                    if (DoneCommand != null)
+                        IsDone = true;
+                    IsUnDone = false;
+                };
             }
         }
     }
