@@ -33,8 +33,8 @@
                     <TextBlock
                             Grid.Row="0"
                             Grid.Column="0"
-                            FontSize="30" 
-                            MinHeight="50" 
+                            FontSize="24" 
+                            MinHeight="40" 
                             TextAlignment="Center"
                             Margin="50 20 50 0"
                             Background="Transparent"
@@ -44,8 +44,8 @@
                     <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
-                            FontSize="30" 
-                            MinHeight="50" 
+                            FontSize="24" 
+                            MinHeight="40" 
                             TextAlignment="Center"
                             Margin="50 20 50 0"
                             Background="Transparent"
@@ -56,9 +56,10 @@
                                 Grid.Row="1"
                                 Grid.Column="0">
                         <TextBlock
-                            FontSize="24" 
+                            FontSize="20" 
                             TextAlignment="Center"
-                            Margin="40 20"
+                            MinHeight="40"
+                            Margin="10"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}">
                             СУБД:
@@ -66,9 +67,10 @@
                         <TextBlock
                             FontSize="20" 
                             TextAlignment="Center"
-                            Margin="20 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
-                            Text="{Binding DBSName, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding DBMSName, UpdateSourceTrigger=PropertyChanged}"
                             Foreground="{DynamicResource PrimaryHueLightBrush}">
                         </TextBlock>
                     </StackPanel>
@@ -76,9 +78,10 @@
                                 Grid.Row="2"
                                 Grid.Column="0">
                         <TextBlock
-                            FontSize="24" 
+                            FontSize="20" 
                             TextAlignment="Center"
-                            Margin="40 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}">
                             Поставщик:
@@ -86,7 +89,8 @@
                         <TextBlock
                             FontSize="20" 
                             TextAlignment="Center"
-                            Margin="20 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Text="{Binding DatabaseProviderName, UpdateSourceTrigger=PropertyChanged}"
                             Foreground="{DynamicResource PrimaryHueLightBrush}">
@@ -97,9 +101,10 @@
                                 Grid.Row="3"
                                 Grid.Column="0">
                         <TextBlock
-                            FontSize="24" 
+                            FontSize="20" 
                             TextAlignment="Center"
-                            Margin="40 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}">
                             Логин:
@@ -107,7 +112,8 @@
                         <TextBlock
                             FontSize="20" 
                             TextAlignment="Center"
-                            Margin="20 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"
                             Foreground="{DynamicResource PrimaryHueLightBrush}">
@@ -118,9 +124,10 @@
                                 Grid.Row="4"
                                 Grid.Column="0">
                         <TextBlock
-                            FontSize="24" 
+                            FontSize="20" 
                             TextAlignment="Center"
-                            Margin="40 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}">
                             Пароль:
@@ -128,7 +135,8 @@
                         <TextBlock
                             FontSize="20" 
                             TextAlignment="Center"
-                            Margin="20 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                             Foreground="{DynamicResource PrimaryHueLightBrush}">
@@ -137,13 +145,13 @@
 
                     <CheckBox
                         Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
                         Foreground="{DynamicResource PrimaryHueDarkBrush}"
                         Grid.Row="5"
                         Grid.Column="0"
-                        FontSize="24" 
+                        FontSize="20" 
                         IsEnabled="False"
-                        Margin="20 20"
+                        MinHeight="40"
+                        Margin="10"
                         IsChecked="{Binding IntegratedSecurity}">
                         Проверка подлинности
                     </CheckBox>
@@ -153,7 +161,8 @@
                             Grid.Column="0"
                             FontSize="20" 
                             TextAlignment="Center"
-                            Margin="20 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}">
                             Период создания резервных копий (дней)
@@ -162,16 +171,16 @@
                             Grid.Row="7"
                             Grid.Column="0"
                             Minimum="0"
-                            Maximum="100"
+                            Maximum="99"
                             IsEnabled="False"
                             Width="350"
-                            Margin="0 0 0 20"
+                            Margin="0 0 0 10"
                             Style="{StaticResource MaterialDesignDiscreteSlider}"
-                            ToolTip="От 0 до 100"
+                            ToolTip="От 0 до 99"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             Value="{Binding BackupIntervals}"
                             FontSize="20" 
-                            MinHeight="50" 
+                            MinHeight="40" 
                     />
                     
                     
@@ -183,16 +192,17 @@
                                 Grid.Row="1"
                                 Grid.Column="1">
                         <TextBlock
-                            FontSize="24" 
+                            FontSize="20" 
                             TextAlignment="Center"
-                            Margin="40 20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}">
                             СУБД:
                         </TextBlock>
                         <ComboBox ItemsSource="{Binding DBSNames}"
                             materialDesign:ComboBoxAssist.ShowSelectedItem="True"
-                            Margin="20" 
+                            Margin="20 0 20 20" 
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             SelectedItem="{Binding SelectedDBsNames}"
@@ -214,25 +224,27 @@
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding DatabaseProviderName}" 
+                            Text="{Binding DatabaseProviderNameNext}" 
                             IsEnabled="False"
-                            FontSize="20" 
+                            FontSize="20"
+                            MinHeight="40"
                             TextAlignment="Right"
                             Grid.Row="2"
                             Grid.Column="1"
-                            Margin="20">
+                            Margin="10">
                     </TextBox>
                     <TextBox
                             materialDesign:HintAssist.Hint="Логин для подключения"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding Login}" 
+                            Text="{Binding LoginNext}" 
                             FontSize="20" 
+                            MinHeight="40"
                             TextAlignment="Right"
                             Grid.Row="3"
                             Grid.Column="1"
-                            Margin="20">
+                            Margin="10">
                     </TextBox>
 
                     <TextBox
@@ -240,23 +252,24 @@
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding Password}" 
+                            Text="{Binding PasswordNext}" 
                             FontSize="20" 
+                            MinHeight="40"
                             TextAlignment="Right"
                             Grid.Row="4"
                             Grid.Column="1"
-                            Margin="20">
+                            Margin="10">
                     </TextBox>
 
                     <CheckBox
                         Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
                         Foreground="{DynamicResource PrimaryHueDarkBrush}"
                         Grid.Row="5"
                         Grid.Column="1"
-                        FontSize="24" 
-                        Margin="20"
-                        IsChecked="{Binding IntegratedSecurity}">
+                        FontSize="20" 
+                        Margin="10"
+                        MinHeight="40"
+                        IsChecked="{Binding IntegratedSecurityNext}">
                         Проверка подлинности
                     </CheckBox>
                     <TextBlock
@@ -264,7 +277,8 @@
                             Grid.Column="1"
                             FontSize="20" 
                             TextAlignment="Center"
-                            Margin="20"
+                            Margin="10"
+                            MinHeight="40"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}">
                             Период создания резервных копий (дней)
@@ -273,22 +287,23 @@
                             Grid.Row="7"
                             Grid.Column="1"
                             Minimum="0"
-                            Maximum="100"
+                            Maximum="99"
                             Width="350"
-                            Margin="0 0 0 20"
+                            Margin="0 0 0 10"
                             Style="{StaticResource MaterialDesignDiscreteSlider}"
-                            ToolTip="От 0 до 100"
+                            ToolTip="От 0 до 99"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Value="{Binding BackupIntervals}"
+                            Value="{Binding BackupIntervalsNext}"
                             FontSize="20" 
-                            MinHeight="50" 
+                            MinHeight="40" 
                     />
                     <Button
                             Grid.Row="8"
                             Grid.Column="1"
-                            Margin="20"
+                            Margin="20 10"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             ToolTip="Сохранить измененияи обновить"
+                            Command="{Binding CommandSave}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             Background="{DynamicResource PrimaryHueDarkBrush}"
                             FontSize="16" 

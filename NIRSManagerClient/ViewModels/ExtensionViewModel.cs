@@ -54,7 +54,13 @@ namespace NIRSManagerClient.ViewModels
         }
 
         //
-        private void StackOperations_ChangeStatusEvent() => OnPropertyChanged("Operations");
+        private void StackOperations_ChangeStatusEvent()
+        {
+            GetLastOperation();
+            Operations = NirsSystem.StackOperations.Operations;
+            OnPropertyChanged("LastOperation");
+            OnPropertyChanged("Operations");
+        }
 
         /// <summary>
         /// Получение ФИО пользователя
@@ -88,11 +94,6 @@ namespace NIRSManagerClient.ViewModels
         public string FIO { get; private set; }
 
         /// <summary>
-        /// Позиция основного меню
-        /// </summary>
-        public bool IsLeftPosition { get; private set; }
-
-        /// <summary>
         /// Последняя операция
         /// </summary>
         public string LastOperation { get; private set; }
@@ -105,18 +106,15 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Список операций
         /// </summary>
-        public List<Operation> Operations
-        {
-            get => NirsSystem.StackOperations.Operations;
-        }
+        public List<Operation> Operations { get; private set; }
 
         public ExtensionViewModel(bool status) : base("Главная форма")
         {
             NirsSystem.User.ChangeFIOEvent += _user_ChangeFIOEvent;
             NirsSystem.StackOperations.ChangeStatusEvent += StackOperations_ChangeStatusEvent;
             GetFio();
-            IsLeftPosition = NirsSystem.User.IsLeftPosition;
             GetLastOperation();
+            Operations = NirsSystem.StackOperations.Operations;
 
             //Настройки интерфейса
             new PaletteHelper().SetLightDark(NirsSystem.User.IsDarkTheme);
