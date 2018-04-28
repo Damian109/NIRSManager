@@ -186,6 +186,10 @@ namespace NIRSCore
             catch(NirsException exception)
             {
                 ErrorManager.ExecuteException(exception);
+                User = new User
+                {
+                    Changer = true
+                };
                 return false;
             }
 

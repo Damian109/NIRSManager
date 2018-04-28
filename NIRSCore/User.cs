@@ -21,7 +21,7 @@ namespace NIRSCore
         private string _databaseLogin, _databasePassword, _dBMSName;
         private string _databaseProviderName, _connectionString;
         private bool _integratedSecurity;
-        private TimeSpan _backupIntervals;
+        private int _backupIntervals;
         private DateTime _lastBackup;
 
         #endregion
@@ -182,7 +182,7 @@ namespace NIRSCore
         /// <summary>
         /// Интервалы между бекапами
         /// </summary>
-        public TimeSpan BackupIntervals
+        public int BackupIntervals
         {
             get => _backupIntervals;
             set
@@ -314,7 +314,7 @@ namespace NIRSCore
             _databaseLogin = _databasePassword = _dBMSName = _databaseProviderName = string.Empty;
             _connectionString = string.Empty;
             _integratedSecurity = true;
-            _backupIntervals = TimeSpan.MinValue;
+            _backupIntervals = 0;
             _lastBackup = DateTime.MinValue;
 
             //Настройки синхронизации
