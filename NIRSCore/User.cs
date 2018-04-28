@@ -251,16 +251,12 @@ namespace NIRSCore
         public DateTime DateLastEditDatabase { get; set; }
 
         #endregion
+
         #region InterfacePropertyes
         /// <summary>
         /// Тема приложения
         /// </summary>
         public bool IsDarkTheme { get; set; }
-
-        /// <summary>
-        /// Позиция основного меню
-        /// </summary>
-        public bool IsLeftPosition { get; set; }
 
         /// <summary>
         /// Основные цвета
@@ -272,6 +268,7 @@ namespace NIRSCore
         /// </summary>
         public string AdditionalColors { get; set; }
         #endregion
+
         #region EditorPropertyes
         /// <summary>
         /// Цвет чисел в редакторе
@@ -334,7 +331,7 @@ namespace NIRSCore
             EditorStringColor = Colors.SandyBrown;
 
             //Настройки интерфейса
-            IsDarkTheme = IsLeftPosition = true;
+            IsDarkTheme = false;
             MainColors = AdditionalColors = string.Empty;
         }
     }
