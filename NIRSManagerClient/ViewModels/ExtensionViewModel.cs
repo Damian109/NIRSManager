@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using MaterialDesignThemes.Wpf;
 using NIRSCore.StackOperations;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -53,11 +54,20 @@ namespace NIRSManagerClient.ViewModels
             OnPropertyChanged("ServerStatus");
         }
 
+        //Получение коллекции операций
+        private ObservableCollection<Operation> GetOperations()
+        {
+            ObservableCollection<Operation> operations = new ObservableCollection<Operation>();
+            foreach (Operation elem in NirsSystem.StackOperations.Operations)
+                operations.Add(elem);
+            return operations;
+        }
+
         //
         private void StackOperations_ChangeStatusEvent()
         {
             GetLastOperation();
-            Operations = NirsSystem.StackOperations.Operations;
+            Operations = GetOperations();
             OnPropertyChanged("LastOperation");
             OnPropertyChanged("Operations");
         }
@@ -106,7 +116,7 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Список операций
         /// </summary>
-        public List<Operation> Operations { get; private set; }
+        public ObservableCollection<Operation> Operations { get; private set; }
 
         public ExtensionViewModel(bool status) : base("Главная форма")
         {
@@ -114,7 +124,7 @@ namespace NIRSManagerClient.ViewModels
             NirsSystem.StackOperations.ChangeStatusEvent += StackOperations_ChangeStatusEvent;
             GetFio();
             GetLastOperation();
-            Operations = NirsSystem.StackOperations.Operations;
+            Operations = GetOperations();
 
             //Настройки интерфейса
             new PaletteHelper().SetLightDark(NirsSystem.User.IsDarkTheme);

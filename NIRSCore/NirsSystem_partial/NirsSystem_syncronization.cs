@@ -10,7 +10,7 @@ namespace NIRSCore
         /// <summary>
         /// Задержка таймера перед следующей проверкой сервера
         /// </summary>
-        private const int MSTOTIMER = 60000;
+        private const int MSTOTIMER = 20000;
 
         /// <summary>
         /// Метод обратного вызова для таймера

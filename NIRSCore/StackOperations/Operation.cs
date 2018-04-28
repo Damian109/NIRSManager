@@ -18,11 +18,7 @@
         public bool IsUnDone
         {
             get => _isUnDone;
-            set
-            {
-                _isUnDone = value;
-                ChangeStatusEvent?.Invoke();
-            }
+            set => _isUnDone = value;
         }
 
         /// <summary>
@@ -31,11 +27,7 @@
         public bool IsDone
         {
             get => _isDone;
-            set
-            {
-                _isDone = value;
-                ChangeStatusEvent?.Invoke();
-            }
+            set => _isDone = value;
         }
 
         /// <summary>
@@ -79,6 +71,7 @@
                     if (UnDoneCommand != null)
                         IsUnDone = true;
                     IsDone = false;
+                    ChangeStatusEvent?.Invoke();
                 };
             }
 
@@ -89,6 +82,7 @@
                     if (DoneCommand != null)
                         IsDone = true;
                     IsUnDone = false;
+                    ChangeStatusEvent?.Invoke();
                 };
             }
         }

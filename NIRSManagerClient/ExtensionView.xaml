@@ -145,8 +145,6 @@
                                         Style="{StaticResource MaterialDesignFlatButton}"
                                         Command="{x:Static materialDesign:Flipper.FlipCommand}"
                                         Content="{Binding LastOperation}"
-                            Background="{DynamicResource SecondaryAccentBrush}"
-                            Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
                                         Width="auto">
                         </Button>
                     </materialDesign:Flipper.FrontContent>
@@ -181,7 +179,7 @@
                                             ItemsSource="{Binding Operations}">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn 
+                                        <GridViewColumn
                                                 DisplayMemberBinding="{Binding Name}"
                                                 Header="Название операции">
                                         </GridViewColumn>

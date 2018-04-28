@@ -171,9 +171,9 @@ namespace NIRSCore
         {
             if (_login == string.Empty)
                 return false;
+            FileSettings fileSettings = new FileSettings(_login, _md5);
             try
             {
-                FileSettings fileSettings = new FileSettings(_login, _md5);
                 fileSettings.Read();
 
                 //Проверка существования базы данных в виде файла
@@ -185,6 +185,7 @@ namespace NIRSCore
             }
             catch(NirsException exception)
             {
+                fileSettings.Delete();
                 ErrorManager.ExecuteException(exception);
                 User = new User
                 {
