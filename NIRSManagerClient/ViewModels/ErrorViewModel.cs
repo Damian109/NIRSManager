@@ -20,7 +20,7 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Команда загрузки другого окна при выходе
         /// </summary>
-        public RelayCommand BackCommand { get; private set; }
+        public RelayCommand CommandBack { get; private set; }
 
         /// <summary>
         /// Конструктор
@@ -32,7 +32,7 @@ namespace NIRSManagerClient.ViewModels
         {
             Head = head;
             Message = message;
-            BackCommand = command;
+            CommandBack = command;
         }
     }
 }

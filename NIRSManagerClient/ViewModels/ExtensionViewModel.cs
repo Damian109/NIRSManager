@@ -133,7 +133,8 @@ namespace NIRSManagerClient.ViewModels
 
             if(!status)
             {
-                //LoadChild();
+                LoadChild(new ErrorView("Ошибка при загрузке настроек", "Для того, чтобы обработать данную ситуацию были созданы новые стандартные настройки" +
+                    "   Пожалуйста измените их в настройках программы", new RelayCommand(obj => LoadChild(new MainSettingsView()))));
                 return;
             }
 
