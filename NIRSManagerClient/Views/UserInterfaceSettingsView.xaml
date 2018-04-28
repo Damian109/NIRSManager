@@ -47,7 +47,7 @@
                         <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:UserInterfaceSettingsView}}, Path=DataContext.CommandApplyPrimary, Mode=OneTime}"
                                         CommandParameter="{Binding}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Primary" />
+                                <TextBlock Text="Основной" />
                                 <Viewbox Width="16" Height="16">
                                     <Canvas Width="24" Height="24">
                                         <Path Style="{StaticResource PalettePath}" />
@@ -65,7 +65,7 @@
                         <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:UserInterfaceSettingsView}}, Path=DataContext.CommandApplyAccent, Mode=OneTime}"
                                             CommandParameter="{Binding}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Accent" />
+                                <TextBlock Text="Дополнительный" />
                                 <Viewbox Width="16" Height="16">
                                     <Canvas Width="24" Height="24">
                                         <Path Style="{StaticResource PalettePath}" />
@@ -99,9 +99,9 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal" Margin="8">
-                            <TextBlock VerticalAlignment="Center">Light</TextBlock>
-                            <ToggleButton Margin="8 0 16 0" Command="{Binding CommandApplyTheme}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
-                            <TextBlock VerticalAlignment="Center">Dark</TextBlock>
+                            <TextBlock VerticalAlignment="Center">Светлая</TextBlock>
+                            <ToggleButton Margin="8 0 16 0" Command="{Binding CommandApplyTheme}" IsChecked="{Binding IsDarkTheme}" />
+                            <TextBlock VerticalAlignment="Center">Темная</TextBlock>
                         </StackPanel>
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0 12 0 0">
                             <ItemsControl ItemsSource="{Binding Swatches, Mode=OneTime}">

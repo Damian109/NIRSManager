@@ -15,11 +15,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// Смена цветовой схемы приложения
         /// </summary>
         /// <param name="isDark">Темная ли тема</param>
-        private static void ApplyTheme(bool isDark)
-        {
-            new PaletteHelper().SetLightDark(isDark);
-            NirsSystem.User.IsDarkTheme = isDark;
-        }  
+        private static void ApplyTheme() => new PaletteHelper().SetLightDark(NirsSystem.User.IsDarkTheme);
 
         /// <summary>
         /// Смена основной цветовой схемы
@@ -50,6 +46,14 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
             Swatches = new SwatchesProvider().Swatches;
 
         /// <summary>
+        /// Тема
+        /// </summary>
+        public bool IsDarkTheme
+        {
+            get => NirsSystem.User.IsDarkTheme;
+            set => NirsSystem.User.IsDarkTheme = value;
+        }
+        /// <summary>
         /// Цветовые схемы
         /// </summary>
         public IEnumerable<Swatch> Swatches { get; }
@@ -59,7 +63,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// </summary>
         public RelayCommand CommandApplyTheme
         {
-            get => new RelayCommand(obj => ApplyTheme((bool)obj));
+            get => new RelayCommand(obj => ApplyTheme());
         }
 
         /// <summary>
