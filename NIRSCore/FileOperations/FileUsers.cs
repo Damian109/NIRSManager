@@ -123,11 +123,13 @@ namespace NIRSCore.FileOperations
         /// Задать пользователя по умолчанию
         /// </summary>
         /// <param name="login">Логин пользователя</param>
-        public void SetMainUser(string login)
+        public void SetMainUser(string login = null)
         {
             foreach (var elem in _usersItems)
                 elem.IsMain = false;
-            var user = _usersItems.Where(u => u.Login == login).FirstOrDefault().IsMain = true;
+            if (login == null)
+                return;
+            _usersItems.Where(u => u.Login == login).FirstOrDefault().IsMain = true;
         }
 
         /// <summary>

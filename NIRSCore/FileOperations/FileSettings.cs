@@ -70,7 +70,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new NirsException("Ошибка при загрузке файла настроек", "Файл настроек", "Файловая система");
             }

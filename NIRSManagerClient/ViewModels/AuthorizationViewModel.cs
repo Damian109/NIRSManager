@@ -115,6 +115,14 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public AuthorizationViewModel() : base("Форма авторизации")
         {
+            if(NirsSystem.IsMainUser)
+            {
+                ExtensionView extensionView = new ExtensionView(NirsSystem.OpenUserSettings());
+                extensionView.Show();
+                MainWindow window = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                window.Close();
+            }
+
             _login = _password = string.Empty;
             _color = Brushes.PaleVioletRed;
             _status = AuthorizationStatus.AuthLogin;

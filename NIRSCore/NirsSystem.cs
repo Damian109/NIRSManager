@@ -33,6 +33,11 @@ namespace NIRSCore
         public static User User { get; set; }
 
         /// <summary>
+        /// Есть ли пользователь по умолчанию
+        /// </summary>
+        public static bool IsMainUser { get; set; }
+
+        /// <summary>
         /// Клиентская база данных
         /// </summary>
         public static ClientDatabaseContext ClientDatabaseContext { get; set; }
@@ -81,6 +86,7 @@ namespace NIRSCore
             {
                 _login = fileUsersItem.Login;
                 _md5 = fileUsersItem.Md5;
+                IsMainUser = true;
             }
 
             //Проверка сервера на работоспособность

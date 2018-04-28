@@ -20,7 +20,7 @@ namespace NIRSManagerClient.ViewModels
         /// Получение последней выполненной операции
         /// </summary>
         private void GetLastOperation() =>
-            LastOperation = NirsSystem.StackOperations.Operations.FirstOrDefault().Name;
+            LastOperation = NirsSystem.StackOperations.Operations.FirstOrDefault()?.Name;
 
         /// <summary>
         /// Обработка закрытия окна
