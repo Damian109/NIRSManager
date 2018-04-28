@@ -72,19 +72,6 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         }
 
         /// <summary>
-        /// Строка подключения
-        /// </summary>
-        public string ConnectionString
-        {
-            get => NirsSystem.User.ConnectionString;
-            set
-            {
-                NirsSystem.User.ConnectionString = value;
-                OnPropertyChanged("ConnectionString");
-            }
-        }
-
-        /// <summary>
         /// Логин для подключения к БД
         /// </summary>
         public string Login
@@ -111,7 +98,6 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
             set
             {
                 NirsSystem.User.IntegratedSecurity = value;
-                ConnectionString = FormConnectionString();
                 OnPropertyChanged("IntegratedSecurity");
             }
         }

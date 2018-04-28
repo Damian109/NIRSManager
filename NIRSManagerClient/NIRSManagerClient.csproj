@@ -99,6 +99,7 @@
     <Compile Include="HelpfulModels\DatabaseSelection.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\ErrorsViewModel.cs" />
+    <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="ViewModels\ExtensionViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
@@ -131,6 +132,9 @@
     </Compile>
     <Compile Include="Views\ErrorsView.xaml.cs">
       <DependentUpon>ErrorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ErrorView.xaml.cs">
+      <DependentUpon>ErrorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExchangeErrorView.xaml.cs">
       <DependentUpon>ExchangeErrorView.xaml</DependentUpon>
@@ -214,6 +218,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ErrorsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ErrorView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExchangeErrorView.xaml">

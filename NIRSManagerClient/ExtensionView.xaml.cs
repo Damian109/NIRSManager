@@ -11,10 +11,10 @@ namespace NIRSManagerClient
     /// </summary>
     public partial class ExtensionView : Window
     {
-        public ExtensionView()
+        public ExtensionView(bool status)
         {
             InitializeComponent();
-            ExtensionViewModel viewModel = new ExtensionViewModel();
+            ExtensionViewModel viewModel = new ExtensionViewModel(status);
             DataContext = viewModel;
             Closing += viewModel.OnWindowClosing;
         }

@@ -1,13 +1,13 @@
 ﻿using NIRSCore;
 using System.Linq;
 using System.Windows;
+using MaterialDesignColors;
 using System.ComponentModel;
 using NIRSManagerClient.Views;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using NIRSCore.StackOperations;
 using System.Collections.Generic;
-using MaterialDesignThemes.Wpf;
-using MaterialDesignColors;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -110,7 +110,7 @@ namespace NIRSManagerClient.ViewModels
             get => NirsSystem.StackOperations.Operations;
         }
 
-        public ExtensionViewModel() : base("Главная форма")
+        public ExtensionViewModel(bool status) : base("Главная форма")
         {
             NirsSystem.User.ChangeFIOEvent += _user_ChangeFIOEvent;
             NirsSystem.StackOperations.ChangeStatusEvent += StackOperations_ChangeStatusEvent;
@@ -130,6 +130,12 @@ namespace NIRSManagerClient.ViewModels
             //Загрузка статуса сервера
             StatusServer_changed();
             NirsSystem.ChangeStatusServer += StatusServer_changed;
+
+            if(!status)
+            {
+                //LoadChild();
+                return;
+            }
 
             if (NirsSystem.IsDatabaseContextCreated)
                 LoadChild(new AuthorsView());

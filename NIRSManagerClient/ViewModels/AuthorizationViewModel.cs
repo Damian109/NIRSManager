@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using NIRSCore.ErrorManager;
-using NIRSCore.StackOperations;
 using NIRSCore.HelpfulEnumsStructs;
 
 namespace NIRSManagerClient.ViewModels
@@ -30,8 +29,7 @@ namespace NIRSManagerClient.ViewModels
                 return;
             try
             {
-                NirsSystem.OpenUserSettings();
-                ExtensionView extensionView = new ExtensionView();
+                ExtensionView extensionView = new ExtensionView(NirsSystem.OpenUserSettings());
                 extensionView.Show();
             }
             catch (NirsException exception)
