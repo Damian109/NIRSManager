@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NIRSManagerClient.DataBaseModels
+namespace NIRSCore.DataBaseModels
 {
     /// <summary>
     /// Класс для представления строки таблицы организаций
