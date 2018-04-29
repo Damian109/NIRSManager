@@ -8,7 +8,7 @@ namespace NIRSCore.DataBaseModels
     /// <summary>
     /// Настройки конфигурации контекста подклкючения к БД
     /// </summary>
-    public sealed class ContextConfiguration : DbConfiguration
+    /*public sealed class ContextConfiguration : DbConfiguration
     {
         public ContextConfiguration()
         {
@@ -17,5 +17,5 @@ namespace NIRSCore.DataBaseModels
 
             //SetDefaultConnectionFactory(new SQlit());
         }
-    }
+    }*/
 }
