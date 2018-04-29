@@ -49,7 +49,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
             switch (controller.ServiceName)
             {
                 case "MSSQL$SQLEXPRESS":
-                    return new DatabaseSelection("MS SQL Express", "System.Data.SqlClient");
+                    return new DatabaseSelection("MS SQL Express", "System.Data.EntityClient");
                 case "MySQL":
                     return new DatabaseSelection("MySQL", "MySql.Data.MySqlClient");
                 default:
@@ -238,6 +238,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
                 string prevPassword = Password;
                 bool prevIntegratedSecurity = IntegratedSecurity;
                 int prevBackupIntervals = BackupIntervals;
+                string prevConnectionString = NirsSystem.User.ConnectionString;
 
                 //Создание команды выполнения операции
                 RelayCommand done = new RelayCommand(objDone =>
@@ -248,6 +249,19 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
                     Password = PasswordNext;
                     IntegratedSecurity = IntegratedSecurityNext;
                     BackupIntervals = BackupIntervalsNext;
+
+                    //Формирование пути к БД
+                    string path = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\database";
+                    if (NirsSystem.User.DBMSName == "MS SQL Express")
+                        path += ".mdf";
+                    else
+                        path += ".db";
+
+                    if (NirsSystem.User.DBMSName == "MS SQL Express")
+                    {
+                        NirsSystem.User.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename='" + path + "'; Integrated Security = " +
+                            NirsSystem.User.IntegratedSecurity.ToString() + "; ";
+                    }
                 });
 
                 //Создание команды отмена операции
@@ -260,6 +274,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
                     Password = prevPassword;
                     IntegratedSecurity = prevIntegratedSecurity;
                     BackupIntervals = prevBackupIntervals;
+                    NirsSystem.User.ConnectionString = prevConnectionString;
                 });
 
                 //Создание операции
