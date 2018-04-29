@@ -2,8 +2,12 @@
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Data.Entity.Core.EntityClient;
+using System.Linq;
+using System.Data.SQLite;
+using System.IO;
+using System;
 
-namespace NIRSManagerClient.DataBaseModels
+namespace NIRSCore.DataBaseModels
 {
     /// <summary>
     /// Контекст базы данных
@@ -12,46 +16,11 @@ namespace NIRSManagerClient.DataBaseModels
     public class ClientDatabaseContext : DbContext
     {
         /// <summary>
-        /// Функция-некий костыль, чтобы избежать миграций
-        /// </summary>
-        /// <param name="modelBuilder"></param>
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            Database.SetInitializer<ClientDatabaseContext>(null);
-            base.OnModelCreating(modelBuilder);
-        }
-
-        /// <summary>
-        /// Формирование строки подключения
-        /// </summary>
-        /// <param name="user">Пользовательские настройки</param>
-        /// <param name="path">Путь к базе данных пользователя</param>
-        /// <returns>Строка подключения</returns>
-        public static string FormConnectionString(User user, string path)
-        {
-            SqlConnectionStringBuilder sqlConnection = new SqlConnectionStringBuilder()
-            {
-                DataSource = ".",
-                InitialCatalog = path,
-                IntegratedSecurity = user.IntegratedSecurity,
-                Password = user.DatabasePassword,
-                UserID = user.DatabaseLogin,
-                Authentication = SqlAuthenticationMethod.SqlPassword
-            };
-
-            EntityConnectionStringBuilder entityConnection = new EntityConnectionStringBuilder()
-            {
-                Provider = user.DatabaseProviderName,
-                ProviderConnectionString = sqlConnection.ToString()
-            };
-            return entityConnection.ToString();
-        }
-
-        /// <summary>
         /// Создание контекста данных
         /// </summary>
         /// <param name="connectionString">Строка подключения</param>
-        public ClientDatabaseContext(string connectionString) : base(connectionString) { }
+        public ClientDatabaseContext(string conn) : base(conn) {
+        }
 
         /// <summary>
         /// Таблица ученых степеней
