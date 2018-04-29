@@ -105,6 +105,7 @@
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\ConnectionSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\MainSettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\ProgramSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\UserInterfaceSettingsViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>

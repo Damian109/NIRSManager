@@ -15,22 +15,34 @@
                     UseLayoutRounding="True"
                     SnapsToDevicePixels="True">
                 <StackPanel Orientation="Vertical">
+                    <TextBox
+                            materialDesign:HintAssist.Hint="Адрес сервера"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            Text="{Binding ServerString}" 
+                            FontSize="20" 
+                            MinHeight="40"
+                            TextAlignment="Right"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="50 20">
+                    </TextBox>
+                    
                     <CheckBox
                         Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
                         Foreground="{DynamicResource PrimaryHueDarkBrush}"
                         Grid.Row="0"
                         Grid.Column="2"
                         Grid.ColumnSpan="2"
                         FontSize="20" 
                         MinHeight="50" 
-                        Margin="50 50 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
+                        Margin="50 10 50 20"
+                        IsChecked="{Binding IsStartFromWindows}">
                         Запускать при старте системы
                     </CheckBox>
                     <CheckBox
                         Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
                         Foreground="{DynamicResource PrimaryHueDarkBrush}"
                         Grid.Row="0"
                         Grid.Column="2"
@@ -38,12 +50,11 @@
                         FontSize="20" 
                         MinHeight="50" 
                         Margin="50 50 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
+                        IsChecked="{Binding IsMinimizeToTray}">
                         Сворачивать в трей при закрытии
                     </CheckBox>
                     <CheckBox
                         Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
                         Foreground="{DynamicResource PrimaryHueDarkBrush}"
                         Grid.Row="0"
                         Grid.Column="2"
@@ -51,8 +62,20 @@
                         FontSize="20" 
                         MinHeight="50" 
                         Margin="50 50 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
+                        IsChecked="{Binding IsShowNotifications}">
                         Показывать уведомления
+                    </CheckBox>
+                    <CheckBox
+                        Style="{StaticResource MaterialDesignCheckBox}"
+                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        FontSize="20" 
+                        MinHeight="50" 
+                        Margin="50 50 50 20"
+                        IsChecked="{Binding IsMainUser}">
+                        Сделать меня пользователем по умолчанию
                     </CheckBox>
                 </StackPanel>
             </GroupBox>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NIRSManagerClient.ViewModels.SettingsViewModels;
 
 namespace NIRSManagerClient.Views
 {
@@ -23,6 +24,7 @@ namespace NIRSManagerClient.Views
         public ProgramSettingsView()
         {
             InitializeComponent();
+            DataContext = new ProgramSettingsViewModel();
         }
     }
 }
