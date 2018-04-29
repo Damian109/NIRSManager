@@ -211,6 +211,22 @@ namespace NIRSCore
             }
         }
 
+        /// <summary>
+        /// Строка подключения
+        /// </summary>
+        public string ConnectionString
+        {
+            get => _connectionString;
+            set
+            {
+                _connectionString = value;
+                if (Changer)
+                {
+                    DateLastEditSettings = DateTime.Now;
+                }
+            }
+        }
+
         #endregion
 
         #region ServerPropertyes
