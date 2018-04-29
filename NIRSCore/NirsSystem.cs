@@ -99,6 +99,24 @@ namespace NIRSCore
         }
 
         /// <summary>
+        /// Сделать пользователем по умолчанию
+        /// </summary>
+        public static void SetMainUser()
+        {
+            _fileUsers.SetMainUser(_login);
+            IsMainUser = true;
+        }
+
+        /// <summary>
+        ///Удалить пользователя по умолчанию
+        /// </summary>
+        public static void DeleteMainUser()
+        {
+            _fileUsers.SetMainUser();
+            IsMainUser = false;
+        }
+
+        /// <summary>
         /// Завершение работы системы
         /// </summary>
         public static void Close()
