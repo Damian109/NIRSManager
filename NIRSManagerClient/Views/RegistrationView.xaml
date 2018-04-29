@@ -67,7 +67,7 @@
         <TextBox 
             Grid.Row="2" Grid.ColumnSpan="2"
             HorizontalAlignment="Left" 
-                 Margin="20, 10, 10, 10" 
+                 Margin="20, 10, 10, 0" 
                  TextWrapping="Wrap" 
                  VerticalAlignment="Top" 
                  Width="250"
@@ -87,7 +87,7 @@
         <TextBox 
              Grid.Row="3" Grid.ColumnSpan="2"
              HorizontalAlignment="Left" 
-             Margin="20, 10, 10, 10" 
+             Margin="20, 10, 10, 0" 
              VerticalAlignment="Top" 
              Width="250"
              materialDesign:HintAssist.Hint="Пароль"
