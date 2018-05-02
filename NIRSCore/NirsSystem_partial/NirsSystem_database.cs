@@ -50,8 +50,6 @@ namespace NIRSCore
         /// <param name="author"></param>
         public static void AddAuthor(Author author)
         {
-            if (!IsDatabaseContextCreated)
-                return;
             using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
             {
                 context.Authors.Add(author);
