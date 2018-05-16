@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NIRSCore.DataBaseModels
@@ -14,49 +13,47 @@ namespace NIRSCore.DataBaseModels
         /// Идентификатор автора
         /// </summary>
         [Key]
-        public int UserId { get; set; }
+        public int AuthorId { get; set; }
 
         /// <summary>
-        /// Фамилия пользователя
+        /// ФИО автора
         /// </summary>
-        [StringLength(80)]
-        public string SurName { get; set; }
+        [StringLength(250)]
+        public string AuthorName { get; set; }
 
         /// <summary>
-        /// Имя пользователя
-        /// </summary>
-        [StringLength(80)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Отчество пользователя
-        /// </summary>
-        [StringLength(80)]
-        public string SecondName { get; set; }
-
-        /// <summary>
-        /// Дата рождения
-        /// </summary>
-        public DateTime DateOfBirth { get; set; }
-
-        /// <summary>
-        /// Ученая степень (Внешний ключ)
-        /// </summary>
-        public int AcademicDegreeId { get; set; }
-
-        /// <summary>
-        /// Должность (Внешний ключ)
-        /// </summary>
-        public int PositionId { get; set; }
-
-        /// <summary>
-        /// Название организации (Внешний ключ)
+        /// Идентификатор организации (Внешний ключ)
         /// </summary>
         public int OrganizationId { get; set; }
 
         /// <summary>
+        /// Идентификатор факультета (Внешний ключ)
+        /// </summary>
+        public int? FacultyId { get; set; }
+
+        /// <summary>
+        /// Идентификатор кафедры (Внешний ключ)
+        /// </summary>
+        public int? DepartmentId { get; set; }
+
+        /// <summary>
+        /// Идентификатор группы (Внешний ключ)
+        /// </summary>
+        public int? GroupId { get; set; }
+
+        /// <summary>
+        /// Идентификатор должности (Внешний ключ)
+        /// </summary>
+        public int? PositionId { get; set; }
+
+        /// <summary>
+        /// Идентификатор ученой степени (Внешний ключ)
+        /// </summary>
+        public int? AcademicDegreeId { get; set; }
+
+        /// <summary>
         /// Путь к личному фото
         /// </summary>
-        public string PathPhoto { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

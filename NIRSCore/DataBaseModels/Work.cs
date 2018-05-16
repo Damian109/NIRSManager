@@ -16,41 +16,40 @@ namespace NIRSCore.DataBaseModels
         public int WorkId { get; set; }
 
         /// <summary>
-        /// Направление (Внешний ключ)
+        /// Название работы
         /// </summary>
-        public int DirectionId { get; set; }
+        [StringLength(200)]
+        public string WorkName { get; set; }
 
         /// <summary>
-        /// Организация (Внешний ключ)
+        /// Идентификатор руководителя (Внешний ключ)
         /// </summary>
-        public int OrganizationId { get; set; }
-
-        /// <summary>
-        /// Научный руководитель (Внешний ключ)
-        /// </summary>
-        public int AuthorId { get; set; }
-
-        /// <summary>
-        /// Оценка работы
-        /// </summary>
-        public int Mark { get; set; }
+        public int? HeadAuthorId { get; set; }
 
         /// <summary>
         /// Путь к файлу работы
         /// </summary>
         [StringLength(200)]
-        public string PathWork { get; set; }
+        public string WorkPath { get; set; }
 
         /// <summary>
-        /// Путь к файлу оценки экспертного заключения
+        /// Оценка работы
         /// </summary>
-        [StringLength(200)]
-        public string PathMark { get; set; }
+        public int WorkMark { get; set; }
 
         /// <summary>
-        /// Название работы
+        /// Объем работы
         /// </summary>
-        [StringLength(200)]
-        public string Name { get; set; }
+        public double WorkSize { get; set; }
+
+        /// <summary>
+        /// Идентификатор журнала (Внешний ключ)
+        /// </summary>
+        public int? JournalId { get; set; }
+
+        /// <summary>
+        /// Идентификатор конференции (Внешний ключ)
+        /// </summary>
+        public int? ConferenceId { get; set; }
     }
 }
