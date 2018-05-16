@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.Validation;
 
 namespace NIRSManagerServer.Models
 {
@@ -30,16 +29,7 @@ namespace NIRSManagerServer.Models
         public void AddUser(UserTable user)
         {
             Users.Add(user);
-            try
-            {
-
-                SaveChanges();
-
-            }
-            catch (DbEntityValidationException ex)
-            {
-            }
-            
+            SaveChanges();
         }
 
         /// <summary>

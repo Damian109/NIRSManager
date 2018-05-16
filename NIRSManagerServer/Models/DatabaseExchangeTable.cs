@@ -26,6 +26,11 @@ namespace NIRSManagerServer.Models
         public int UserSenderId { get; set; }
 
         /// <summary>
+        /// Предполагается ли односторонний обмен
+        /// </summary>
+        public bool IsOneWay { get; set; }
+
+        /// <summary>
         /// Принял ли получатель обмен
         /// </summary>
         public bool? IsSenderAccept { get; set; }

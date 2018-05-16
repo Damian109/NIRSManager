@@ -63,8 +63,7 @@ namespace NIRSManagerServer.Controllers
                     Login = data.Login,
                     Md5 = data.Md5,
                     DateEditDatabase = null,
-                    DateEditSetting = null,
-                    NameDatabase = null
+                    DateEditSetting = null
                 });
 
                 GenerateStructDirectoryes(data.Login);

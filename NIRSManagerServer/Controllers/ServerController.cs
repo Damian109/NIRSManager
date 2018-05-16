@@ -12,6 +12,6 @@ namespace NIRSManagerServer.Controllers
         /// </summary>
         /// <returns>Всегда истина</returns>
         [HttpGet]
-        public bool Ping() =>true;
+        public bool Ping() => true;
     }
 }

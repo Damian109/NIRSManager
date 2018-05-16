@@ -37,11 +37,5 @@ namespace NIRSManagerServer.Models
         /// Дата последнего изменения базы данных
         /// </summary>
         public DateTime? DateEditDatabase { get; set; }
-
-        /// <summary>
-        /// Название основной базы данных
-        /// </summary>
-        [StringLength(50)]
-        public string NameDatabase { get; set; }
     }
 }

@@ -30,6 +30,6 @@ namespace NIRSManagerServer.Models
         /// <summary>
         /// Дата создания резервной копии
         /// </summary>
-        public DateTime DateOfCreate { get; set; }
+        public DateTime? DateOfCreate { get; set; }
     }
 }
