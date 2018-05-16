@@ -139,6 +139,7 @@ namespace NIRSCore
                 _md5 = HashForSecurity.GetMd5Hash(login + password);
                 RegistrationFunc(isServer);
                 StackOperations.AddOperation(new Operation("Регистрация", null, null));
+                Close();
                 return RegistrationStatus.RegGood;
             }
 

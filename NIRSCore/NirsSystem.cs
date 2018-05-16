@@ -119,7 +119,7 @@ namespace NIRSCore
         /// <summary>
         /// Завершение работы системы
         /// </summary>
-        public static void Close()
+        public static void Close(bool sync = true)
         {
             ErrorManager.SaveErrors();
             _fileUsers.Write();
@@ -128,9 +128,14 @@ namespace NIRSCore
                 User = User
             };
             fileSettings.Write();
-            Synchronization();
+            if(sync)
+                Synchronization();
         }
 
+        /// <summary>
+        /// Получение Логина пользователя
+        /// </summary>
+        /// <returns></returns>
         public static string GetLogin() => _login;
     }
 }

@@ -1,273 +1,424 @@
-﻿using NIRSCore.DataBaseModels;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using NIRSCore.DataBaseModels;
+using NIRSCore.FileOperations;
 
 namespace NIRSCore
 {
     public static partial class NirsSystem
     {
         /// <summary>
-        /// Получение Автора
+        /// Инициализация базы данных некоторыми изначальными данными
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Author GetAuthor(int id)
+        public async static void InitialiseDB()
         {
-            if (!IsDatabaseContextCreated)
-                return null;
-            Author result = null;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+            await Task.Run(() =>
             {
-                var elems = context.Authors.Where(u => u.UserId == id).ToList();
-                result = elems.FirstOrDefault();
-            }
-            return result;
+
+                FileInitialiser file = new FileInitialiser();
+                file.Read();
+                if (file.Items.Count < 1)
+                    return;
+                foreach (var elem in file.Items)
+                {
+                    switch (elem.TableName)
+                    {
+                        case "Организация":
+                            AddObject(new Organization { OrganizationName = elem.ValueName });
+                            break;
+                        case "Факультет":
+                            AddObject(new Faculty { FacultyName = elem.ValueName });
+                            break;
+                        case "Кафедра":
+                            AddObject(new Department { DepartmentName = elem.ValueName });
+                            break;
+                        case "Группа":
+                            AddObject(new Group { GroupName = elem.ValueName });
+                            break;
+                        case "Должность":
+                            AddObject(new Position { PositionName = elem.ValueName });
+                            break;
+                        case "Степень":
+                            AddObject(new AcademicDegree { AcademicDegreeName = elem.ValueName });
+                            break;
+                        case "Направление":
+                            AddObject(new Direction { DirectionName = elem.ValueName });
+                            break;
+                        case "Награда":
+                            AddObject(new Reward { RewardName = elem.ValueName });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
         }
 
         /// <summary>
-        /// Получение списка авторов
+        /// Добавление элемента в базу данных
         /// </summary>
-        /// <returns></returns>
-        public static List<Author> GetAuthors()
-        {
-            if (!IsDatabaseContextCreated)
-                return null;
-            List<Author> result = null;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-            {
-                var elems = context.Authors.ToList();
-                result = elems;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Добавление автора
-        /// </summary>
-        /// <param name="author"></param>
-        public static void AddAuthor(Author author)
+        /// <param name="obj">Любой преобразованный элемент из моделей БД</param>
+        public static void AddObject(object obj)
         {
             try
             {
                 using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
                 {
-                    context.Authors.Add(author);
+                    if (obj is Organization)
+                        context.Organizations.Add((Organization)obj);
+                    if (obj is Faculty)
+                        context.Faculties.Add((Faculty)obj);
+                    if(obj is Department)
+                        context.Departments.Add((Department)obj);
+                    if(obj is Group)
+                        context.Groups.Add((Group)obj);
+                    if(obj is Position)
+                        context.Positions.Add((Position)obj);
+                    if(obj is AcademicDegree)
+                        context.AcademicDegrees.Add((AcademicDegree)obj);
+                    if (obj is Author)
+                        context.Authors.Add((Author)obj);
+                    if (obj is Journal)
+                        context.Journals.Add((Journal)obj);
+                    if (obj is Conference)
+                        context.Conferences.Add((Conference)obj);
+                    if (obj is Work)
+                        context.Works.Add((Work)obj);
+                    if (obj is Direction)
+                        context.Directions.Add((Direction)obj);
+                    if (obj is Reward)
+                        context.Rewards.Add((Reward)obj);
+                    if (obj is CoAuthor)
+                        context.CoAuthors.Add((CoAuthor)obj);
+                    if (obj is DirectionWork)
+                        context.DirectionWorks.Add((DirectionWork)obj);
+                    if (obj is RewardWork)
+                        context.RewardWorks.Add((RewardWork)obj);
                     context.SaveChanges();
                 }
                 IsDatabaseContextCreated = true;
             }
-            catch(Exception)
+            catch (Exception)
             {
-                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при добавлении автора",
+                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при добавлении элемента",
                     "База данных", "Работа с базой данных"));
             }
         }
 
         /// <summary>
-        /// Изменение автора
+        /// Поиск объекта
         /// </summary>
-        /// <param name="author"></param>
-        public static void UpdateAuthor(Author author)
+        /// <typeparam name="T">Тип модели базы данных</typeparam>
+        /// <param name="id">Идентификатор записи</param>
+        /// <returns>Объект по типу модели</returns>
+        public static object GetObject<T>(int id)
+        {
+            if (!IsDatabaseContextCreated)
+                return null;
+            try
+            {
+                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+                {
+                    if (typeof(T) == typeof(Organization))
+                        return context.Organizations.Where(u => u.OrganizationId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Faculty))
+                        return context.Faculties.Where(u => u.FacultyId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Department))
+                        return context.Departments.Where(u => u.DepartmentId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Group))
+                        return context.Groups.Where(u => u.GroupId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Position))
+                        return context.Positions.Where(u => u.PositionId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(AcademicDegree))
+                        return context.AcademicDegrees.Where(u => u.AcademicDegreeId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Author))
+                        return context.Authors.Where(u => u.AuthorId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Journal))
+                        return context.Journals.Where(u => u.JournalId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Conference))
+                        return context.Conferences.Where(u => u.ConferenceId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Work))
+                        return context.Works.Where(u => u.WorkId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Direction))
+                        return context.Directions.Where(u => u.DirectionId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(Reward))
+                        return context.Rewards.Where(u => u.RewardId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(CoAuthor))
+                        return context.CoAuthors.Where(u => u.CoAuthorId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(DirectionWork))
+                        return context.DirectionWorks.Where(u => u.DirectionWorkId == id).ToList().FirstOrDefault();
+                    if (typeof(T) == typeof(RewardWork))
+                        return context.RewardWorks.Where(u => u.RewardWorkId == id).ToList().FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при поиске элемента",
+                    "База данных", "Работа с базой данных"));
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Получение списка объектов
+        /// </summary>
+        /// <typeparam name="T">Тип модели базы данных</typeparam>
+        /// <returns></returns>
+        public static object GetListObject<T>()
+        {
+            if (!IsDatabaseContextCreated)
+                return null;
+            try
+            {
+                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+                {
+                    if (typeof(T) == typeof(Organization))
+                        return context.Organizations.ToList();
+                    if (typeof(T) == typeof(Faculty))
+                        return context.Faculties.ToList();
+                    if (typeof(T) == typeof(Department))
+                        return context.Departments.ToList();
+                    if (typeof(T) == typeof(Group))
+                        return context.Groups.ToList();
+                    if (typeof(T) == typeof(Position))
+                        return context.Positions.ToList();
+                    if (typeof(T) == typeof(AcademicDegree))
+                        return context.AcademicDegrees.ToList();
+                    if (typeof(T) == typeof(Author))
+                        return context.Authors.ToList();
+                    if (typeof(T) == typeof(Journal))
+                        return context.Journals.ToList();
+                    if (typeof(T) == typeof(Conference))
+                        return context.Conferences.ToList();
+                    if (typeof(T) == typeof(Work))
+                        return context.Works.ToList();
+                    if (typeof(T) == typeof(Direction))
+                        return context.Directions.ToList();
+                    if (typeof(T) == typeof(Reward))
+                        return context.Rewards.ToList();
+                    if (typeof(T) == typeof(CoAuthor))
+                        return context.CoAuthors.ToList();
+                    if (typeof(T) == typeof(DirectionWork))
+                        return context.DirectionWorks.ToList();
+                    if (typeof(T) == typeof(RewardWork))
+                        return context.RewardWorks.ToList();
+                }
+            }
+            catch (Exception)
+            {
+                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при выборке данных",
+                    "База данных", "Работа с базой данных"));
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// Изменение элемента
+        /// </summary>
+        /// <param name="obj">Любой преобразованный элемент из моделей БД</param>
+        public static void UpdateObject(object obj)
         {
             if (!IsDatabaseContextCreated)
                 return;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+            try
             {
-                var elem = context.Authors.FirstOrDefault(u => u.UserId == author.UserId);
-                elem = author;
-                context.SaveChanges();
+                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+                {
+                    if (obj is Organization org)
+                    {
+                        var query = context.Organizations.FirstOrDefault(u => u.OrganizationId == org.OrganizationId);
+                        query = org;
+                    }
+                    if (obj is Faculty fac)
+                    {
+                        var query = context.Faculties.FirstOrDefault(u => u.FacultyId == fac.FacultyId);
+                        query = fac;
+                    }
+                    if (obj is Department dep)
+                    {
+                        var query = context.Departments.FirstOrDefault(u => u.DepartmentId == dep.DepartmentId);
+                        query = dep;
+                    }
+                    if (obj is Group gro)
+                    {
+                        var query = context.Groups.FirstOrDefault(u => u.GroupId == gro.GroupId);
+                        query = gro;
+                    }
+                    if (obj is Position pos)
+                    {
+                        var query = context.Positions.FirstOrDefault(u => u.PositionId == pos.PositionId);
+                        query = pos;
+                    }
+                    if (obj is AcademicDegree aca)
+                    {
+                        var query = context.AcademicDegrees.FirstOrDefault(u => u.AcademicDegreeId == aca.AcademicDegreeId);
+                        query = aca;
+                    }
+                    if (obj is Author aut)
+                    {
+                        var query = context.Authors.FirstOrDefault(u => u.AuthorId == aut.AuthorId);
+                        query = aut;
+                    }
+                    if (obj is Journal jou)
+                    {
+                        var query = context.Journals.FirstOrDefault(u => u.JournalId == jou.JournalId);
+                        query = jou;
+                    }
+                    if (obj is Conference con)
+                    {
+                        var query = context.Conferences.FirstOrDefault(u => u.ConferenceId == con.ConferenceId);
+                        query = con;
+                    }
+                    if (obj is Work wor)
+                    {
+                        var query = context.Works.FirstOrDefault(u => u.WorkId == wor.WorkId);
+                        query = wor;
+                    }
+                    if (obj is Direction dir)
+                    {
+                        var query = context.Directions.FirstOrDefault(u => u.DirectionId == dir.DirectionId);
+                        query = dir;
+                    }
+                    if (obj is Reward rew)
+                    {
+                        var query = context.Rewards.FirstOrDefault(u => u.RewardId == rew.RewardId);
+                        query = rew;
+                    }
+                    if (obj is CoAuthor coa)
+                    {
+                        var query = context.CoAuthors.FirstOrDefault(u => u.CoAuthorId == coa.CoAuthorId);
+                        query = coa;
+                    }
+                    if (obj is DirectionWork diw)
+                    {
+                        var query = context.DirectionWorks.FirstOrDefault(u => u.DirectionWorkId == diw.DirectionWorkId);
+                        query = diw;
+                    }
+                    if (obj is RewardWork elem)
+                    {
+                        var query = context.RewardWorks.FirstOrDefault(u => u.RewardWorkId == elem.RewardWorkId);
+                        query = elem;
+                    }
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при изменении элемента",
+                    "База данных", "Работа с базой данных"));
             }
         }
 
         /// <summary>
-        /// Удаление автора
+        /// Удаление элемента
         /// </summary>
-        /// <param name="author"></param>
-        public static void DeleteAuthor(Author author)
+        /// <param name="obj">Любой преобразованный элемент из моделей БД</param>
+        public static void DeleteObject(object obj)
         {
             if (!IsDatabaseContextCreated)
                 return;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-            {
-                Author auth = context.Authors.FirstOrDefault(u => u.UserId == author.UserId);
-                if(auth != null)
-                {
-                    context.Authors.Remove(auth);
-                    context.SaveChanges();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получение организации
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Organization GetOrganization(int id)
-        {
-            if (!IsDatabaseContextCreated)
-                return null;
-            Organization result = null;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-            {
-                var elems = context.Organizations.Where(u => u.OrganizationId == id).ToList();
-                result = elems.FirstOrDefault();
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Получение списка организаций
-        /// </summary>
-        /// <returns></returns>
-        public static List<Organization> GetOrganizations()
-        {
-            if (!IsDatabaseContextCreated)
-                return null;
-            List<Organization> result = null;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-            {
-                var elems = context.Organizations.ToList();
-                result = elems;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Добавление организации
-        /// </summary>
-        /// <param name="organization"></param>
-        public static void AddOrganization(Organization organization)
-        {
             try
             {
                 using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
                 {
-                    context.Organizations.Add(organization);
+                    if (obj is Organization org)
+                    {
+                        var query = context.Organizations.FirstOrDefault(u => u.OrganizationId == org.OrganizationId);
+                        if (query != null)
+                            context.Organizations.Remove(query);
+                    }
+                    if (obj is Faculty fac)
+                    {
+                        var query = context.Faculties.FirstOrDefault(u => u.FacultyId == fac.FacultyId);
+                        if (query != null)
+                            context.Faculties.Remove(query);
+                    }
+                    if (obj is Department dep)
+                    {
+                        var query = context.Departments.FirstOrDefault(u => u.DepartmentId == dep.DepartmentId);
+                        if (query != null)
+                            context.Departments.Remove(query);
+                    }
+                    if (obj is Group gro)
+                    {
+                        var query = context.Groups.FirstOrDefault(u => u.GroupId == gro.GroupId);
+                        if (query != null)
+                            context.Groups.Remove(query);
+                    }
+                    if (obj is Position pos)
+                    {
+                        var query = context.Positions.FirstOrDefault(u => u.PositionId == pos.PositionId);
+                        if (query != null)
+                            context.Positions.Remove(query);
+                    }
+                    if (obj is AcademicDegree aca)
+                    {
+                        var query = context.AcademicDegrees.FirstOrDefault(u => u.AcademicDegreeId == aca.AcademicDegreeId);
+                        if (query != null)
+                            context.AcademicDegrees.Remove(query);
+                    }
+                    if (obj is Author aut)
+                    {
+                        var query = context.Authors.FirstOrDefault(u => u.AuthorId == aut.AuthorId);
+                        if (query != null)
+                            context.Authors.Remove(query);
+                    }
+                    if (obj is Journal jou)
+                    {
+                        var query = context.Journals.FirstOrDefault(u => u.JournalId == jou.JournalId);
+                        if (query != null)
+                            context.Journals.Remove(query);
+                    }
+                    if (obj is Conference con)
+                    {
+                        var query = context.Conferences.FirstOrDefault(u => u.ConferenceId == con.ConferenceId);
+                        if (query != null)
+                            context.Conferences.Remove(query);
+                    }
+                    if (obj is Work wor)
+                    {
+                        var query = context.Works.FirstOrDefault(u => u.WorkId == wor.WorkId);
+                        if (query != null)
+                            context.Works.Remove(query);
+                    }
+                    if (obj is Direction dir)
+                    {
+                        var query = context.Directions.FirstOrDefault(u => u.DirectionId == dir.DirectionId);
+                        if (query != null)
+                            context.Directions.Remove(query);
+                    }
+                    if (obj is Reward rew)
+                    {
+                        var query = context.Rewards.FirstOrDefault(u => u.RewardId == rew.RewardId);
+                        if (query != null)
+                            context.Rewards.Remove(query);
+                    }
+                    if (obj is CoAuthor coa)
+                    {
+                        var query = context.CoAuthors.FirstOrDefault(u => u.CoAuthorId == coa.CoAuthorId);
+                        if (query != null)
+                            context.CoAuthors.Remove(query);
+                    }
+                    if (obj is DirectionWork diw)
+                    {
+                        var query = context.DirectionWorks.FirstOrDefault(u => u.DirectionWorkId == diw.DirectionWorkId);
+                        if (query != null)
+                            context.DirectionWorks.Remove(query);
+                    }
+                    if (obj is RewardWork elem)
+                    {
+                        var query = context.RewardWorks.FirstOrDefault(u => u.RewardWorkId == elem.RewardWorkId);
+                        if (query != null)
+                            context.RewardWorks.Remove(query);
+                    }
                     context.SaveChanges();
                 }
-                IsDatabaseContextCreated = true;
             }
             catch (Exception)
             {
-                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при добавлении организации",
-                    "База данных", "Работа с базой данных"));
-            }
-        }
-
-        /// <summary>
-        /// Получение должности
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Position GetPosition(int id)
-        {
-            if (!IsDatabaseContextCreated)
-                return null;
-            Position result = null;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-            {
-                var elems = context.Positions.Where(u => u.PositionId == id).ToList();
-                result = elems.FirstOrDefault();
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Получение списка должностей
-        /// </summary>
-        /// <returns></returns>
-        public static List<Position> GetPositions()
-        {
-            if (!IsDatabaseContextCreated)
-                return null;
-            List<Position> result = null;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-            {
-                var elems = context.Positions.ToList();
-                result = elems;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Добавление должности
-        /// </summary>
-        /// <param name="position"></param>
-        public static void AddPosition(Position position)
-        { 
-            try
-            {
-                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-                {
-                    context.Positions.Add(position);
-                    context.SaveChanges();
-                }
-                IsDatabaseContextCreated = true;
-            }
-            catch (Exception)
-            {
-                ErrorManager.ExecuteException(new NIRSCore.ErrorManager.NirsException("Ошибка при добавлении должности",
-                    "База данных", "Работа с базой данных"));
-            }
-        }
-
-        /// <summary>
-        /// Получение ученой степени
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static AcademicDegree GetAcademicDegree(int id)
-        {
-            if (!IsDatabaseContextCreated)
-                return null;
-            AcademicDegree result = null;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-            {
-                var elems = context.AcademicDegrees.Where(u => u.AcademicDegreeId == id).ToList();
-                result = elems.FirstOrDefault();
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Получение списка ученых степеней
-        /// </summary>
-        /// <returns></returns>
-        public static List<AcademicDegree> GetAcademicDegrees()
-        {
-            if (!IsDatabaseContextCreated)
-                return null;
-            List<AcademicDegree> result = null;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-            {
-                var elems = context.AcademicDegrees.ToList();
-                result = elems;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Добавление ученой степени
-        /// </summary>
-        /// <param name="academicDegree"></param>
-        public static void AddAcademicDegree(AcademicDegree academicDegree)
-        {
-            try
-            {
-                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
-                {
-                    context.AcademicDegrees.Add(academicDegree);
-                    context.SaveChanges();
-                }
-                IsDatabaseContextCreated = true;
-            }
-            catch (Exception)
-            {
-                ErrorManager.ExecuteException(new NIRSCore.ErrorManager.NirsException("Ошибка при добавлении академ.степени",
+                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при удалении элемента",
                     "База данных", "Работа с базой данных"));
             }
         }
