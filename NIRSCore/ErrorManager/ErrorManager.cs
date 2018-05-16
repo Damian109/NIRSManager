@@ -19,6 +19,8 @@ namespace NIRSCore.ErrorManager
         public ErrorManager()
         {
             _nirsErrors = new List<NirsError>();
+
+            //Чтение файла ошибок
             FileErrors file = new FileErrors();
             file.Read();
             if(file.ErrorsItems.Count > 0)
@@ -40,7 +42,8 @@ namespace NIRSCore.ErrorManager
                 {
                     Message = elem.Message,
                     NameSource = elem.NameSource,
-                    NameSystem = elem.NameSystem
+                    NameSystem = elem.NameSystem,
+                    DateError = elem.DateError
                 });
             file.ErrorsItems = items;
             file.Write();
@@ -64,6 +67,20 @@ namespace NIRSCore.ErrorManager
         /// </summary>
         public void SetToServer()
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //
             //
             //
