@@ -113,6 +113,8 @@
     <Compile Include="FileOperations\FileErrorsItem.cs" />
     <Compile Include="ErrorManager\NirsError.cs" />
     <Compile Include="ErrorManager\NirsException.cs" />
+    <Compile Include="FileOperations\FileInitialiser.cs" />
+    <Compile Include="FileOperations\FileInitialiserItem.cs" />
     <Compile Include="FileOperations\FileProgramSettings.cs" />
     <Compile Include="FileOperations\FileSettings.cs" />
     <Compile Include="FileOperations\FileUsers.cs" />

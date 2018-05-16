@@ -81,7 +81,7 @@ namespace NIRSCore.FileOperations
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new NirsException("Ошибка при записи файла учетных записей", "Файл учетных записей", "Файловая система");
             }
