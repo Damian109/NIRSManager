@@ -50,10 +50,19 @@ namespace NIRSCore
         /// <param name="author"></param>
         public static void AddAuthor(Author author)
         {
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+            try
             {
-                context.Authors.Add(author);
-                context.SaveChanges();
+                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+                {
+                    context.Authors.Add(author);
+                    context.SaveChanges();
+                }
+                IsDatabaseContextCreated = true;
+            }
+            catch(Exception)
+            {
+                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при добавлении автора",
+                    "База данных", "Работа с базой данных"));
             }
         }
 
@@ -83,8 +92,12 @@ namespace NIRSCore
                 return;
             using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
             {
-                context.Authors.Remove(author);
-                context.SaveChanges();
+                Author auth = context.Authors.FirstOrDefault(u => u.UserId == author.UserId);
+                if(auth != null)
+                {
+                    context.Authors.Remove(auth);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -129,12 +142,19 @@ namespace NIRSCore
         /// <param name="organization"></param>
         public static void AddOrganization(Organization organization)
         {
-            if (!IsDatabaseContextCreated)
-                return;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+            try
             {
-                context.Organizations.Add(organization);
-                context.SaveChanges();
+                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+                {
+                    context.Organizations.Add(organization);
+                    context.SaveChanges();
+                }
+                IsDatabaseContextCreated = true;
+            }
+            catch (Exception)
+            {
+                ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при добавлении организации",
+                    "База данных", "Работа с базой данных"));
             }
         }
 
@@ -178,13 +198,20 @@ namespace NIRSCore
         /// </summary>
         /// <param name="position"></param>
         public static void AddPosition(Position position)
-        {
-            if (!IsDatabaseContextCreated)
-                return;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+        { 
+            try
             {
-                context.Positions.Add(position);
-                context.SaveChanges();
+                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+                {
+                    context.Positions.Add(position);
+                    context.SaveChanges();
+                }
+                IsDatabaseContextCreated = true;
+            }
+            catch (Exception)
+            {
+                ErrorManager.ExecuteException(new NIRSCore.ErrorManager.NirsException("Ошибка при добавлении должности",
+                    "База данных", "Работа с базой данных"));
             }
         }
 
@@ -229,12 +256,19 @@ namespace NIRSCore
         /// <param name="academicDegree"></param>
         public static void AddAcademicDegree(AcademicDegree academicDegree)
         {
-            if (!IsDatabaseContextCreated)
-                return;
-            using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+            try
             {
-                context.AcademicDegrees.Add(academicDegree);
-                context.SaveChanges();
+                using (ClientDatabaseContext context = new ClientDatabaseContext(User.ConnectionString))
+                {
+                    context.AcademicDegrees.Add(academicDegree);
+                    context.SaveChanges();
+                }
+                IsDatabaseContextCreated = true;
+            }
+            catch (Exception)
+            {
+                ErrorManager.ExecuteException(new NIRSCore.ErrorManager.NirsException("Ошибка при добавлении академ.степени",
+                    "База данных", "Работа с базой данных"));
             }
         }
     }

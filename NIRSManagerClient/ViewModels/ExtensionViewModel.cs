@@ -233,5 +233,10 @@ namespace NIRSManagerClient.ViewModels
         {
             get => new RelayCommand(obj => LoadChild(new ExchangeView()));
         }
+
+        public RelayCommand CommandAuthorsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new AuthorsView()));
+        }
     }
 }

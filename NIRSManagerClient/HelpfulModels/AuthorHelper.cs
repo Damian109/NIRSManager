@@ -1,5 +1,6 @@
 ﻿using NIRSCore;
 using NIRSCore.DataBaseModels;
+using System;
 
 namespace NIRSManagerClient.HelpfulModels
 {
@@ -36,7 +37,7 @@ namespace NIRSManagerClient.HelpfulModels
             UserId = id;
             Author authorQuery = NirsSystem.GetAuthor(id);
             Fio = authorQuery.SurName + " " + authorQuery.Name + " " + authorQuery.SecondName;
-            PathPhoto = authorQuery.PathPhoto;
+            PathPhoto = Environment.CurrentDirectory + authorQuery.PathPhoto;
             Position = NirsSystem.GetPosition(authorQuery.PositionId)?.PositionName;
             Organization = NirsSystem.GetOrganization(authorQuery.OrganizationId)?.OrganizationName;
         }

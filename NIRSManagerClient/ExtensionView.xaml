@@ -45,7 +45,7 @@
                         <Expander Margin="5" FontSize="16"
                             Header="Мои данные">
                             <StackPanel Orientation="Vertical">
-                                <MenuItem Header="Авторы" FontSize="16" Margin="5"/>
+                                <MenuItem Header="Авторы" FontSize="16" Margin="5" Command="{Binding CommandAuthorsLoad}"/>
                                 <MenuItem Header="Работы" FontSize="16" Margin="5"/>
                                 <MenuItem Header="Руководители" FontSize="16" Margin="5"/>
                             </StackPanel>

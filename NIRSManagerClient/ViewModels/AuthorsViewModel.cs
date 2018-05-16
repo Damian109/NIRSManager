@@ -1,38 +1,48 @@
 ﻿using NIRSCore;
-using System.Collections.ObjectModel;
-using NIRSManagerClient.HelpfulModels;
+using System.Linq;
 using System.Windows;
+using System.Threading.Tasks;
+using NIRSManagerClient.Views;
+using System.Collections.Generic;
+using NIRSManagerClient.HelpfulModels;
+
 
 namespace NIRSManagerClient.ViewModels
 {
     public sealed class AuthorsViewModel : ViewModel
     {
         //Первоначальный список авторов
-        private ObservableCollection<AuthorHelper> _authors;
-
+        private List<AuthorHelper> _authors;
         private static string _search = string.Empty;
 
         /// <summary>
-        /// Получение списка авторов с учетом правил поиска
+        /// Строка поиска
         /// </summary>
-        /// <returns></returns>
-        private ObservableCollection<AuthorHelper> GetAuthorsLocal()
+        public string Search
         {
-            ObservableCollection<AuthorHelper> result = new ObservableCollection<AuthorHelper>();
-            foreach(var elem in _authors)
-                if (elem.Fio.Contains(_search) || elem.Organization.Contains(_search) || elem.Position.Contains(_search))
-                    result.Add(elem);
-            return result;
+            get => _search;
+            set => _search = value;
         }
 
-        private ObservableCollection<AuthorHelper> GetAuthors()
+        /// <summary>
+        /// Команда - Добавить автора
+        /// </summary>
+        public RelayCommand CommandAdd
         {
-            ObservableCollection<AuthorHelper> result = new ObservableCollection<AuthorHelper>();
-            var query = NirsSystem.GetAuthors();
-            if(query != null)
-                foreach (var elem in query)
-                    result.Add(new AuthorHelper(elem.UserId));
-            return result;
+            get => new RelayCommand(obj =>
+            {
+                ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+                window.mainGrid.Children.Clear();
+                window.mainGrid.Children.Add(new AuthorView(0));
+            });
+        }
+
+        /// <summary>
+        /// Команда поиска
+        /// </summary>
+        public RelayCommand CommandSearch
+        {
+            get => new RelayCommand(obj => FillAuthors());
         }
 
         /// <summary>
@@ -40,30 +50,69 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public AuthorsViewModel() : base("Авторы")
         {
-            _authors = GetAuthors();
-        }
-
-        /// <summary>
-        /// Строка поиска
-        /// </summary>
-        public string Search 
-        {
-            get => _search;
-            set
-            {
-                _search = value;
-                OnPropertyChanged("Authors");
-            }
+            _authors = new List<AuthorHelper>();
+            FillAuthors();
         }
 
         /// <summary>
         /// Список авторов
         /// </summary>
-        public ObservableCollection<AuthorHelper> Authors {  get => GetAuthorsLocal(); }
+        public List<AuthorHelper> Authors { get => _authors; }
 
-        public RelayCommand CommandSearch
+        /// <summary>
+        /// Заполнение списка авторов
+        /// </summary>
+        private void FillAuthors()
         {
-            get => new RelayCommand(obj => OnPropertyChanged("Authors"));
+            GetAuthors();
+            if (_authors == null)
+                _authors = new List<AuthorHelper>();
+            OnPropertyChanged("Authors");
+        }
+
+        /// <summary>
+        /// Получение списка авторов с учетом правил поиска
+        /// </summary>
+        private async void GetAuthors()
+        {
+            await Task.Run(() =>
+            {
+                List<AuthorHelper> queryResult = new List<AuthorHelper>();
+                List<AuthorHelper> result = new List<AuthorHelper>();
+                var query = NirsSystem.GetAuthors();
+                if (query != null)
+                    foreach (var elem in query)
+                        queryResult.Add(new AuthorHelper(elem.UserId));
+                foreach (var elem in queryResult)
+                {
+                    if (elem.Fio != null)
+                    {
+                        if (elem.Fio.Contains(_search))
+                        {
+                            result.Add(elem);
+                            continue;
+                        }
+                    }
+                    if (elem.Position != null)
+                    {
+                        if (elem.Position.Contains(_search))
+                        {
+                            result.Add(elem);
+                            continue;
+                        }
+                    }
+                    if (elem.Organization != null)
+                    {
+                        if (elem.Organization.Contains(_search))
+                        {
+                            result.Add(elem);
+                            continue;
+                        }
+                    }
+                }
+                _authors = result;
+                OnPropertyChanged("Authors");
+            });
         }
     }
 }

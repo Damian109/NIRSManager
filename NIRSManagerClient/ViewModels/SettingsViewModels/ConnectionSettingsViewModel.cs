@@ -261,6 +261,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
                     {
                         NirsSystem.User.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename='" + path + "'; Integrated Security = " +
                             NirsSystem.User.IntegratedSecurity.ToString() + "; ";
+                        NirsSystem.Close();
                     }
                 });
 
