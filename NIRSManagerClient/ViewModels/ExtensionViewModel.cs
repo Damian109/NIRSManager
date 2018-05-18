@@ -154,6 +154,12 @@ namespace NIRSManagerClient.ViewModels
 
         //Команды переходов по меню
 
+        public RelayCommand CommandStaticLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new StaticTablesView()));
+        }
+
+
         /// <summary>
         /// Команда Настройки профиля
         /// </summary>

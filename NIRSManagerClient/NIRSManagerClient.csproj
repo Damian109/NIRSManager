@@ -116,6 +116,7 @@
     <Compile Include="ViewModels\SettingsViewModels\MainSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\ProgramSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\UserInterfaceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\StaticTablesViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -178,6 +179,9 @@
     </Compile>
     <Compile Include="Views\ServerSettingsView.xaml.cs">
       <DependentUpon>ServerSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StaticTablesView.xaml.cs">
+      <DependentUpon>StaticTablesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserInterfaceSettingsView.xaml.cs">
       <DependentUpon>UserInterfaceSettingsView.xaml</DependentUpon>
@@ -264,6 +268,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ServerSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StaticTablesView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserInterfaceSettingsView.xaml">
