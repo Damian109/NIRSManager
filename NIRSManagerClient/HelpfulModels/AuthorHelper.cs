@@ -1,5 +1,8 @@
 ﻿using NIRSCore;
+using System.Linq;
+using System.Windows;
 using NIRSCore.DataBaseModels;
+using NIRSManagerClient.Views;
 
 namespace NIRSManagerClient.HelpfulModels
 {
@@ -49,6 +52,19 @@ namespace NIRSManagerClient.HelpfulModels
         /// Ученая степень
         /// </summary>
         public string AcademicDegreeName { get; set; }
+
+        /// <summary>
+        /// Команда - Изменить автора
+        /// </summary>
+        public RelayCommand CommandEdit
+        {
+            get => new RelayCommand(obj =>
+            {
+                ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+                window.mainGrid.Children.Clear();
+                window.mainGrid.Children.Add(new AuthorView(AuthorId));
+            });
+        }
 
         /// <summary>
         /// Конструктор
