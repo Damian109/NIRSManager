@@ -33,11 +33,10 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Background="Transparent"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                    FontSize="20" 
-                                    MinHeight="40"
-                                    MinWidth="230"
+                                    FontSize="16" 
+                                    MinHeight="30"
                                     TextAlignment="Right"
-                                    Margin="25">
+                                    Margin="20">
                                     <TextBox.Text>
                                         <Binding Path="OrganizationName" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
@@ -47,12 +46,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     Text="{Binding OrganizationStatus, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="14"
-                                    Margin="25 5"
+                                    Margin="25 2"
                                     MinWidth="200"
                                     MinHeight="30">
                                 </TextBlock>
                                 <Button
-                                    Margin="25"
+                                    Margin="20"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Добавление организации в БД"
                                     Command="{Binding CommandAddOrganization}"
@@ -60,7 +59,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="15" 
-                                    MinHeight="40">
+                                    MinHeight="35">
                                     Добавить организацию
                                 </Button>
                             </StackPanel>
@@ -75,11 +74,11 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Background="Transparent"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                    FontSize="20" 
-                                    MinHeight="40"
+                                    FontSize="16" 
+                                    MinHeight="30"
                                     MinWidth="230"
                                     TextAlignment="Right"
-                                    Margin="25">
+                                    Margin="20">
                                     <TextBox.Text>
                                         <Binding Path="FacultyName" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
@@ -89,12 +88,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     Text="{Binding FacultyStatus, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="14"
-                                    Margin="25 5"
+                                    Margin="25 2"
                                     MinWidth="200"
                                     MinHeight="30">
                                 </TextBlock>
                                 <Button
-                                    Margin="25"
+                                    Margin="20"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Добавление факультета в БД"
                                     Command="{Binding CommandAddFaculty}"
@@ -102,7 +101,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="15" 
-                                    MinHeight="40">
+                                    MinHeight="35">
                                     Добавить факультет
                                 </Button>
                             </StackPanel>
@@ -117,11 +116,11 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Background="Transparent"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                    FontSize="20" 
-                                    MinHeight="40"
+                                    FontSize="16" 
+                                    MinHeight="30"
                                     MinWidth="230"
                                     TextAlignment="Right"
-                                    Margin="25">
+                                    Margin="20">
                                     <TextBox.Text>
                                         <Binding Path="DepartmentName" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
@@ -131,12 +130,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     Text="{Binding DepartmentStatus, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="14"
-                                    Margin="25 5"
+                                    Margin="25 2"
                                     MinWidth="200"
                                     MinHeight="30">
                                 </TextBlock>
                                 <Button
-                                    Margin="25"
+                                    Margin="20"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Добавление кафедры в БД"
                                     Command="{Binding CommandAddDepartment}"
@@ -144,7 +143,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="15" 
-                                    MinHeight="40">
+                                    MinHeight="35">
                                     Добавить кафедру
                                 </Button>
                             </StackPanel>
@@ -159,11 +158,11 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Background="Transparent"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                    FontSize="20" 
-                                    MinHeight="40"
+                                    FontSize="16" 
+                                    MinHeight="30"
                                     MinWidth="230"
                                     TextAlignment="Right"
-                                    Margin="25">
+                                    Margin="20">
                                     <TextBox.Text>
                                         <Binding Path="GroupName" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
@@ -173,12 +172,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     Text="{Binding GroupStatus, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="14"
-                                    Margin="25 5"
+                                    Margin="25 2"
                                     MinWidth="200"
                                     MinHeight="30">
                                 </TextBlock>
                                 <Button
-                                    Margin="25"
+                                    Margin="20"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Добавление группы в БД"
                                     Command="{Binding CommandAddGroup}"
@@ -186,7 +185,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="15" 
-                                    MinHeight="40">
+                                    MinHeight="35">
                                     Добавить группу
                                 </Button>
                             </StackPanel>
@@ -201,11 +200,11 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Background="Transparent"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                    FontSize="20" 
-                                    MinHeight="40"
+                                    FontSize="16" 
+                                    MinHeight="30"
                                     MinWidth="230"
                                     TextAlignment="Right"
-                                    Margin="25">
+                                    Margin="20">
                                     <TextBox.Text>
                                         <Binding Path="PositionName" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
@@ -215,12 +214,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     Text="{Binding PositionStatus, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="14"
-                                    Margin="25 5"
+                                    Margin="25 2"
                                     MinWidth="200"
                                     MinHeight="30">
                                 </TextBlock>
                                 <Button
-                                    Margin="25"
+                                    Margin="20"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Добавление должность в БД"
                                     Command="{Binding CommandAddOPosition}"
@@ -228,7 +227,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="15" 
-                                    MinHeight="40">
+                                    MinHeight="35">
                                     Добавить должность
                                 </Button>
                             </StackPanel>
@@ -243,11 +242,11 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Background="Transparent"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                    FontSize="20" 
-                                    MinHeight="40"
+                                    FontSize="16" 
+                                    MinHeight="30"
                                     MinWidth="230"
                                     TextAlignment="Right"
-                                    Margin="25">
+                                    Margin="20">
                                     <TextBox.Text>
                                         <Binding Path="AcademicDegreeName" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
@@ -257,12 +256,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     Text="{Binding AcademicDegreeStatus, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="14"
-                                    Margin="25 5"
+                                    Margin="25 2"
                                     MinWidth="200"
                                     MinHeight="30">
                                 </TextBlock>
                                 <Button
-                                    Margin="25"
+                                    Margin="20"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Добавление ученой степени в БД"
                                     Command="{Binding CommandAddAcademicDegree}"
@@ -270,7 +269,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="15" 
-                                    MinHeight="40">
+                                    MinHeight="35">
                                     Добавить степень
                                 </Button>
                             </StackPanel>
@@ -285,11 +284,11 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Background="Transparent"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                    FontSize="20" 
-                                    MinHeight="40"
+                                    FontSize="16" 
+                                    MinHeight="30"
                                     MinWidth="230"
                                     TextAlignment="Right"
-                                    Margin="25">
+                                    Margin="20">
                                     <TextBox.Text>
                                         <Binding Path="DirectionName" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
@@ -299,12 +298,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     Text="{Binding DirectionStatus, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="14"
-                                    Margin="25 5"
+                                    Margin="25 2"
                                     MinWidth="200"
                                     MinHeight="30">
                                 </TextBlock>
                                 <Button
-                                    Margin="25"
+                                    Margin="20"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Добавление направления в БД"
                                     Command="{Binding CommandAddDirection}"
@@ -312,7 +311,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="15" 
-                                    MinHeight="40">
+                                    MinHeight="35">
                                     Добавить направление
                                 </Button>
                             </StackPanel>
@@ -327,11 +326,11 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Background="Transparent"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                    FontSize="20" 
-                                    MinHeight="40"
+                                    FontSize="16" 
+                                    MinHeight="30"
                                     MinWidth="230"
                                     TextAlignment="Right"
-                                    Margin="25">
+                                    Margin="20">
                                     <TextBox.Text>
                                         <Binding Path="RewardName" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
@@ -341,12 +340,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     Text="{Binding RewardStatus, UpdateSourceTrigger=PropertyChanged}"
                                     FontSize="14"
-                                    Margin="25 5"
+                                    Margin="25 2"
                                     MinWidth="200"
                                     MinHeight="30">
                                 </TextBlock>
                                 <Button
-                                    Margin="25"
+                                    Margin="20"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Добавление награды в БД"
                                     Command="{Binding CommandAddReward}"
@@ -354,7 +353,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="15" 
-                                    MinHeight="40">
+                                    MinHeight="35">
                                     Добавить награду
                                 </Button>
                             </StackPanel>
