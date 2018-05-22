@@ -70,7 +70,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             ItemsSource="{Binding Organizations}"
                             SelectedItem="{Binding SelectedOrganization}"
-                            Margin="8" 
+                            Margin="0 0 0 14" 
                             MinWidth="140"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -115,7 +115,7 @@
 
                     <TextBlock Grid.Column="2"
                             Grid.Row="1"
-                            Margin="8"
+                            Margin="10 25 10 10"
                             FontSize="16" 
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
@@ -130,7 +130,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             ItemsSource="{Binding Faculties}"
                             SelectedItem="{Binding SelectedFaculty}"
-                            Margin="8" 
+                            Margin="0 0 0 14"
                             MinWidth="140"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -145,7 +145,7 @@
 
                     <TextBlock Grid.Column="2"
                             Grid.Row="2"
-                            Margin="8"
+                            Margin="10 25 10 10"
                             FontSize="16" 
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
@@ -160,7 +160,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             ItemsSource="{Binding Departments}"
                             SelectedItem="{Binding SelectedDepartment}"
-                            Margin="8" 
+                            Margin="0 0 0 14"
                             MinWidth="140"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -175,7 +175,7 @@
 
                     <TextBlock Grid.Column="2"
                             Grid.Row="3"
-                            Margin="8"
+                            Margin="10 25 10 10"
                             FontSize="16" 
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
@@ -190,7 +190,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             ItemsSource="{Binding Groups}"
                             SelectedItem="{Binding SelectedGroup}"
-                            Margin="8" 
+                            Margin="0 0 0 14"
                             MinWidth="140"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -205,7 +205,7 @@
 
                     <TextBlock Grid.Column="2"
                             Grid.Row="4"
-                            Margin="8"
+                            Margin="10 25 10 10"
                             FontSize="16" 
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
@@ -220,7 +220,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             ItemsSource="{Binding Positions}"
                             SelectedItem="{Binding SelectedPosition}"
-                            Margin="8" 
+                            Margin="0 0 0 14"
                             MinWidth="140"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -250,7 +250,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
                             ItemsSource="{Binding AcademicDegrees}"
                             SelectedItem="{Binding SelectedAcademicDegree}"
-                            Margin="8" 
+                            Margin="0 0 0 14"
                             MinWidth="140"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
