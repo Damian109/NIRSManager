@@ -24,7 +24,7 @@ namespace NIRSCore.DataBaseModels
         /// <summary>
         /// Идентификатор организации (Внешний ключ)
         /// </summary>
-        public int OrganizationId { get; set; }
+        public int? OrganizationId { get; set; }
 
         /// <summary>
         /// Идентификатор факультета (Внешний ключ)

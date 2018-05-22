@@ -9,7 +9,7 @@
         <Border
                 Background="{DynamicResource MaterialDesignBackground}">
             <GroupBox
-                Header="{Binding Fio,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="500" MinWidth="600"
+                Header="{Binding AuthorName,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="500" MinWidth="600"
                 VerticalAlignment="Center" Margin="20"
                  Style="{DynamicResource MaterialDesignGroupBox}"
                     UseLayoutRounding="True"
@@ -27,92 +27,51 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Фамилия автора"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding SurName}" 
-                            FontSize="20" 
-                            MinHeight="40"
-                            TextAlignment="Right"
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="10">
-                    </TextBox>
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Имя автора"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding AName}" 
-                            FontSize="20" 
-                            MinHeight="40"
-                            TextAlignment="Right"
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="10">
-                    </TextBox>
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Отчество автора"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding SecondName}" 
-                            FontSize="20" 
-                            MinHeight="40"
-                            TextAlignment="Right"
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="10">
-                    </TextBox>
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Путь к фото"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding PathPhoto}" 
-                            FontSize="20" 
-                            MinHeight="40"
-                            TextAlignment="Right"
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            IsEnabled="{Binding IsDeletable}"
-                            Grid.ColumnSpan="2"
-                            Margin="10">
-                    </TextBox>
                     
-                    <ComboBox ItemsSource="{Binding AcademicDegrees}"
-                              Margin="20 30 20 20" 
-                            MinWidth="100"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            SelectedItem="{Binding SelectedAcademicDegree}"
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=AcademicDegreeName}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    <Image Grid.Column="0" 
+                           Grid.Row="0" 
+                           Grid.ColumnSpan="2"
+                           Grid.RowSpan="4"
+                           Source="{Binding PhotoPath, UpdateSourceTrigger=PropertyChanged}"
+                    />
 
-                    <ComboBox ItemsSource="{Binding Organizations}"
-                            SelectedItem="{Binding SelectedOrganization}"
-                            Margin="20 30 20 20" 
-                            MinWidth="100"
+                    <Button Grid.Column="0"
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2"
+                            Margin="20 10"
+                            IsEnabled="{Binding IsDeletable}"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            ToolTip="Изменить фото"
+                            Command="{Binding CommandBack}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
+                            FontSize="16" 
+                            MinHeight="50">
+                        Изменить фото
+                    </Button>
+
+                    <TextBlock Grid.Column="0"
+                            Grid.Row="5"
+                            Margin="8"
+                            FontSize="16" 
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Grid.Row="1"
-                            Grid.Column="2"
+                        >
+                        Выберите организацию
+                    </TextBlock>
+
+                    <ComboBox Grid.Column="1"
+                            Grid.Row="5"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            ItemsSource="{Binding Organizations}"
+                            SelectedItem="{Binding SelectedOrganization}"
+                            Margin="8" 
+                            MinWidth="140"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                         <ComboBox.ItemTemplate>
@@ -124,14 +83,145 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    <ComboBox ItemsSource="{Binding Positions}"
-                              SelectedItem="{Binding SelectedPosition}"
-                              Margin="20 30 20 20" 
-                            MinWidth="100"
+                    <Button Grid.Column="0"
+                            Grid.Row="6"
+                            FontSize="16"
+                            Margin="20 10"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            ToolTip="Вернуться к авторам"
+                            Command="{Binding CommandBack}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
+                            MinHeight="50">
+                        Назад
+                    </Button>
+
+
+                    <TextBox Grid.Column="2"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            FontSize="20"
+                            materialDesign:HintAssist.Hint="ФИО автора"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            MinHeight="40"
+                            TextAlignment="Right"
+                            Margin="10">
+                        <TextBox.Text>
+                            <Binding Path="AuthorName" UpdateSourceTrigger="PropertyChanged" />
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <TextBlock Grid.Column="2"
+                            Grid.Row="1"
+                            Margin="8"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        >
+                        Выберите факультет
+                    </TextBlock>
+
+                    <ComboBox Grid.Column="3"
+                            Grid.Row="1"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            ItemsSource="{Binding Faculties}"
+                            SelectedItem="{Binding SelectedFaculty}"
+                            Margin="8" 
+                            MinWidth="140"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=FacultyName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBlock Grid.Column="2"
                             Grid.Row="2"
-                            Grid.Column="2"
+                            Margin="8"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        >
+                        Выберите кафедру
+                    </TextBlock>
+
+                    <ComboBox Grid.Column="3"
+                            Grid.Row="2"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            ItemsSource="{Binding Departments}"
+                            SelectedItem="{Binding SelectedDepartment}"
+                            Margin="8" 
+                            MinWidth="140"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=DepartmentName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBlock Grid.Column="2"
+                            Grid.Row="3"
+                            Margin="8"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        >
+                        Выберите группу
+                    </TextBlock>
+
+                    <ComboBox Grid.Column="3"
+                            Grid.Row="3"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            ItemsSource="{Binding Groups}"
+                            SelectedItem="{Binding SelectedGroup}"
+                            Margin="8" 
+                            MinWidth="140"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=GroupName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBlock Grid.Column="2"
+                            Grid.Row="4"
+                            Margin="8"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        >
+                        Выберите должность
+                    </TextBlock>
+
+                    <ComboBox Grid.Column="3"
+                            Grid.Row="4"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            ItemsSource="{Binding Positions}"
+                            SelectedItem="{Binding SelectedPosition}"
+                            Margin="8" 
+                            MinWidth="140"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                         <ComboBox.ItemTemplate>
@@ -142,32 +232,39 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    
-                    <DatePicker
-                        MinWidth="200"
-                        materialDesign:HintAssist.Hint="Дата рождения"
-                        Text="{Binding DateOfBirth}"
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        Grid.ColumnSpan="2"
-                        Margin="20 30"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-                        />
-                    <Button
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            Margin="20 10"
-                            Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="Вернуться к авторам"
-                            Command="{Binding CommandBack}"
-                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                            Background="{DynamicResource PrimaryHueDarkBrush}"
+
+                    <TextBlock Grid.Column="2"
+                            Grid.Row="5"
+                            Margin="8"
                             FontSize="16" 
-                            MinHeight="50">
-                        Назад
-                    </Button>
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                        >
+                        Ученая степень
+                    </TextBlock>
+
+                    <ComboBox Grid.Column="3"
+                            Grid.Row="5"
+                            FontSize="16" 
+                            Background="Transparent"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            ItemsSource="{Binding AcademicDegrees}"
+                            SelectedItem="{Binding SelectedAcademicDegree}"
+                            Margin="8" 
+                            MinWidth="140"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=AcademicDegreeName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
                     <Button
-                            Grid.Row="4"
+                            Grid.Row="6"
                             Grid.Column="2"
                             Margin="20 10"
                             Style="{StaticResource MaterialDesignRaisedButton}"
@@ -179,8 +276,9 @@
                             MinHeight="50">
                         Сохранить
                     </Button>
+
                     <Button
-                            Grid.Row="4"
+                            Grid.Row="6"
                             Grid.Column="3"
                             Margin="20 10"
                             Style="{StaticResource MaterialDesignRaisedButton}"
@@ -193,81 +291,6 @@
                             MinHeight="50">
                         Удалить
                     </Button>
-
-                    <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="3">
-                        <TextBox
-                            materialDesign:HintAssist.Hint="Ученая степень"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding AcademicDegreeName}" 
-                            FontSize="12" 
-                            MinHeight="15"
-                            TextAlignment="Right"
-                            Margin="1">
-                        </TextBox>
-                        <Button
-                            Margin="5"
-                            Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="Добавить ученую степень"
-                            Command="{Binding CommandAddAcademicDegree}"
-                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                            Background="{DynamicResource PrimaryHueDarkBrush}"
-                            FontSize="10" 
-                            MinHeight="20">
-                            Добавить
-                        </Button>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="3">
-                        <TextBox
-                            materialDesign:HintAssist.Hint="Организация"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding OrganizationName}" 
-                            FontSize="12" 
-                            MinHeight="15"
-                            TextAlignment="Right"
-                            Margin="1">
-                        </TextBox>
-                        <Button
-                            Margin="5"
-                            Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="Добавить организацию"
-                            Command="{Binding CommandAddOrganization}"
-                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                            Background="{DynamicResource PrimaryHueDarkBrush}"
-                            FontSize="10" 
-                            MinHeight="20">
-                            Добавить
-                        </Button>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="3">
-                        <TextBox
-                            materialDesign:HintAssist.Hint="Должность"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding PositionName}" 
-                            FontSize="12" 
-                            MinHeight="15"
-                            TextAlignment="Right"
-                            Margin="1">
-                        </TextBox>
-                        <Button
-                            Margin="5"
-                            Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="Добавить должность"
-                            Command="{Binding CommandAddPosition}"
-                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                            Background="{DynamicResource PrimaryHueDarkBrush}"
-                            FontSize="10" 
-                            MinHeight="20">
-                            Добавить
-                        </Button>
-                    </StackPanel>
                 </Grid>
             </GroupBox>
         </Border>

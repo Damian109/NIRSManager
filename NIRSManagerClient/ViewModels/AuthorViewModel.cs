@@ -12,11 +12,172 @@ namespace NIRSManagerClient.ViewModels
 {
     public sealed class AuthorViewModel : ViewModel
     {
+        //Текущее представление автора
         private Author _author;
-        private Author _prevAuthor;
-        private bool _isNew;
 
-        //Доступность кнопки удаления
+        //Предыдущее представление автора
+        private readonly Author _prevAuthor;
+
+        //Является ли автор новым
+        private readonly bool _isNew;
+
+        //Заполнение всех списков значениями
+        private async void GetTables() => await Task.Run(() =>
+        {
+            Organizations = (List<Organization>)NirsSystem.GetListObject<Organization>();
+            if (Organizations == null)
+                Organizations = new List<Organization>();
+            Organizations.Insert(0, new Organization { OrganizationId = 0, OrganizationName = "(пусто)" });
+            SelectedOrganization = Organizations.FirstOrDefault(u => u.OrganizationId == _author.OrganizationId);
+            OnPropertyChanged("Organizations");
+            OnPropertyChanged("SelectedOrganization");
+
+            Faculties = (List<Faculty>)NirsSystem.GetListObject<Faculty>();
+            if (Faculties == null)
+                Faculties = new List<Faculty>();
+            Faculties.Insert(0, new Faculty { FacultyId = 0, FacultyName = "(пусто)" });
+            SelectedFaculty = Faculties.FirstOrDefault(u => u.FacultyId == _author.FacultyId);
+            OnPropertyChanged("Faculties");
+            OnPropertyChanged("SelectedFaculty");
+
+            Departments = (List<Department>)NirsSystem.GetListObject<Department>();
+            if (Departments == null)
+                Departments = new List<Department>();
+            Departments.Insert(0, new Department { DepartmentId = 0, DepartmentName = "(пусто)" });
+            SelectedDepartment = Departments.FirstOrDefault(u => u.DepartmentId == _author.DepartmentId);
+            OnPropertyChanged("Departments");
+            OnPropertyChanged("SelectedDepartment");
+
+            Groups = (List<Group>)NirsSystem.GetListObject<Group>();
+            if (Groups == null)
+                Groups = new List<Group>();
+            Groups.Insert(0, new Group { GroupId = 0, GroupName = "(пусто)" });
+            SelectedGroup = Groups.FirstOrDefault(u => u.GroupId == _author.GroupId);
+            OnPropertyChanged("Groups");
+            OnPropertyChanged("SelectedGroup");
+
+            Positions = (List<Position>)NirsSystem.GetListObject<Position>();
+            if (Positions == null)
+                Positions = new List<Position>();
+            Positions.Insert(0, new Position { PositionId = 0, PositionName = "(пусто)" });
+            SelectedPosition = Positions.FirstOrDefault(u => u.PositionId == _author.PositionId);
+            OnPropertyChanged("Positions");
+            OnPropertyChanged("SelectedPosition");
+
+            AcademicDegrees = (List<AcademicDegree>)NirsSystem.GetListObject<AcademicDegree>();
+            if (AcademicDegrees == null)
+                AcademicDegrees = new List<AcademicDegree>();
+            AcademicDegrees.Insert(0, new AcademicDegree { AcademicDegreeId = 0, AcademicDegreeName = "(пусто)" });
+            SelectedAcademicDegree = AcademicDegrees.FirstOrDefault(u => u.AcademicDegreeId == _author.AcademicDegreeId);
+            OnPropertyChanged("AcademicDegrees");
+            OnPropertyChanged("SelectedAcademicDegree");
+        });
+
+        //Загрузка страницы с авторами
+        private void BackWindow()
+        {
+            ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+            window.mainGrid.Children.Clear();
+            window.mainGrid.Children.Add(new Views.AuthorsView());
+        }
+
+        /// <summary>
+        /// ФИО автора
+        /// </summary>
+        public string AuthorName
+        {
+            get => _author.AuthorName;
+            set
+            {
+                _author.AuthorName = value;
+                OnPropertyChanged("AuthorName");
+            }
+        }
+
+        /// <summary>
+        /// Путь к фото
+        /// </summary>
+        public string PhotoPath
+        {
+            get => Environment.CurrentDirectory + _author.PhotoPath;
+            set
+            {
+                _author.PhotoPath = value;
+                OnPropertyChanged("PhotoPath");
+                //
+                //
+                //
+                //
+                ///
+                /* _author.PathPhoto = "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.UserId + "author.png";
+                File.Copy(value, Environment.CurrentDirectory + _author.PathPhoto);
+                OnPropertyChanged("PathPhoto"); */
+            }
+        }
+
+        /// <summary>
+        /// Список доступных организаций
+        /// </summary>
+        public List<Organization> Organizations { get; private set; }
+
+        /// <summary>
+        /// Выбранная организация
+        /// </summary>
+        public Organization SelectedOrganization { get; set; }
+
+        /// <summary>
+        /// Список доступных факультетов
+        /// </summary>
+        public List<Faculty> Faculties { get; private set; }
+
+        /// <summary>
+        /// Выбранный факультет
+        /// </summary>
+        public Faculty SelectedFaculty { get; set; }
+
+        /// <summary>
+        /// Список доступных кафедр
+        /// </summary>
+        public List<Department> Departments { get; private set; }
+
+        /// <summary>
+        /// Выбранная кафедра
+        /// </summary>
+        public Department SelectedDepartment { get; set; }
+
+        /// <summary>
+        /// Список доступных групп
+        /// </summary>
+        public List<Group> Groups { get; private set; }
+
+        /// <summary>
+        /// Выбранная группа
+        /// </summary>
+        public Group SelectedGroup { get; set; }
+
+        /// <summary>
+        /// Список доступных должностей
+        /// </summary>
+        public List<Position> Positions { get; private set; }
+
+        /// <summary>
+        /// Выбранная должность
+        /// </summary>
+        public Position SelectedPosition { get; set; }
+
+        /// <summary>
+        /// Список доступных ученых степеней
+        /// </summary>
+        public List<AcademicDegree> AcademicDegrees { get; private set; }
+
+        /// <summary>
+        /// Выбранная ученая степень
+        /// </summary>
+        public AcademicDegree SelectedAcademicDegree { get; set; }
+
+        /// <summary>
+        /// Доступность некоторых кнопок
+        /// </summary>
         public bool IsDeletable
         {
             get
@@ -37,316 +198,35 @@ namespace NIRSManagerClient.ViewModels
             {
                 _author = new Author()
                 {
-                    AcademicDegreeId = 0,
-                    DateOfBirth = DateTime.Now,
-                    Name = "",
-                    SurName = "",
-                    SecondName = "",
-                    OrganizationId = 0,
-                    PathPhoto = "\\data\\" + NirsSystem.GetLogin() + "\\photos\\0author.png",
-                    PositionId = 0
+                    AcademicDegreeId = null,
+                    AuthorName = "",
+                    DepartmentId = null,
+                    FacultyId = null,
+                    GroupId = null,
+                    PhotoPath = "\\data\\author.PNG",
+                    OrganizationId = null,
+                    PositionId = null
                 };
                 _isNew = true;
             }
             else
             {
-                _author = NirsSystem.GetAuthor(id);
+                _author = (Author)NirsSystem.GetObject<Author>(id);
                 _prevAuthor = new Author
                 {
                     AcademicDegreeId = _author.AcademicDegreeId,
-                    DateOfBirth = _author.DateOfBirth,
-                    Name = _author.Name,
+                    AuthorName = _author.AuthorName,
+                    DepartmentId = _author.DepartmentId,
+                    FacultyId = _author.FacultyId,
+                    GroupId = _author.GroupId,
+                    PhotoPath = _author.PhotoPath,
                     OrganizationId = _author.OrganizationId,
-                    PathPhoto = _author.PathPhoto,
                     PositionId = _author.PositionId,
-                    SecondName = _author.SecondName,
-                    SurName = _author.SurName,
-                    UserId = _author.UserId
+                    AuthorId = _author.AuthorId
                 };
                 _isNew = false;
             }
-            _academicDegrees = new List<AcademicDegree>();
-            _selectedAcademicDegree = null;
-            AcademicDegreeName = string.Empty;
-            _organizations = new List<Organization>();
-            _selectedOrganization = null;
-            OrganizationName = string.Empty;
-            _positions = new List<Position>();
-            _selectedPosition = null;
-            PositionName = string.Empty;
-
-            GetAcademicDegrees();
-            GetOrganizations();
-            GetPositions();
-        }
-
-        //Свойства
-        //Определяются по данным автора
-
-        public string SurName
-        {
-            get => _author.SurName;
-            set
-            {
-                _author.SurName = value;
-                OnPropertyChanged("Fio");
-            }
-        }
-
-        public string AName
-        {
-            get => _author.Name;
-            set
-            {
-                _author.Name = value;
-                OnPropertyChanged("Fio");
-            }
-        }
-
-        public string SecondName
-        {
-            get => _author.SecondName;
-            set
-            {
-                _author.SecondName = value;
-                OnPropertyChanged("Fio");
-            }
-        }
-
-        public DateTime DateOfBirth
-        {
-            get => _author.DateOfBirth;
-            set => _author.DateOfBirth = value;
-        }
-
-        /// <summary>
-        /// ФИО Автора
-        /// </summary>
-        public string Fio
-        {
-            get => SurName + " " + AName + " " + SecondName;
-        }
-
-        /// <summary>
-        /// Путь к фото
-        /// </summary>
-        public string PathPhoto
-        {
-            get => _author.PathPhoto;
-            set
-            {
-                _author.PathPhoto = "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.UserId + "author.png";
-                File.Copy(value, Environment.CurrentDirectory + _author.PathPhoto);
-                OnPropertyChanged("PathPhoto");
-            }
-        }
-
-        //Ученые степени
-
-        private List<AcademicDegree> _academicDegrees;
-        private AcademicDegree _selectedAcademicDegree;
-
-        //Асинхронный запрос к базе данных списка ученых степеней
-        private async void GetAcademicDegrees()
-        {
-            await Task.Run(() =>
-            {
-                List<AcademicDegree> list = NirsSystem.GetAcademicDegrees();
-                if (list == null)
-                    return;
-                _academicDegrees = new List<AcademicDegree>();
-                foreach (var elem in list)
-                    _academicDegrees.Add(elem);
-                OnPropertyChanged("AcademicDegrees");
-            });
-        }
-
-        //Асинхронный запрос на добавление ученой степени в список БД
-        private async void AddAcademicDegreeAsync()
-        {
-            await Task.Run(() =>
-            {
-                NirsSystem.AddAcademicDegree(new AcademicDegree { AcademicDegreeName = AcademicDegreeName });
-                GetAcademicDegrees();
-            });
-        }
-
-        //Добавление ученой степени
-        private void AddAcademicDegree() => AddAcademicDegreeAsync();
-
-        /// <summary>
-        /// Коллекция ученых степеней
-        /// </summary>
-        public List<AcademicDegree> AcademicDegrees
-        {
-            get => _academicDegrees;
-        }
-
-        /// <summary>
-        /// Выбранная ученая степень
-        /// </summary>
-        public AcademicDegree SelectedAcademicDegree
-        {
-            get => _selectedAcademicDegree;
-            set
-            {
-                _selectedAcademicDegree = value;
-                _author.AcademicDegreeId = value.AcademicDegreeId;
-            }
-        }
-
-        /// <summary>
-        /// Название новой ученой степени
-        /// </summary>
-        public string AcademicDegreeName { get; set; }
-
-        /// <summary>
-        /// Добавление новой ученой степени
-        /// </summary>
-        public RelayCommand CommandAddAcademicDegree
-        {
-            get => new RelayCommand(obj => AddAcademicDegree());
-        }
-
-        //Организации
-
-        private List<Organization> _organizations;
-        private Organization _selectedOrganization;
-
-        //Асинхронный запрос к базе данных списка организаций
-        private async void GetOrganizations()
-        {
-            await Task.Run(() =>
-            {
-                List<Organization> list = NirsSystem.GetOrganizations();
-                if (list == null)
-                    return;
-                _organizations = new List<Organization>();
-                foreach (var elem in list)
-                    _organizations.Add(elem);
-                OnPropertyChanged("Organizations");
-            });
-        }
-
-        //Асинхронный запрос на добавление организации в список БД
-        private async void AddOrganizationAsync()
-        {
-            await Task.Run(() =>
-            {
-                NirsSystem.AddOrganization(new Organization { OrganizationName = OrganizationName });
-                GetOrganizations();
-            });
-        }
-
-        //Добавление организации
-        private void AddOrganization() => AddOrganizationAsync();
-
-        /// <summary>
-        /// Коллекция организаций
-        /// </summary>
-        public List<Organization> Organizations
-        {
-            get => _organizations;
-        }
-
-        /// <summary>
-        /// Выбранная организация
-        /// </summary>
-        public Organization SelectedOrganization
-        {
-            get => _selectedOrganization;
-            set
-            {
-                _selectedOrganization = value;
-                _author.OrganizationId = value.OrganizationId;
-            }
-        }
-
-        /// <summary>
-        /// Название новой организации
-        /// </summary>
-        public string OrganizationName { get; set; }
-
-        /// <summary>
-        /// Добавление новой организации
-        /// </summary>
-        public RelayCommand CommandAddOrganization
-        {
-            get => new RelayCommand(obj => AddOrganization());
-        }
-
-        //Должности
-
-        private List<Position> _positions;
-        private Position _selectedPosition;
-
-        //Асинхронный запрос к базе данных списка должностей
-        private async void GetPositions()
-        {
-            await Task.Run(() =>
-            {
-                List<Position> list = NirsSystem.GetPositions();
-                if (list == null)
-                    return;
-                _positions = new List<Position>();
-                foreach (var elem in list)
-                    _positions.Add(elem);
-                OnPropertyChanged("Positions");
-            });
-        }
-
-        //Асинхронный запрос на добавление должности в список БД
-        private async void AddPositionAsync()
-        {
-            await Task.Run(() =>
-            {
-                NirsSystem.AddPosition(new Position { PositionName = PositionName });
-                GetPositions();
-            });
-        }
-
-        //Добавление должности
-        private void AddPosition() => AddPositionAsync();
-
-        /// <summary>
-        /// Коллекция должностей
-        /// </summary>
-        public List<Position> Positions
-        {
-            get => _positions;
-        }
-
-        /// <summary>
-        /// Выбранная должность
-        /// </summary>
-        public Position SelectedPosition
-        {
-            get => _selectedPosition;
-            set
-            {
-                _selectedPosition = value;
-                _author.PositionId = value.PositionId;
-            }
-        }
-
-        /// <summary>
-        /// Название новой должности
-        /// </summary>
-        public string PositionName { get; set; }
-
-        /// <summary>
-        /// Добавление новой должности
-        /// </summary>
-        public RelayCommand CommandAddPosition
-        {
-            get => new RelayCommand(obj => AddPosition());
-        }
-
-        private void BackWindow()
-        {
-            ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
-            window.mainGrid.Children.Clear();
-            window.mainGrid.Children.Add(new Views.AuthorsView());
+            GetTables();
         }
 
         /// <summary>
@@ -364,16 +244,46 @@ namespace NIRSManagerClient.ViewModels
         {
             get => new RelayCommand(obj =>
             {
+                if (SelectedOrganization == null || SelectedOrganization == Organizations[0])
+                    _author.OrganizationId = null;
+                else
+                    _author.OrganizationId = SelectedOrganization.OrganizationId;
+
+                if (SelectedFaculty == null || SelectedFaculty == Faculties[0])
+                    _author.FacultyId = null;
+                else
+                    _author.FacultyId = SelectedFaculty.FacultyId;
+
+                if (SelectedDepartment == null || SelectedDepartment == Departments[0])
+                    _author.DepartmentId = null;
+                else
+                    _author.DepartmentId = SelectedDepartment.DepartmentId;
+
+                if (SelectedGroup == null || SelectedGroup == Groups[0])
+                    _author.GroupId = null;
+                else
+                    _author.GroupId = SelectedGroup.GroupId;
+
+                if (SelectedPosition == null || SelectedPosition == Positions[0])
+                    _author.PositionId = null;
+                else
+                    _author.PositionId = SelectedPosition.PositionId;
+
+                if (SelectedAcademicDegree == null || SelectedAcademicDegree == AcademicDegrees[0])
+                    _author.AcademicDegreeId = null;
+                else
+                    _author.AcademicDegreeId = SelectedAcademicDegree.AcademicDegreeId;
+
                 if (_isNew)
                 {
                     //Создание команды выполнения операции
-                    RelayCommand done = new RelayCommand(objUnDone => NirsSystem.AddAuthor(_author), null);
+                    RelayCommand done = new RelayCommand(objDone => NirsSystem.AddObject(_author), null);
 
                     //Создание команды отмены операции
-                    RelayCommand undone = new RelayCommand(objUnDone => NirsSystem.DeleteAuthor(_author), null);
+                    RelayCommand undone = new RelayCommand(objUnDone => NirsSystem.DeleteObject(_author), null);
 
                     //Создание операции
-                    Operation operation = new Operation("Добавлен новый автор " + Fio, done, undone);
+                    Operation operation = new Operation("Добавлен новый автор", done, undone);
 
                     NirsSystem.StackOperations.AddOperation(operation);
                     operation.DoneCommand.Execute(null);
@@ -381,13 +291,13 @@ namespace NIRSManagerClient.ViewModels
                 else
                 {
                     //Создание команды выполнения операции
-                    RelayCommand done = new RelayCommand(objUnDone => NirsSystem.UpdateAuthor(_author), null);
+                    RelayCommand done = new RelayCommand(objDone => NirsSystem.UpdateObject(_author), null);
 
                     //Создание команды отмены операции
-                    RelayCommand undone = new RelayCommand(objUnDone => NirsSystem.UpdateAuthor(_prevAuthor), null);
+                    RelayCommand undone = new RelayCommand(objUnDone => NirsSystem.UpdateObject(_prevAuthor), null);
 
                     //Создание операции
-                    Operation operation = new Operation("Автор " + Fio + " был изменен", done, undone);
+                    Operation operation = new Operation("Автор был изменен", done, undone);
 
                     NirsSystem.StackOperations.AddOperation(operation);
                     operation.DoneCommand.Execute(null);
@@ -404,13 +314,13 @@ namespace NIRSManagerClient.ViewModels
             get => new RelayCommand(obj =>
             {
                 //Создание команды выполнения операции
-                RelayCommand done = new RelayCommand(objUnDone => NirsSystem.DeleteAuthor(_author), null);
+                RelayCommand done = new RelayCommand(objDone => NirsSystem.DeleteObject(_author), null);
 
                 //Создание команды отмены операции
-                RelayCommand undone = new RelayCommand(objUnDone => NirsSystem.AddAuthor(_author), null);
+                RelayCommand undone = new RelayCommand(objUnDone => NirsSystem.AddObject(_author), null);
 
                 //Создание операции
-                Operation operation = new Operation("Удален автор " + Fio, done, undone);
+                Operation operation = new Operation("Удален автор", done, undone);
 
                 NirsSystem.StackOperations.AddOperation(operation);
                 operation.DoneCommand.Execute(null);

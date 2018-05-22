@@ -77,23 +77,53 @@ namespace NIRSManagerClient.HelpfulModels
             AuthorName = author.AuthorName;
             PhotoPath = Environment.CurrentDirectory + author.PhotoPath;
 
-            Organization organization = (Organization)NirsSystem.GetObject<Organization>(author.OrganizationId);
-            OrganizationName = organization.OrganizationName;
+            if (author.OrganizationId != null)
+            {
+                Organization organization = (Organization)NirsSystem.GetObject<Organization>((int)author.OrganizationId);
+                OrganizationName = organization.OrganizationName;
+            }
+            else
+                OrganizationName = "(Без организации)";
 
-            Faculty faculty = (Faculty)NirsSystem.GetObject<Faculty>((int)author.FacultyId);
-            FacultyName = "Факультет: " + faculty.FacultyName;
+            if (author.FacultyId != null)
+            {
+                Faculty faculty = (Faculty)NirsSystem.GetObject<Faculty>((int)author.FacultyId);
+                FacultyName = "Факультет: " + faculty.FacultyName;
+            }
+            else
+                FacultyName = "";
 
-            Department department = (Department)NirsSystem.GetObject<Department>((int)author.DepartmentId);
-            DepartmentName = "Кафедра: " + department.DepartmentName;
+            if (author.DepartmentId != null)
+            {
+                Department department = (Department)NirsSystem.GetObject<Department>((int)author.DepartmentId);
+                DepartmentName = "Кафедра: " + department.DepartmentName;
+            }
+            else
+                DepartmentName = "";
 
-            Group group = (Group)NirsSystem.GetObject<Group>((int)author.GroupId);
-            GroupName = "Группа: " + group.GroupName;
+            if (author.GroupId != null)
+            {
+                Group group = (Group)NirsSystem.GetObject<Group>((int)author.GroupId);
+                GroupName = "Группа: " + group.GroupName;
+            }
+            else
+                GroupName = "";
 
-            Position position = (Position)NirsSystem.GetObject<Position>((int)author.PositionId);
-            PositionName = "Должность: " + position.PositionName;
+            if (author.PositionId != null)
+            {
+                Position position = (Position)NirsSystem.GetObject<Position>((int)author.PositionId);
+                PositionName = "Должность: " + position.PositionName;
+            }
+            else
+                PositionName = "";
 
-            AcademicDegree academicDegree = (AcademicDegree)NirsSystem.GetObject<AcademicDegree>((int)author.AcademicDegreeId);
-            AcademicDegreeName = academicDegree.AcademicDegreeName;
+            if (author.AcademicDegreeId != null)
+            {
+                AcademicDegree academicDegree = (AcademicDegree)NirsSystem.GetObject<AcademicDegree>((int)author.AcademicDegreeId);
+                AcademicDegreeName = academicDegree.AcademicDegreeName;
+            }
+            else
+                AcademicDegreeName = "";
         }
     }
 }
