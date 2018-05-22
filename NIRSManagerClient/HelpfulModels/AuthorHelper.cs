@@ -1,4 +1,5 @@
-﻿using NIRSCore;
+﻿using System;
+using NIRSCore;
 using System.Linq;
 using System.Windows;
 using NIRSCore.DataBaseModels;
@@ -74,7 +75,7 @@ namespace NIRSManagerClient.HelpfulModels
         {
             AuthorId = author.AuthorId;
             AuthorName = author.AuthorName;
-            PhotoPath = author.PhotoPath;
+            PhotoPath = Environment.CurrentDirectory + author.PhotoPath;
 
             Organization organization = (Organization)NirsSystem.GetObject<Organization>(author.OrganizationId);
             OrganizationName = organization.OrganizationName;
