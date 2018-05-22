@@ -213,7 +213,6 @@ namespace NIRSCore
             return null;
         }
 
-
         /// <summary>
         /// Изменение элемента
         /// </summary>
@@ -229,77 +228,96 @@ namespace NIRSCore
                     if (obj is Organization org)
                     {
                         var query = context.Organizations.FirstOrDefault(u => u.OrganizationId == org.OrganizationId);
-                        query = org;
+                        query.OrganizationName = org.OrganizationName;
                     }
                     if (obj is Faculty fac)
                     {
                         var query = context.Faculties.FirstOrDefault(u => u.FacultyId == fac.FacultyId);
-                        query = fac;
+                        query.FacultyName = fac.FacultyName;
                     }
                     if (obj is Department dep)
                     {
                         var query = context.Departments.FirstOrDefault(u => u.DepartmentId == dep.DepartmentId);
-                        query = dep;
+                        query.DepartmentName = dep.DepartmentName;
                     }
                     if (obj is Group gro)
                     {
                         var query = context.Groups.FirstOrDefault(u => u.GroupId == gro.GroupId);
-                        query = gro;
+                        query.GroupName = gro.GroupName;
                     }
                     if (obj is Position pos)
                     {
                         var query = context.Positions.FirstOrDefault(u => u.PositionId == pos.PositionId);
-                        query = pos;
+                        query.PositionName = pos.PositionName;
                     }
                     if (obj is AcademicDegree aca)
                     {
                         var query = context.AcademicDegrees.FirstOrDefault(u => u.AcademicDegreeId == aca.AcademicDegreeId);
-                        query = aca;
+                        query.AcademicDegreeName = aca.AcademicDegreeName;
                     }
                     if (obj is Author aut)
                     {
                         var query = context.Authors.FirstOrDefault(u => u.AuthorId == aut.AuthorId);
-                        query = aut;
+                        query.AcademicDegreeId = aut.AcademicDegreeId;
+                        query.AuthorName = aut.AuthorName;
+                        query.DepartmentId = aut.DepartmentId;
+                        query.FacultyId = aut.FacultyId;
+                        query.GroupId = aut.GroupId;
+                        query.OrganizationId = aut.OrganizationId;
+                        query.PhotoPath = aut.PhotoPath;
+                        query.PositionId = aut.PositionId;
                     }
                     if (obj is Journal jou)
                     {
                         var query = context.Journals.FirstOrDefault(u => u.JournalId == jou.JournalId);
-                        query = jou;
+                        query.JournalName = jou.JournalName;
+                        query.JournalDate = jou.JournalDate;
                     }
                     if (obj is Conference con)
                     {
                         var query = context.Conferences.FirstOrDefault(u => u.ConferenceId == con.ConferenceId);
-                        query = con;
+                        query.ConferenceName = con.ConferenceName;
+                        query.ConferenceDate = con.ConferenceDate;
                     }
                     if (obj is Work wor)
                     {
                         var query = context.Works.FirstOrDefault(u => u.WorkId == wor.WorkId);
-                        query = wor;
+                        query.ConferenceId = wor.ConferenceId;
+                        query.HeadAuthorId = wor.HeadAuthorId;
+                        query.JournalId = wor.JournalId;
+                        query.WorkMark = wor.WorkMark;
+                        query.WorkName = wor.WorkName;
+                        query.WorkPath = wor.WorkPath;
+                        query.WorkSize = wor.WorkSize;
                     }
                     if (obj is Direction dir)
                     {
                         var query = context.Directions.FirstOrDefault(u => u.DirectionId == dir.DirectionId);
-                        query = dir;
+                        query.DirectionName = dir.DirectionName;
                     }
                     if (obj is Reward rew)
                     {
                         var query = context.Rewards.FirstOrDefault(u => u.RewardId == rew.RewardId);
-                        query = rew;
+                        query.RewardName = rew.RewardName;
                     }
                     if (obj is CoAuthor coa)
                     {
                         var query = context.CoAuthors.FirstOrDefault(u => u.CoAuthorId == coa.CoAuthorId);
-                        query = coa;
+                        query.AuthorId = coa.AuthorId;
+                        query.Contribution = coa.Contribution;
+                        query.WorkId = coa.WorkId;
                     }
                     if (obj is DirectionWork diw)
                     {
                         var query = context.DirectionWorks.FirstOrDefault(u => u.DirectionWorkId == diw.DirectionWorkId);
-                        query = diw;
+                        query.DirectionId = diw.DirectionId;
+                        query.WorkId = diw.WorkId;
                     }
                     if (obj is RewardWork elem)
                     {
                         var query = context.RewardWorks.FirstOrDefault(u => u.RewardWorkId == elem.RewardWorkId);
-                        query = elem;
+                        query.RewardId = elem.RewardId;
+                        query.WorkId = elem.WorkId;
                     }
                     context.SaveChanges();
                 }
