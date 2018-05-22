@@ -239,22 +239,25 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _organizationName = value;
-                foreach(var elem in _organizations)
-                    if(elem.OrganizationName == _organizationName)
-                    {
-                        OrganizationStatus = GetStatus(2);
-                        OrganizationEnabled = false;
-                        OnPropertyChanged("OrganizationStatus");
-                        OnPropertyChanged("OrganizationEnabled");
-                        return;
-                    }
-                if(_organizationName == string.Empty)
+                if (_organizationName == string.Empty)
                 {
                     OrganizationStatus = GetStatus(1);
                     OrganizationEnabled = false;
                     OnPropertyChanged("OrganizationStatus");
                     OnPropertyChanged("OrganizationEnabled");
                     return;
+                }
+                if(_organizations != null)
+                {
+                    foreach (var elem in _organizations)
+                        if (elem.OrganizationName == _organizationName)
+                        {
+                            OrganizationStatus = GetStatus(2);
+                            OrganizationEnabled = false;
+                            OnPropertyChanged("OrganizationStatus");
+                            OnPropertyChanged("OrganizationEnabled");
+                            return;
+                        }
                 }
                 OrganizationStatus = GetStatus(3);
                 OrganizationEnabled = true;
@@ -283,22 +286,25 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _departmentName = value;
-                foreach (var elem in _departments)
-                    if (elem.DepartmentName == _departmentName)
-                    {
-                        DepartmentStatus = GetStatus(2);
-                        DepartmentEnabled = false;
-                        OnPropertyChanged("DepartmentStatus");
-                        OnPropertyChanged("DepartmentEnabled");
-                        return;
-                    }
-                if (_organizationName == string.Empty)
+                if (_departmentName == string.Empty)
                 {
                     DepartmentStatus = GetStatus(1);
                     DepartmentEnabled = false;
                     OnPropertyChanged("DepartmentStatus");
                     OnPropertyChanged("DepartmentEnabled");
                     return;
+                }
+                if(_departments != null)
+                {
+                    foreach (var elem in _departments)
+                        if (elem.DepartmentName == _departmentName)
+                        {
+                            DepartmentStatus = GetStatus(2);
+                            DepartmentEnabled = false;
+                            OnPropertyChanged("DepartmentStatus");
+                            OnPropertyChanged("DepartmentEnabled");
+                            return;
+                        }
                 }
                 DepartmentStatus = GetStatus(3);
                 DepartmentEnabled = true;
@@ -327,22 +333,25 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _facultyName = value;
-                foreach (var elem in _faculties)
-                    if (elem.FacultyName == _facultyName)
-                    {
-                        FacultyStatus = GetStatus(2);
-                        FacultyEnabled = false;
-                        OnPropertyChanged("FacultyStatus");
-                        OnPropertyChanged("FacultyEnabled");
-                        return;
-                    }
-                if (_organizationName == string.Empty)
+                if (_facultyName == string.Empty)
                 {
                     FacultyStatus = GetStatus(1);
                     FacultyEnabled = false;
                     OnPropertyChanged("FacultyStatus");
                     OnPropertyChanged("FacultyEnabled");
                     return;
+                }
+                if(_faculties != null)
+                {
+                    foreach (var elem in _faculties)
+                        if (elem.FacultyName == _facultyName)
+                        {
+                            FacultyStatus = GetStatus(2);
+                            FacultyEnabled = false;
+                            OnPropertyChanged("FacultyStatus");
+                            OnPropertyChanged("FacultyEnabled");
+                            return;
+                        }
                 }
                 FacultyStatus = GetStatus(3);
                 FacultyEnabled = true;
@@ -371,22 +380,25 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _groupName = value;
-                foreach (var elem in _groups)
-                    if (elem.GroupName == _groupName)
-                    {
-                        GroupStatus = GetStatus(2);
-                        GroupEnabled = false;
-                        OnPropertyChanged("GroupStatus");
-                        OnPropertyChanged("GroupEnabled");
-                        return;
-                    }
-                if (_organizationName == string.Empty)
+                if (_groupName == string.Empty)
                 {
                     GroupStatus = GetStatus(1);
                     GroupEnabled = false;
                     OnPropertyChanged("GroupStatus");
                     OnPropertyChanged("GroupEnabled");
                     return;
+                }
+                if(_groups != null)
+                {
+                    foreach (var elem in _groups)
+                        if (elem.GroupName == _groupName)
+                        {
+                            GroupStatus = GetStatus(2);
+                            GroupEnabled = false;
+                            OnPropertyChanged("GroupStatus");
+                            OnPropertyChanged("GroupEnabled");
+                            return;
+                        }
                 }
                 GroupStatus = GetStatus(3);
                 GroupEnabled = true;
@@ -415,22 +427,25 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _positionName = value;
-                foreach (var elem in _positions)
-                    if (elem.PositionName == _positionName)
-                    {
-                        PositionStatus = GetStatus(2);
-                        PositionEnabled = false;
-                        OnPropertyChanged("PositionStatus");
-                        OnPropertyChanged("PositionEnabled");
-                        return;
-                    }
-                if (_organizationName == string.Empty)
+                if (_positionName == string.Empty)
                 {
                     PositionStatus = GetStatus(1);
                     PositionEnabled = false;
                     OnPropertyChanged("PositionStatus");
                     OnPropertyChanged("PositionEnabled");
                     return;
+                }
+                if(_positions != null)
+                {
+                    foreach (var elem in _positions)
+                        if (elem.PositionName == _positionName)
+                        {
+                            PositionStatus = GetStatus(2);
+                            PositionEnabled = false;
+                            OnPropertyChanged("PositionStatus");
+                            OnPropertyChanged("PositionEnabled");
+                            return;
+                        }
                 }
                 PositionStatus = GetStatus(3);
                 PositionEnabled = true;
@@ -459,22 +474,25 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _academicDegreeName = value;
-                foreach (var elem in _academicDegrees)
-                    if (elem.AcademicDegreeName == _academicDegreeName)
-                    {
-                        AcademicDegreeStatus = GetStatus(2);
-                        AcademicDegreeEnabled = false;
-                        OnPropertyChanged("AcademicDegreeStatus");
-                        OnPropertyChanged("AcademicDegreeEnabled");
-                        return;
-                    }
-                if (_organizationName == string.Empty)
+                if (_academicDegreeName == string.Empty)
                 {
                     AcademicDegreeStatus = GetStatus(1);
                     AcademicDegreeEnabled = false;
                     OnPropertyChanged("AcademicDegreeStatus");
                     OnPropertyChanged("AcademicDegreeEnabled");
                     return;
+                }
+                if(_academicDegrees != null)
+                {
+                    foreach (var elem in _academicDegrees)
+                        if (elem.AcademicDegreeName == _academicDegreeName)
+                        {
+                            AcademicDegreeStatus = GetStatus(2);
+                            AcademicDegreeEnabled = false;
+                            OnPropertyChanged("AcademicDegreeStatus");
+                            OnPropertyChanged("AcademicDegreeEnabled");
+                            return;
+                        }
                 }
                 AcademicDegreeStatus = GetStatus(3);
                 AcademicDegreeEnabled = true;
@@ -503,22 +521,25 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _directionName = value;
-                foreach (var elem in _directions)
-                    if (elem.DirectionName == _directionName)
-                    {
-                        DirectionStatus = GetStatus(2);
-                        DirectionEnabled = false;
-                        OnPropertyChanged("DirectionStatus");
-                        OnPropertyChanged("DirectionEnabled");
-                        return;
-                    }
-                if (_organizationName == string.Empty)
+                if (_directionName == string.Empty)
                 {
                     DirectionStatus = GetStatus(1);
                     DirectionEnabled = false;
                     OnPropertyChanged("DirectionStatus");
                     OnPropertyChanged("DirectionEnabled");
                     return;
+                }
+                if(_directions != null)
+                {
+                    foreach (var elem in _directions)
+                        if (elem.DirectionName == _directionName)
+                        {
+                            DirectionStatus = GetStatus(2);
+                            DirectionEnabled = false;
+                            OnPropertyChanged("DirectionStatus");
+                            OnPropertyChanged("DirectionEnabled");
+                            return;
+                        }
                 }
                 DirectionStatus = GetStatus(3);
                 DirectionEnabled = true;
@@ -547,22 +568,25 @@ namespace NIRSManagerClient.ViewModels
             set
             {
                 _rewardName = value;
-                foreach (var elem in _rewards)
-                    if (elem.RewardName == _rewardName)
-                    {
-                        RewardStatus = GetStatus(2);
-                        RewardEnabled = false;
-                        OnPropertyChanged("RewardStatus");
-                        OnPropertyChanged("RewardEnabled");
-                        return;
-                    }
-                if (_organizationName == string.Empty)
+                if (_rewardName == string.Empty)
                 {
                     RewardStatus = GetStatus(1);
                     RewardEnabled = false;
                     OnPropertyChanged("RewardStatus");
                     OnPropertyChanged("RewardEnabled");
                     return;
+                }
+                if(_rewards != null)
+                {
+                    foreach (var elem in _rewards)
+                        if (elem.RewardName == _rewardName)
+                        {
+                            RewardStatus = GetStatus(2);
+                            RewardEnabled = false;
+                            OnPropertyChanged("RewardStatus");
+                            OnPropertyChanged("RewardEnabled");
+                            return;
+                        }
                 }
                 RewardStatus = GetStatus(3);
                 RewardEnabled = true;
