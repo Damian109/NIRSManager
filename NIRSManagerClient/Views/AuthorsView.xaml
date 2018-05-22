@@ -17,11 +17,12 @@
                             materialDesign:RippleAssist.IsCentered="True">
                     <TextBlock
                             FontSize="28" 
-                            MinHeight="50" 
+                            MinHeight="30" 
+                            Margin="1"
                             TextAlignment="Center"
                             Background="Transparent"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                        Авторы                    
+                        Авторы
                     </TextBlock>
                     <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2" Panel.ZIndex="1"
                                    Margin="100 5 0 0"
@@ -40,11 +41,40 @@
                                      MinWidth="200" VerticalAlignment="Center" Text="{Binding Search, Mode=TwoWay}"/>
                         </Grid>
                     </materialDesign:ColorZone>
+                    <RadioButton GroupName="SearchParam"
+                                 Content="ФИО автора"
+                                 Margin="15 15"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsFio}" />
+                    <RadioButton GroupName="SearchParam"
+                                 Content="Организация"
+                                 Margin="10 15"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsOrganization}" />
+                    <RadioButton GroupName="SearchParam"
+                                 Content="Факультет"
+                                 Margin="10 15"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsFaculty}" />
+                    <RadioButton GroupName="SearchParam"
+                                 Content="Кафедра"
+                                 Margin="10 15"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsDepartment}" />
+                    <RadioButton GroupName="SearchParam"
+                                 Content="Группа"
+                                 Margin="10 15"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsGroup}" />
+                    <CheckBox Content="Точное совпадение"
+                                 Margin="10 15"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsAccuracy}" />
                 </StackPanel>
             </DockPanel>
         </materialDesign:ColorZone>
         <ScrollViewer Grid.Row="1">
-            <ListView ItemsSource="{Binding Authors}" 
+            <ListView ItemsSource="{Binding Authors, UpdateSourceTrigger=PropertyChanged}" 
                           Grid.IsSharedSizeScope="True"
                           >
                 <ListView.ItemContainerStyle>
@@ -75,67 +105,67 @@
                                 </Grid.RowDefinitions>
                                 <Image Grid.Column="0" Grid.Row="0" 
                                        Grid.RowSpan="4"
-                                       Height="180"
-                                       Width="180"
+                                       Height="60"
+                                       Width="60"
                                        Source="{Binding PhotoPath}"
                                        >
                                 </Image>
                                 <TextBlock
-                                    FontSize="28" 
+                                    FontSize="24" 
                                     Grid.Column="1"
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
-                                     MinHeight="40" 
+                                     MinHeight="30" 
                                         TextAlignment="Left"
                                         Background="Transparent"
                                     Text="{Binding AuthorName}" />
                                 <TextBlock
-                                    FontSize="18" 
+                                    FontSize="12" 
                                     Grid.Column="1"
                                     Grid.Row="2"
-                                     MinHeight="20" 
+                                     MinHeight="15" 
                                         TextAlignment="Left"
                                         Background="Transparent"
                                     Text="{Binding OrganizationName}" />
                                 <TextBlock
-                                    FontSize="18" 
+                                    FontSize="12" 
                                     Grid.Column="1"
                                     Grid.Row="3"
-                                     MinHeight="20" 
+                                     MinHeight="15" 
                                         TextAlignment="Left"
                                         Background="Transparent"
                                     Text="{Binding AcademicDegreeName}" />
 
                                 <TextBlock
-                                    FontSize="18" 
+                                    FontSize="12" 
                                     Grid.Column="2"
                                     Grid.Row="0"
-                                     MinHeight="20" 
+                                     MinHeight="15" 
                                         TextAlignment="Left"
                                         Background="Transparent"
                                     Text="{Binding FacultyName}" />
                                 <TextBlock
-                                    FontSize="18" 
+                                    FontSize="12" 
                                     Grid.Column="2"
                                     Grid.Row="1"
-                                     MinHeight="20" 
+                                     MinHeight="15" 
                                         TextAlignment="Left"
                                         Background="Transparent"
                                     Text="{Binding DepartmentName}" />
 
                                 <TextBlock
-                                    FontSize="18" 
+                                    FontSize="12" 
                                     Grid.Column="2"
                                     Grid.Row="2"
-                                     MinHeight="20" 
+                                     MinHeight="15" 
                                         TextAlignment="Left"
                                         Background="Transparent"
                                     Text="{Binding GroupName}" />
                                 <TextBlock
-                                    FontSize="18" 
+                                    FontSize="12" 
                                     Grid.Column="2"
                                     Grid.Row="3"
-                                     MinHeight="20" 
+                                     MinHeight="15" 
                                         TextAlignment="Left"
                                         Background="Transparent"
                                     Text="{Binding PositionName}" />

@@ -41,28 +41,110 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         private async void GetAuthors() => await Task.Run(() =>
         {
-            Authors = new List<AuthorHelper>();
+            List<AuthorHelper> authors = new List<AuthorHelper>();
             _authorsFull = (List<Author>)NirsSystem.GetListObject<Author>();
             if (_authorsFull == null || _authorsFull.Count < 1)
                 return;
             if (_search == string.Empty)
             {
                 foreach (var elem in _authorsFull)
-                    Authors.Add(new AuthorHelper(elem));
+                    authors.Add(new AuthorHelper(elem));
+                Authors = authors;
                 OnPropertyChanged("Authors");
                 return;
             }
-            if (_search[0] == '#')
+            foreach (var elem in _authorsFull)
             {
+                if(IsFio)
+                {
+                    if(IsAccuracy)
+                    {
+                        if (elem.AuthorName == _search)
+                            authors.Add(new AuthorHelper(elem));
+                    }
+                    else
+                    {
+                        if (elem.AuthorName.Contains(_search))
+                            authors.Add(new AuthorHelper(elem));
+                    }
+                    
+                }
 
+                if (IsOrganization)
+                {
+                    if (elem.OrganizationId != null)
+                    {
+                        Organization organization = (Organization)NirsSystem.GetObject<Organization>((int)elem.OrganizationId);
+                        if (IsAccuracy)
+                        {
+                            if (organization.OrganizationName == _search)
+                                authors.Add(new AuthorHelper(elem));
+                        }
+                        else
+                        {
+                            if (organization.OrganizationName.Contains(_search))
+                                authors.Add(new AuthorHelper(elem));
+                        }
+                    }
+                }
+
+                if (IsFaculty)
+                {
+                    if (elem.FacultyId != null)
+                    {
+                        Faculty faculty = (Faculty)NirsSystem.GetObject<Faculty>((int)elem.FacultyId);
+                        if (IsAccuracy)
+                        {
+                            if (faculty.FacultyName == _search)
+                                authors.Add(new AuthorHelper(elem));
+                        }
+                        else
+                        {
+                            if (faculty.FacultyName.Contains(_search))
+                                authors.Add(new AuthorHelper(elem));
+                        }
+                    }
+                }
+
+                if (IsDepartment)
+                {
+                    if (elem.DepartmentId != null)
+                    {
+                        Department department = (Department)NirsSystem.GetObject<Department>((int)elem.DepartmentId);
+                        if (IsAccuracy)
+                        {
+                            if (department.DepartmentName == _search)
+                                authors.Add(new AuthorHelper(elem));
+                        }
+                        else
+                        {
+                            if (department.DepartmentName.Contains(_search))
+                                authors.Add(new AuthorHelper(elem));
+                        }
+                    }
+                }
+
+                if (IsGroup)
+                {
+                    if (elem.GroupId != null)
+                    {
+                        Group group = (Group)NirsSystem.GetObject<Group>((int)elem.GroupId);
+                        if (IsAccuracy)
+                        {
+                            if (group.GroupName == _search)
+                                authors.Add(new AuthorHelper(elem));
+                        }
+                        else
+                        {
+                            if (group.GroupName.Contains(_search))
+                                authors.Add(new AuthorHelper(elem));
+                        }
+                    }
+                }
             }
-            else
-            {
-                foreach (var elem in _authorsFull)
-                    if (elem.AuthorName.Contains(_search))
-                        Authors.Add(new AuthorHelper(elem));
-            }
+            Authors = authors;
             OnPropertyChanged("Authors");
+            return;
         });
 
         /// <summary>
@@ -85,5 +167,35 @@ namespace NIRSManagerClient.ViewModels
         {
             get => new RelayCommand(obj => GetAuthors());
         }
+
+        /// <summary>
+        /// Поиск по ФИО
+        /// </summary>
+        public bool IsFio { get; set; } = true;
+
+        /// <summary>
+        /// Поиск по организации
+        /// </summary>
+        public bool IsOrganization { get; set; }
+
+        /// <summary>
+        /// Поиск по факультету
+        /// </summary>
+        public bool IsFaculty { get; set; }
+
+        /// <summary>
+        /// Поиск по кафедре
+        /// </summary>
+        public bool IsDepartment { get; set; }
+
+        /// <summary>
+        /// Поиск по группе
+        /// </summary>
+        public bool IsGroup { get; set; }
+
+        /// <summary>
+        /// Искать ли с точным совпадением?
+        /// </summary>
+        public bool IsAccuracy { get; set; } = false;
     }
 }
