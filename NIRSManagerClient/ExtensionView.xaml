@@ -46,7 +46,7 @@
                             Header="Мои данные">
                             <StackPanel Orientation="Vertical">
                                 <MenuItem Header="Авторы" FontSize="16" Margin="5" Command="{Binding CommandAuthorsLoad}"/>
-                                <MenuItem Header="Работы" FontSize="16" Margin="5"/>
+                                <MenuItem Header="Работы" FontSize="16" Margin="5" Command="{Binding CommandWorksLoad}"/>
                                 <MenuItem Header="Таблицы" FontSize="16" Margin="5" Command="{Binding CommandStaticLoad}"/>
                             </StackPanel>
                         </Expander>

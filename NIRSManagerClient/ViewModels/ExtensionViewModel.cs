@@ -154,6 +154,25 @@ namespace NIRSManagerClient.ViewModels
 
         //Команды переходов по меню
 
+        /// <summary>
+        /// Команда Авторы
+        /// </summary>
+        public RelayCommand CommandAuthorsLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new AuthorsView()));
+        }
+
+        /// <summary>
+        /// Команда Работы
+        /// </summary>
+        public RelayCommand CommandWorksLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new WorksView()));
+        }
+
+        /// <summary>
+        /// Команда Статические таблицы
+        /// </summary>
         public RelayCommand CommandStaticLoad
         {
             get => new RelayCommand(obj => LoadChild(new StaticTablesView()));
@@ -240,9 +259,6 @@ namespace NIRSManagerClient.ViewModels
             get => new RelayCommand(obj => LoadChild(new ExchangeView()));
         }
 
-        public RelayCommand CommandAuthorsLoad
-        {
-            get => new RelayCommand(obj => LoadChild(new AuthorsView()));
-        }
+        
     }
 }
