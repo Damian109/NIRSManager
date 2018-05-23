@@ -36,6 +36,8 @@ namespace NIRSCore.FileOperations
                 Directory.CreateDirectory("data//" + login + "//Documents");
             if (!Directory.Exists("data//" + login + "//Photos"))
                 Directory.CreateDirectory("data//" + login + "//Photos");
+            if (!Directory.Exists("data//" + login + "//temp"))
+                Directory.CreateDirectory("data//" + login + "//temp");
         }
     }
 }
