@@ -104,14 +104,6 @@ namespace NIRSManagerClient.ViewModels
             {
                 _author.PhotoPath = value;
                 OnPropertyChanged("PhotoPath");
-                //
-                //
-                //
-                //
-                ///
-                /* _author.PathPhoto = "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.UserId + "author.png";
-                File.Copy(value, Environment.CurrentDirectory + _author.PathPhoto);
-                OnPropertyChanged("PathPhoto"); */
             }
         }
 
@@ -325,6 +317,45 @@ namespace NIRSManagerClient.ViewModels
                 NirsSystem.StackOperations.AddOperation(operation);
                 operation.DoneCommand.Execute(null);
                 BackWindow();
+            });
+        }
+
+        /// <summary>
+        /// Команда Загрузить новое фото
+        /// </summary>
+        public RelayCommand CommandLoadPhoto
+        {
+            //
+            //
+            //
+            //
+            //
+            //\
+            //
+            //
+            //
+            get => new RelayCommand(obj =>
+            {
+                //Начальная инициализация диалогового окна
+                Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
+                {
+                    FileName = "",
+                    DefaultExt = ".jpg",
+                    Filter = "Изображение (*.jpg, *.png)|*.jpg;*.png"
+                };
+
+                bool? result = dialog.ShowDialog();
+
+                if(result == true)
+                {
+                    PhotoPath = dialog.FileName;
+                    string newPath = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.AuthorId + "author.png";
+                    //File.
+                    if (File.Exists(newPath))
+                        File.Delete(newPath);
+                    File.Copy(dialog.FileName, newPath);
+                    PhotoPath = "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.AuthorId + "author.png";
+                }
             });
         }
     }

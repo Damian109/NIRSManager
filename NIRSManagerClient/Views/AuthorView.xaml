@@ -35,6 +35,8 @@
                            Grid.Row="0" 
                            Grid.ColumnSpan="2"
                            Grid.RowSpan="4"
+                           MaxWidth="300"
+                           MaxHeight="300"
                            Source="{Binding PhotoPath, UpdateSourceTrigger=PropertyChanged}"
                     />
 
@@ -45,7 +47,7 @@
                             IsEnabled="{Binding IsDeletable}"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             ToolTip="Изменить фото"
-                            Command="{Binding CommandBack}"
+                            Command="{Binding CommandLoadPhoto}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             Background="{DynamicResource PrimaryHueDarkBrush}"
                             FontSize="16" 
