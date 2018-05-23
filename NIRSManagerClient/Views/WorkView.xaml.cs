@@ -4,7 +4,7 @@ namespace NIRSManagerClient.Views
 {
     public partial class WorkView : UserControl
     {
-        public WorkView()
+        public WorkView(int id)
         {
             InitializeComponent();
         }

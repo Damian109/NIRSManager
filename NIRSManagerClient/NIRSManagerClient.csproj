@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="HelpfulModels\AuthorHelper.cs" />
     <Compile Include="HelpfulModels\DatabaseSelection.cs" />
+    <Compile Include="HelpfulModels\WorkHelper.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\AuthorsViewModel.cs" />
     <Compile Include="ViewModels\AuthorViewModel.cs" />
