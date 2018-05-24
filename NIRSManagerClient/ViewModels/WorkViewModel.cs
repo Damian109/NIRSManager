@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using NIRSCore.DataBaseModels;
 using NIRSCore.StackOperations;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -27,149 +26,13 @@ namespace NIRSManagerClient.ViewModels
             window.mainGrid.Children.Add(new Views.WorksView());
         }
 
-        /// <summary>
-        /// Название работы
-        /// </summary>
-        public string WorkName
-        {
-            get => _work.WorkName;
-            set
-            {
-                _work.WorkName = value;
-                OnPropertyChanged("WorkName");
-            }
-        }
-
-        /// <summary>
-        /// Размер работы
-        /// </summary>
-        public string WorkSize
-        {
-            get => _work.WorkSize.ToString();
-            set
-            {
-                _work.WorkSize = Convert.ToDouble(value);
-                OnPropertyChanged("WorkSize");
-            }
-        }
-
-        /// <summary>
-        /// Оценка работы
-        /// </summary>
-        public string WorkMark
-        {
-            get => _work.WorkMark.ToString();
-            set
-            {
-                _work.WorkMark = Convert.ToInt32(value);
-                OnPropertyChanged("WorkMark");
-            }
-        }
-
-        /// <summary>
-        /// Список руководителей
-        /// </summary>
-        public List<Author> HeaderAuthors { get; private set; }
-
-        /// <summary>
-        /// Выбранный руководитель
-        /// </summary>
-        public Author SelectedHeaderAuthor { get; set; }
-
-        /// <summary>
-        /// Доступность некоторых кнопок
-        /// </summary>
-        public bool IsDeletable
-        {
-            get
-            {
-                if (_isNew)
-                    return false;
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Модель представления для автора
-        /// </summary>
-        /// <param name="id"> ID Работы или 0</param>
-        public WorkViewModel(int id) : base("Работа")
-        {
-            if (id == 0)
-            {
-                _work = new Work()
-                {
-                    ConferenceId = null,
-                    HeadAuthorId = null,
-                    JournalId = null,
-                    WorkMark = 0,
-                    WorkName = "",
-                    WorkPath = "",
-                    WorkSize = 0.0d
-                };
-                _isNew = true;
-            }
-            else
-            {
-                _work = (Work)NirsSystem.GetObject<Work>(id);
-                _isNew = false;
-            }
-            GetTables();
-            GetConferences();
-            GetJournals();
-        }
-
-        /// <summary>
-        /// Команда Загрузить новую работу
-        /// </summary>
-        public RelayCommand CommandLoadWork
-        {
-            get => new RelayCommand(obj =>
-            {
-                //Начальная инициализация диалогового окна
-                Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
-                {
-                    FileName = "",
-                    DefaultExt = ".docx",
-                    Filter = "Документ (*.docx, *.pdf)|*.docx;*.pdf"
-                };
-
-                bool? result = dialog.ShowDialog();
-
-                if (result == true)
-                {
-                    string ext = ".pdf";
-                    if (dialog.FileName.Contains(".docx"))
-                        ext = ".docx";
-
-                    string newPath = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\Documents\\" + _work.WorkId + ext;
-                    if (File.Exists(newPath))
-                        File.Delete(newPath);
-                    File.Copy(dialog.FileName, newPath);
-                    _work.WorkPath = "\\data\\" + NirsSystem.GetLogin() + "\\Documents\\" + _work.WorkId + ext;
-                }
-            });
-        }
-
-        /// <summary>
-        /// Команда назад
-        /// </summary>
-        public RelayCommand CommandBack
-        {
-            get => new RelayCommand(obj => BackWindow());
-        }
-
-        //Дополнительные списки авторов
-        List<Author> _addedAuthors;
-        List<Author> _noAddedAuthors;
-
         //Добавление автора
         private void AddAuthor()
         {
             if (SelectedNoAddedAuthor != null)
             {
-                _addedAuthors.Add(SelectedNoAddedAuthor);
-                _noAddedAuthors.Remove(SelectedNoAddedAuthor);
+                AddedAuthors.Add(SelectedNoAddedAuthor);
+                NoAddedAuthors.Remove(SelectedNoAddedAuthor);
                 OnPropertyChanged("AddedAuthors");
                 OnPropertyChanged("NoAddedAuthors");
             }
@@ -180,80 +43,20 @@ namespace NIRSManagerClient.ViewModels
         {
             if (SelectedAddedAuthor != null)
             {
-                _noAddedAuthors.Add(SelectedAddedAuthor);
-                _addedAuthors.Remove(SelectedAddedAuthor);
+                NoAddedAuthors.Add(SelectedAddedAuthor);
+                AddedAuthors.Remove(SelectedAddedAuthor);
                 OnPropertyChanged("AddedAuthors");
                 OnPropertyChanged("NoAddedAuthors");
             }
         }
-
-        /// <summary>
-        /// Список добавленных авторов
-        /// </summary>
-        public ObservableCollection<Author> AddedAuthors
-        {
-            get
-            {
-                ObservableCollection<Author> authors = new ObservableCollection<Author>();
-                if (_addedAuthors != null)
-                    foreach (var elem in _addedAuthors)
-                        authors.Add(elem);
-                return authors;
-            }
-        }
-
-        /// <summary>
-        /// Выбранный добавленный автор
-        /// </summary>
-        public Author SelectedAddedAuthor { get; set; }
-
-        /// <summary>
-        /// Список авторов для добавления
-        /// </summary>
-        public ObservableCollection<Author> NoAddedAuthors
-        {
-            get
-            {
-                ObservableCollection<Author> noAuthors = new ObservableCollection<Author>();
-                if (_noAddedAuthors != null)
-                    foreach (var elem in _noAddedAuthors)
-                        noAuthors.Add(elem);
-                return noAuthors;
-            }
-        }
-
-        /// <summary>
-        /// Выбранный автор для добавления
-        /// </summary>
-        public Author SelectedNoAddedAuthor { get; set; }
-
-        /// <summary>
-        /// Команда Добавить автора
-        /// </summary>
-        public RelayCommand CommandAddAuthor
-        {
-            get => new RelayCommand(obj => AddAuthor());
-        }
-
-        /// <summary>
-        /// Команда Удалить автора
-        /// </summary>
-        public RelayCommand CommandDeleteAuthor
-        {
-            get => new RelayCommand(obj => DeleteAuthor());
-        }
-
-        //Дополнительные списки направлений
-        List<Direction> _addedDirections;
-        List<Direction> _noAddedDirections;
 
         //Добавление направления
         private void AddDirection()
         {
             if (SelectedNoAddedDirection != null)
             {
-                _addedDirections.Add(SelectedNoAddedDirection);
-                _noAddedDirections.Remove(SelectedNoAddedDirection);
+                AddedDirections.Add(SelectedNoAddedDirection);
+                NoAddedDirections.Remove(SelectedNoAddedDirection);
                 OnPropertyChanged("AddedDirections");
                 OnPropertyChanged("NoAddedDirections");
             }
@@ -264,80 +67,20 @@ namespace NIRSManagerClient.ViewModels
         {
             if (SelectedAddedDirection != null)
             {
-                _noAddedDirections.Add(SelectedAddedDirection);
-                _addedDirections.Remove(SelectedAddedDirection);
+                NoAddedDirections.Add(SelectedAddedDirection);
+                AddedDirections.Remove(SelectedAddedDirection);
                 OnPropertyChanged("AddedDirections");
                 OnPropertyChanged("NoAddedDirections");
             }
         }
-
-        /// <summary>
-        /// Список добавленных направлений
-        /// </summary>
-        public ObservableCollection<Direction> AddedDirections
-        {
-            get
-            {
-                ObservableCollection<Direction> directions = new ObservableCollection<Direction>();
-                if (_addedDirections != null)
-                    foreach (var elem in _addedDirections)
-                        directions.Add(elem);
-                return directions;
-            }
-        }
-
-        /// <summary>
-        /// Выбранное добавленное направление
-        /// </summary>
-        public Direction SelectedAddedDirection { get; set; }
-
-        /// <summary>
-        /// Список направлений для добавления
-        /// </summary>
-        public ObservableCollection<Direction> NoAddedDirections
-        {
-            get
-            {
-                ObservableCollection<Direction> directions = new ObservableCollection<Direction>();
-                if (_noAddedDirections != null)
-                    foreach (var elem in _noAddedDirections)
-                        directions.Add(elem);
-                return directions;
-            }
-        }
-
-        /// <summary>
-        /// Выбранное направление для добавления
-        /// </summary>
-        public Direction SelectedNoAddedDirection { get; set; }
-
-        /// <summary>
-        /// Команда Добавить направление
-        /// </summary>
-        public RelayCommand CommandAddDirection
-        {
-            get => new RelayCommand(obj => AddDirection());
-        }
-
-        /// <summary>
-        /// Команда Удалить направление
-        /// </summary>
-        public RelayCommand CommandDeleteDirection
-        {
-            get => new RelayCommand(obj => DeleteDirection());
-        }
-
-        //Дополнительные списки наград
-        List<Reward> _addedRewards;
-        List<Reward> _noAddedRewards;
 
         //Добавление награды
         private void AddReward()
         {
             if (SelectedNoAddedReward != null)
             {
-                _addedRewards.Add(SelectedNoAddedReward);
-                _noAddedRewards.Remove(SelectedNoAddedReward);
+                AddedRewards.Add(SelectedNoAddedReward);
+                NoAddedRewards.Remove(SelectedNoAddedReward);
                 OnPropertyChanged("AddedRewards");
                 OnPropertyChanged("NoAddedRewards");
             }
@@ -348,67 +91,11 @@ namespace NIRSManagerClient.ViewModels
         {
             if (SelectedAddedReward != null)
             {
-                _noAddedRewards.Add(SelectedAddedReward);
-                _addedRewards.Remove(SelectedAddedReward);
+                NoAddedRewards.Add(SelectedAddedReward);
+                AddedRewards.Remove(SelectedAddedReward);
                 OnPropertyChanged("AddedRewards");
                 OnPropertyChanged("NoAddedRewards");
             }
-        }
-
-        /// <summary>
-        /// Список добавленных наград
-        /// </summary>
-        public ObservableCollection<Reward> AddedRewards
-        {
-            get
-            {
-                ObservableCollection<Reward> rewards = new ObservableCollection<Reward>();
-                if (_addedRewards != null)
-                    foreach (var elem in _addedRewards)
-                        rewards.Add(elem);
-                return rewards;
-            }
-        }
-
-        /// <summary>
-        /// Выбранная добавленная награда
-        /// </summary>
-        public Reward SelectedAddedReward { get; set; }
-
-        /// <summary>
-        /// Список наград для добавления
-        /// </summary>
-        public ObservableCollection<Reward> NoAddedRewards
-        {
-            get
-            {
-                ObservableCollection<Reward> rewards = new ObservableCollection<Reward>();
-                if (_noAddedRewards != null)
-                    foreach (var elem in _noAddedRewards)
-                        rewards.Add(elem);
-                return rewards;
-            }
-        }
-
-        /// <summary>
-        /// Выбранная награда для добавления
-        /// </summary>
-        public Reward SelectedNoAddedReward { get; set; }
-
-        /// <summary>
-        /// Команда Добавить награду
-        /// </summary>
-        public RelayCommand CommandAddReward
-        {
-            get => new RelayCommand(obj => AddReward());
-        }
-
-        /// <summary>
-        /// Команда Удалить награду
-        /// </summary>
-        public RelayCommand CommandDeleteReward
-        {
-            get => new RelayCommand(obj => DeleteReward());
         }
 
         //Получение некоторых основных списков
@@ -420,97 +107,60 @@ namespace NIRSManagerClient.ViewModels
                 HeaderAuthors = new List<Author>();
             HeaderAuthors.Insert(0, new Author { AuthorId = 0, AuthorName = "(пусто)" });
             SelectedHeaderAuthor = HeaderAuthors.FirstOrDefault(u => u.AuthorId == _work.HeadAuthorId);
-            OnPropertyChanged("HeaderAuthors");
+            OnPropertyChanged("HeadAuthors");
             OnPropertyChanged("SelectedHeaderAuthor");
 
             //Работа с авторами
             List<Author> authors = (List<Author>)NirsSystem.GetListObject<Author>();
-            List<Author> addedAuthors = new List<Author>();
-            List<Author> noAddedAuthors = new List<Author>();
-
+            AddedAuthors = new List<Author>();
+            NoAddedAuthors = new List<Author>();
             if (authors != null)
             {
                 List<CoAuthor> coAuthors = (List<CoAuthor>)NirsSystem.GetListObject<CoAuthor>();
-                foreach(var auth in authors)
-                {
-                    bool b = false;
-                    if (coAuthors != null)
-                        foreach (var elem in coAuthors)
-                            if (elem.WorkId == _work.WorkId && auth.AuthorId == elem.AuthorId)
-                            {
-                                addedAuthors.Add(auth);
-                                b = true;
-                            }
-                    if(!b)
-                        noAddedAuthors.Add(auth);     
-                }
+                if (coAuthors != null)
+                    foreach (var elem in coAuthors)
+                        if (elem.WorkId == _work.WorkId)
+                            AddedAuthors.Add(authors.FirstOrDefault(u => u.AuthorId == elem.AuthorId));
+                        else
+                            NoAddedAuthors.Add(authors.FirstOrDefault(u => u.AuthorId == elem.AuthorId));
             }
-
-            _addedAuthors = addedAuthors;
-            _noAddedAuthors = noAddedAuthors;
             OnPropertyChanged("AddedAuthors");
             OnPropertyChanged("NoAddedAuthors");
 
             //Работа с направлениями
             List<Direction> directions = (List<Direction>)NirsSystem.GetListObject<Direction>();
-            List<Direction> addedDirections = new List<Direction>();
-            List<Direction> noAddedDirections = new List<Direction>();
+            AddedDirections = new List<Direction>();
+            NoAddedDirections = new List<Direction>();
             if (directions != null)
             {
                 List<DirectionWork> directionWorks = (List<DirectionWork>)NirsSystem.GetListObject<DirectionWork>();
-                foreach (var dir in directions)
-                {
-                    bool b = false;
-                    if (directionWorks != null)
-                        foreach (var elem in directionWorks)
-                            if (elem.WorkId == _work.WorkId && dir.DirectionId == elem.DirectionId)
-                            {
-                                addedDirections.Add(dir);
-                                b = true;
-                            }
-                    if (!b)
-                        noAddedDirections.Add(dir);
-                }
+                if (directionWorks != null)
+                    foreach (var elem in directionWorks)
+                        if (elem.WorkId == _work.WorkId)
+                            AddedDirections.Add(directions.FirstOrDefault(u => u.DirectionId == elem.DirectionId));
+                        else
+                            NoAddedDirections.Add(directions.FirstOrDefault(u => u.DirectionId == elem.DirectionId));
             }
-            _addedDirections = addedDirections;
-            _noAddedDirections = noAddedDirections;
             OnPropertyChanged("AddedDirections");
             OnPropertyChanged("NoAddedDirections");
 
             //Работа с наградами
             List<Reward> rewards = (List<Reward>)NirsSystem.GetListObject<Reward>();
-            List<Reward> addedRewards = new List<Reward>();
-            List<Reward> noAddedRewards = new List<Reward>();
+            AddedRewards = new List<Reward>();
+            NoAddedRewards = new List<Reward>();
             if (rewards != null)
             {
                 List<RewardWork> rewardWorks = (List<RewardWork>)NirsSystem.GetListObject<RewardWork>();
-                foreach (var rew in rewards)
-                {
-                    bool b = false;
-                    if (rewardWorks != null)
-                        foreach (var elem in rewardWorks)
-                            if (elem.WorkId == _work.WorkId && rew.RewardId == elem.RewardId)
-                            {
-                                addedRewards.Add(rew);
-                                b = true;
-                            }
-                    if (!b)
-                        noAddedRewards.Add(rew);
-                }
+                if (rewardWorks != null)
+                    foreach (var elem in rewardWorks)
+                        if (elem.WorkId == _work.WorkId)
+                            AddedRewards.Add(rewards.FirstOrDefault(u => u.RewardId == elem.RewardId));
+                        else
+                            NoAddedRewards.Add(rewards.FirstOrDefault(u => u.RewardId == elem.RewardId));
             }
-            _addedRewards = addedRewards;
-            _noAddedRewards = noAddedRewards;
             OnPropertyChanged("AddedRewards");
             OnPropertyChanged("NoAddedRewards");
         });
-
-
-
-        
-
-        
-
-
 
         //Получение списка журналов
         private async void GetJournals() => await Task.Run(() =>
@@ -595,7 +245,54 @@ namespace NIRSManagerClient.ViewModels
                 NirsSystem.AddObject(new RewardWork { RewardId = elem.RewardId, WorkId = id });
         });
 
-        
+        /// <summary>
+        /// Название работы
+        /// </summary>
+        public string WorkName
+        {
+            get => _work.WorkName;
+            set
+            {
+                _work.WorkName = value;
+                OnPropertyChanged("WorkName");
+            }
+        }
+
+        /// <summary>
+        /// Размер работы
+        /// </summary>
+        public string WorkSize
+        {
+            get => _work.WorkSize.ToString();
+            set
+            {
+                _work.WorkSize = Convert.ToDouble(value);
+                OnPropertyChanged("WorkSize");
+            }
+        }
+
+        /// <summary>
+        /// Оценка работы
+        /// </summary>
+        public string WorkMark
+        {
+            get => _work.WorkMark.ToString();
+            set
+            {
+                _work.WorkMark = Convert.ToInt32(value);
+                OnPropertyChanged("WorkMark");
+            }
+        }
+
+        /// <summary>
+        /// Список руководителей
+        /// </summary>
+        public List<Author> HeaderAuthors { get; private set; }
+
+        /// <summary>
+        /// Выбранный руководитель
+        /// </summary>
+        public Author SelectedHeaderAuthor { get; set; }
 
         /// <summary>
         /// Список журналов
@@ -617,11 +314,65 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public Conference SelectedConference { get; set; }
 
-        
+        /// <summary>
+        /// Список добавленных авторов
+        /// </summary>
+        public List<Author> AddedAuthors { get; set; }
 
-        
+        /// <summary>
+        /// Выбранный добавленный автор
+        /// </summary>
+        public Author SelectedAddedAuthor { get; set; }
 
-        
+        /// <summary>
+        /// Список авторов для добавления
+        /// </summary>
+        public List<Author> NoAddedAuthors { get; set; }
+
+        /// <summary>
+        /// Выбранный автор для добавления
+        /// </summary>
+        public Author SelectedNoAddedAuthor { get; set; }
+
+        /// <summary>
+        /// Список добавленных направлений
+        /// </summary>
+        public List<Direction> AddedDirections { get; set; }
+
+        /// <summary>
+        /// Выбранное добавленное направление
+        /// </summary>
+        public Direction SelectedAddedDirection { get; set; }
+
+        /// <summary>
+        /// Список направлений для добавления
+        /// </summary>
+        public List<Direction> NoAddedDirections { get; set; }
+
+        /// <summary>
+        /// Выбранное направление для добавления
+        /// </summary>
+        public Direction SelectedNoAddedDirection { get; set; }
+
+        /// <summary>
+        /// Список добавленных наград
+        /// </summary>
+        public List<Reward> AddedRewards { get; set; }
+
+        /// <summary>
+        /// Выбранная добавленная награда
+        /// </summary>
+        public Reward SelectedAddedReward { get; set; }
+
+        /// <summary>
+        /// Список наград для добавления
+        /// </summary>
+        public List<Reward> NoAddedRewards { get; set; }
+
+        /// <summary>
+        /// Выбранная награда для добавления
+        /// </summary>
+        public Reward SelectedNoAddedReward { get; set; }
 
         /// <summary>
         /// Название журнала
@@ -643,15 +394,128 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public DateTime DateConference { get; set; }
 
+        /// <summary>
+        /// Доступность некоторых кнопок
+        /// </summary>
+        public bool IsDeletable
+        {
+            get
+            {
+                if (_isNew)
+                    return false;
+                return true;
+            }
+        }
 
+        /// <summary>
+        /// Модель представления для автора
+        /// </summary>
+        /// <param name="id"> ID Работы или 0</param>
+        public WorkViewModel(int id) : base("Работа")
+        {
+            if (id == 0)
+            {
+                _work = new Work()
+                {
+                    ConferenceId = null,
+                    HeadAuthorId = null,
+                    JournalId = null,
+                    WorkMark = 0,
+                    WorkName = "",
+                    WorkPath = "",
+                    WorkSize = 0.0d
+                };
+                _isNew = true;
+            }
+            else
+            {
+                _work = (Work)NirsSystem.GetObject<Work>(id);
+                _isNew = false;
+            }
+            GetTables();
+            GetConferences();
+            GetJournals();
+        }
 
-        
+        /// <summary>
+        /// Команда Добавить автора
+        /// </summary>
+        public RelayCommand CommandAddAuthor
+        {
+            get => new RelayCommand(obj => AddAuthor());
+        }
 
-        
+        /// <summary>
+        /// Команда Удалить автора
+        /// </summary>
+        public RelayCommand CommandDeleteAuthor
+        {
+            get => new RelayCommand(obj => DeleteAuthor());
+        }
 
-        
+        /// <summary>
+        /// Команда Добавить направление
+        /// </summary>
+        public RelayCommand CommandAddDirection
+        {
+            get => new RelayCommand(obj => AddDirection());
+        }
 
-        
+        /// <summary>
+        /// Команда Удалить направление
+        /// </summary>
+        public RelayCommand CommandDeleteDirection
+        {
+            get => new RelayCommand(obj => DeleteDirection());
+        }
+
+        /// <summary>
+        /// Команда Добавить награду
+        /// </summary>
+        public RelayCommand CommandAddReward
+        {
+            get => new RelayCommand(obj => AddReward());
+        }
+
+        /// <summary>
+        /// Команда Удалить награду
+        /// </summary>
+        public RelayCommand CommandDeleteReward
+        {
+            get => new RelayCommand(obj => DeleteReward());
+        }
+
+        /// <summary>
+        /// Команда Загрузить новую работу
+        /// </summary>
+        public RelayCommand CommandLoadWork
+        {
+            get => new RelayCommand(obj =>
+            {
+                //Начальная инициализация диалогового окна
+                Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
+                {
+                    FileName = "",
+                    DefaultExt = ".docx",
+                    Filter = "Документ (*.docx, *.pdf)|*.docx;*.pdf"
+                };
+
+                bool? result = dialog.ShowDialog();
+
+                if (result == true)
+                {
+                    string ext = ".pdf";
+                    if (dialog.FileName.Contains(".docx"))
+                        ext = ".docx";
+
+                    string newPath = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\Documents\\" + _work.WorkId + ext;
+                    if (File.Exists(newPath))
+                        File.Delete(newPath);
+                    File.Copy(dialog.FileName, newPath);
+                    _work.WorkPath = "\\data\\" + NirsSystem.GetLogin() + "\\Documents\\" + _work.WorkId + ext;
+                }
+            });
+        }
 
         /// <summary>
         /// Команда Добавление журнала
@@ -699,7 +563,13 @@ namespace NIRSManagerClient.ViewModels
             });
         }
 
-        
+        /// <summary>
+        /// Команда назад
+        /// </summary>
+        public RelayCommand CommandBack
+        {
+            get => new RelayCommand(obj => BackWindow());
+        }
 
         /// <summary>
         /// Команда сохранить
