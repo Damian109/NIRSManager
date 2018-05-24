@@ -119,6 +119,7 @@
     <Compile Include="ViewModels\SettingsViewModels\UserInterfaceSettingsViewModel.cs" />
     <Compile Include="ViewModels\StaticTablesViewModel.cs" />
     <Compile Include="ViewModels\WorksViewModel.cs" />
+    <Compile Include="ViewModels\WorkViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
