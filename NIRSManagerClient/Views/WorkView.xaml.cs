@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using NIRSManagerClient.ViewModels;
 
 namespace NIRSManagerClient.Views
 {
@@ -7,6 +8,7 @@ namespace NIRSManagerClient.Views
         public WorkView(int id)
         {
             InitializeComponent();
+            DataContext = new WorkViewModel(id);
         }
     }
 }
