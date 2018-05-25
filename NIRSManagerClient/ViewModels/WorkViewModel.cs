@@ -561,7 +561,7 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Дата публикации журнала
         /// </summary>
-        public DateTime DateJournal { get; set; }
+        public DateTime DateJournal { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Команда Добавление журнала
@@ -643,7 +643,7 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Дата проведения конференции
         /// </summary>
-        public DateTime DateConference { get; set; }
+        public DateTime DateConference { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Команда Добавление конференции
