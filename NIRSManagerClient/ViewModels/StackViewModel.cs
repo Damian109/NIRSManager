@@ -36,6 +36,18 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Конструктор
         /// </summary>
-        public StackViewModel() : base("Стек операций") => GetOperationsAsync();
+        public StackViewModel() : base("Стек операций")
+        {
+            GetOperationsAsync();
+            NirsSystem.StackOperations.ChangeStatusEvent += StackOperations_ChangeStatusEvent;
+        }
+
+        /// <summary>
+        /// Поведение окна в ответ на событие изменения стека операций
+        /// </summary>
+        private void StackOperations_ChangeStatusEvent()
+        {
+            GetOperationsAsync();
+        }
     }
 }
