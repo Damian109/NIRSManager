@@ -63,10 +63,8 @@
                                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                     MinHeight="25"
                                     TextAlignment="Right"
+                                    Text="{Binding WorkSize}"
                                     Margin="10">
-                                    <TextBox.Text>
-                                        <Binding Path="WorkSize" UpdateSourceTrigger="PropertyChanged" />
-                                    </TextBox.Text>
                                 </TextBox>
 
                                 <StackPanel Orientation="Horizontal" Grid.Column="3">

@@ -48,7 +48,8 @@ namespace NIRSManagerClient.ViewModels
             get => _work.WorkSize.ToString();
             set
             {
-                _work.WorkSize = Convert.ToDouble(value);
+                string tmp = value.Replace('.', ',');
+                _work.WorkSize = Convert.ToDouble(tmp);
                 OnPropertyChanged("WorkSize");
             }
         }
