@@ -167,14 +167,16 @@ namespace NIRSManagerClient.ViewModels
             get => new RelayCommand(obj => LoadChild(new StaticTablesView()));
         }
 
-
-
         /// <summary>
         /// Команда Стек операций
         /// </summary>
         public RelayCommand CommandStackLoad
         {
-            get => new RelayCommand(obj => LoadChild(new StackView()));
+            get => new RelayCommand(obj =>
+            {
+                StackWindowView stackWindow = new StackWindowView();
+                stackWindow.ShowDialog();
+            });
         }
 
         /// <summary>
