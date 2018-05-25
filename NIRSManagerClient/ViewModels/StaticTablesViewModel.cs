@@ -601,6 +601,13 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public StaticTablesViewModel() : base("Авторы")
         {
+            NirsSystem_ChangeDatabase();
+            NirsSystem.ChangeDatabase += NirsSystem_ChangeDatabase;
+        }
+
+        //Обработка события изменения базы данных
+        private void NirsSystem_ChangeDatabase()
+        {
             SetAllFieldsAsync();
             Initialise();
         }

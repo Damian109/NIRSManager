@@ -21,7 +21,14 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Базовый конструктор
         /// </summary>
-        public AuthorsViewModel() : base("Авторы") => GetAuthors();
+        public AuthorsViewModel() : base("Авторы")
+        {
+            GetAuthors();
+            NirsSystem.ChangeDatabase += NirsSystem_ChangeDatabase;
+        }
+
+        //Обработка события изменения базы данных
+        private void NirsSystem_ChangeDatabase() => GetAuthors();
 
         /// <summary>
         /// Строка поиска

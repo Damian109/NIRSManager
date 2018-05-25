@@ -48,7 +48,14 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Базовый конструктор
         /// </summary>
-        public WorksViewModel() : base("Работы") => GetWorks();
+        public WorksViewModel() : base("Работы")
+        {
+            GetWorks();
+            NirsSystem.ChangeDatabase += NirsSystem_ChangeDatabase;
+        }
+
+        //Обработка события изменения базы данных
+        private void NirsSystem_ChangeDatabase() => GetWorks();
 
         /// <summary>
         /// Поиск по названию

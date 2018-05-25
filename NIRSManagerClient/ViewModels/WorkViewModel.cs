@@ -118,6 +118,15 @@ namespace NIRSManagerClient.ViewModels
             GetTables();
             GetConferences();
             GetJournals();
+            NirsSystem.ChangeDatabase += NirsSystem_ChangeDatabase;
+        }
+
+        //Обработка события изменения базы данных
+        private void NirsSystem_ChangeDatabase()
+        {
+            GetTables();
+            GetConferences();
+            GetJournals();
         }
 
         /// <summary>
