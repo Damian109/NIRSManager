@@ -175,18 +175,36 @@
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollViewer>
-        <Button
-                            Grid.Row="2"
-                            Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="Добавить нового автора"
-                            Command="{Binding CommandAdd}"
-                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                            Background="{DynamicResource PrimaryHueDarkBrush}"
-                            FontSize="16"
-                            Width="120"
-                            MinHeight="50">
-            Добавить
-        </Button>
+        <StackPanel Orientation="Horizontal" 
+            Grid.Row="2" 
+            HorizontalAlignment="Center">
+            <Button
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                ToolTip="Добавить нового автора"
+                Command="{Binding CommandAdd}"
+                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                Background="{DynamicResource PrimaryHueDarkBrush}"
+                FontSize="16"
+                Width="120"
+                Margin="20"
+                MinHeight="50">
+                Добавить
+            </Button>
+            
+            <Button
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                ToolTip="Перейти к формированию отчетов"
+                Command="{Binding CommandReport}"
+                IsEnabled="{Binding IsAccuracy, UpdateSourceTrigger=PropertyChanged}"
+                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                Background="{DynamicResource PrimaryHueDarkBrush}"
+                FontSize="16"
+                Margin="20"
+                Width="120"
+                MinHeight="50">
+                Отчеты
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>
 

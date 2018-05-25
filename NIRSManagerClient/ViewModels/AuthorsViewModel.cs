@@ -180,6 +180,30 @@ namespace NIRSManagerClient.ViewModels
         }
 
         /// <summary>
+        /// Команда - Перейти к отчетам
+        /// </summary>
+        public RelayCommand CommandReport
+        {
+            get => new RelayCommand(obj =>
+            {
+                int n = 0;
+                if (IsFio)
+                    n = 1;
+                if (IsOrganization)
+                    n = 2;
+                if (IsFaculty)
+                    n = 3;
+                if (IsDepartment)
+                    n = 4;
+                if (IsGroup)
+                    n = 5;
+                ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+                window.mainGrid.Children.Clear();
+                window.mainGrid.Children.Add(new ReportView(_authors, n, _search));
+            });
+        }
+
+        /// <summary>
         /// Команда поиска
         /// </summary>
         public RelayCommand CommandSearch
@@ -212,9 +236,20 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public bool IsGroup { get; set; }
 
+        private bool _isAccuracy = false;
+
         /// <summary>
         /// Искать ли с точным совпадением?
         /// </summary>
-        public bool IsAccuracy { get; set; } = false;
+        public bool IsAccuracy
+        {
+            get => _isAccuracy;
+            set
+            {
+                _isAccuracy = value;
+                GetAuthors();
+                OnPropertyChanged("IsAccuracy");
+            }
+        }
     }
 }
