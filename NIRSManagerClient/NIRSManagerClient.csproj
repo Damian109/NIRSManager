@@ -184,6 +184,9 @@
     <Compile Include="Views\RegistrationView.xaml.cs">
       <DependentUpon>RegistrationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReportView.xaml.cs">
+      <DependentUpon>ReportView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ServerSettingsView.xaml.cs">
       <DependentUpon>ServerSettingsView.xaml</DependentUpon>
     </Compile>
@@ -275,6 +278,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RegistrationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReportView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ServerSettingsView.xaml">

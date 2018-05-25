@@ -1,0 +1,128 @@
+﻿<UserControl x:Class="NIRSManagerClient.Views.ReportView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid>
+        <Border
+            Background="{DynamicResource MaterialDesignBackground}">
+            <GroupBox
+                Header="Формирование отчета" HorizontalAlignment="Center" MinHeight="600" MinWidth="700"
+                VerticalAlignment="Center" Margin="10"
+                Style="{DynamicResource MaterialDesignGroupBox}"
+                UseLayoutRounding="True"
+                SnapsToDevicePixels="True">
+                <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center" 
+                    >
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <TextBox FontSize="28"
+                                materialDesign:HintAssist.Hint="Заголовок отчета"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Background="Transparent"
+                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                MinHeight="38"
+                                MinWidth="250"
+                                TextAlignment="Right"
+                                Margin="30">
+                                <TextBox.Text>
+                                    <Binding Path="Header" UpdateSourceTrigger="PropertyChanged" />
+                                </TextBox.Text>
+                            </TextBox>
+                            <CheckBox Content="Выводить список работ"
+                                 Margin="20 10"
+                                 FontSize="24"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsPrintListWorks}" />
+                            <CheckBox Content="Выводить полную информацию о работе"
+                                 Margin="20 10"
+                                 FontSize="24"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                 IsEnabled="{Binding IsPrintListWorks}"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsPrintFullWork}" />
+                            <TextBlock Margin="20"
+                                 MinWidth="150" 
+                                 FontSize="28" 
+                                 Background="Transparent"
+                                 TextAlignment="Center"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}">
+                                 Параметры сортировки
+                            </TextBlock>
+                            <RadioButton GroupName="SearchParam"
+                                 Content="Оставить без сортировки"
+                                 Margin="10"
+                                 FontSize="24"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsOutSort}" />
+                            <RadioButton GroupName="SearchParam"
+                                 Content="Сортировка по имени автора"
+                                 Margin="10"
+                                 FontSize="24"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsName}" />
+                            <RadioButton GroupName="SearchParam"
+                                 Content="Сортировка по количеству работ"
+                                 Margin="10"
+                                 FontSize="24"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                 Background="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 IsChecked="{Binding IsCountWork}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button
+                                    Margin="30 10"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    ToolTip="Экспорт отчета в формат docx"
+                                    Command="{Binding CommandDocx}"
+                                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                                    FontSize="18" 
+                                    MinHeight="40">
+                                    Экспорт в docx
+                                </Button>
+                                <Button
+                                    Margin="30 10"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    ToolTip="Экспорт отчета в формат pdf"
+                                    Command="{Binding CommandPdf}"
+                                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                                    FontSize="18" 
+                                    MinHeight="40">
+                                    Экспорт в pdf
+                                </Button>
+                                <Button
+                                    Margin="30 10"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    ToolTip="Экспорт отчета в формат xlsx"
+                                    Command="{Binding CommandXlsx}"
+                                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                                    FontSize="18" 
+                                    MinHeight="40">
+                                    Экспорт в xlsx
+                                </Button>
+                            </StackPanel>
+                            <ProgressBar IsIndeterminate="True" IsEnabled="{Binding IsDone}" MinHeight="10" Margin="10" />
+                            <TextBlock Margin="15 2"
+                                 MinWidth="150" 
+                                 FontSize="20" 
+                                 Background="Transparent"
+                                 TextAlignment="Left"
+                                 Text="{Binding StatusString}"
+                                 IsEnabled="{Binding IsDone}"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+        </Border>
+    </Grid>
+</UserControl>
