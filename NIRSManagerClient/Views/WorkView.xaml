@@ -365,7 +365,89 @@
                                 </Border>
                             </StackPanel>
                             <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="30 15"
+                                        MinWidth="300" 
+                                        FontSize="26" 
+                                        Background="Transparent"
+                                        TextAlignment="Center"
+                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                    >
+                                    Выберите журнал
+                                    </TextBlock>
 
+                                    <ComboBox FontSize="20" 
+                                        Background="Transparent"
+                                        materialDesign:HintAssist.Hint="Поиск"
+                                        IsEditable="True"
+                                        materialDesign:HintAssist.HintOpacity=".26"
+                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                        ItemsSource="{Binding Journals}"
+                                        SelectedItem="{Binding SelectedJournal}"
+                                        Margin="15" 
+                                        MinWidth="300"
+                                        TextSearch.TextPath="JournalName"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Path=JournalName}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <TextBlock Margin="30 30 30 15"
+                                        MinWidth="300" 
+                                        FontSize="26" 
+                                        Background="Transparent"
+                                        TextAlignment="Center"
+                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                    >
+                                    Добавить новый
+                                    </TextBlock>
+                                    <TextBox 
+                                        FontSize="20"
+                                        materialDesign:HintAssist.Hint="Название"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                        MinHeight="25"
+                                        TextAlignment="Right"
+                                        Margin="15">
+                                        <TextBox.Text>
+                                            <Binding Path="NameJournal" UpdateSourceTrigger="PropertyChanged" />
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="10"
+                                            MinWidth="200" 
+                                            FontSize="20" 
+                                            Background="Transparent"
+                                            TextAlignment="Left"
+                                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                            >
+                                            Дата публикации
+                                        </TextBlock>
+                                        <DatePicker Margin="10"
+                                                    MinWidth="100"
+                                                    Text="{Binding DateJournal, Mode=TwoWay}">
+                                        </DatePicker>
+                                    </StackPanel>
+                                    <Button
+                                                Margin="50 10"
+                                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                                ToolTip="Добавить журнал"
+                                                Command="{Binding CommandAddJournal}"
+                                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                                Background="{DynamicResource PrimaryHueDarkBrush}"
+                                                FontSize="18" 
+                                                MinHeight="40">
+                                        Добавить
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
 

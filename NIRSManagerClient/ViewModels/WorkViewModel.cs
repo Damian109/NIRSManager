@@ -504,37 +504,8 @@ namespace NIRSManagerClient.ViewModels
             OnPropertyChanged("NoAddedRewards");
         });
 
-
-
-        
-
-        
-
-
-
-        //Получение списка журналов
-        private async void GetJournals() => await Task.Run(() =>
-        {
-            Journals = (List<Journal>)NirsSystem.GetListObject<Journal>();
-            if (Journals == null)
-                Journals = new List<Journal>();
-            Journals.Insert(0, new Journal { JournalId = 0, JournalName = "(пусто)" });
-            SelectedJournal = Journals.FirstOrDefault(u => u.JournalId == _work.JournalId);
-            OnPropertyChanged("Journals");
-            OnPropertyChanged("SelectedJournal");
-        });
-
-        //Получение списка конференций
-        private async void GetConferences() => await Task.Run(() =>
-        {
-            Conferences = (List<Conference>)NirsSystem.GetListObject<Conference>();
-            if (Conferences == null)
-                Conferences = new List<Conference>();
-            Conferences.Insert(0, new Conference { ConferenceId = 0, ConferenceName = "(пусто)" });
-            SelectedConference = Conferences.FirstOrDefault(u => u.ConferenceId == _work.ConferenceId);
-            OnPropertyChanged("Conferences");
-            OnPropertyChanged("SelectedConference");
-        });
+        //Дополнительный список под журналы
+        private List<Journal> _journals;
 
         //Добавление журнала
         private async void AddJournal(Journal journal) => await Task.Run(() =>
@@ -549,6 +520,93 @@ namespace NIRSManagerClient.ViewModels
             NirsSystem.DeleteObject(journal);
             GetJournals();
         });
+
+        //Получение списка журналов
+        private async void GetJournals() => await Task.Run(() =>
+        {
+            _journals = (List<Journal>)NirsSystem.GetListObject<Journal>();
+            if (_journals == null)
+                _journals = new List<Journal>();
+            _journals.Insert(0, new Journal { JournalId = 0, JournalName = "(пусто)" });
+            SelectedJournal = _journals.FirstOrDefault(u => u.JournalId == _work.JournalId);
+            OnPropertyChanged("Journals");
+            OnPropertyChanged("SelectedJournal");
+        });
+
+        /// <summary>
+        /// Список журналов
+        /// </summary>
+        public ObservableCollection<Journal> Journals
+        {
+            get
+            {
+                ObservableCollection<Journal> journals = new ObservableCollection<Journal>();
+                if (_journals != null)
+                    foreach (var elem in _journals)
+                        journals.Add(elem);
+                return journals;
+            }
+        }
+
+        /// <summary>
+        /// Выбранный журнал
+        /// </summary>
+        public Journal SelectedJournal { get; set; }
+
+        /// <summary>
+        /// Название журнала
+        /// </summary>
+        public string NameJournal { get; set; }
+
+        /// <summary>
+        /// Дата публикации журнала
+        /// </summary>
+        public DateTime DateJournal { get; set; }
+
+        /// <summary>
+        /// Команда Добавление журнала
+        /// </summary>
+        public RelayCommand CommandAddJournal
+        {
+            get => new RelayCommand(obj =>
+            {
+                Journal journal = new Journal { JournalName = NameJournal, JournalDate = DateJournal };
+
+                //Создание команды выполнения операции
+                RelayCommand done = new RelayCommand(objDone => AddJournal(journal), null);
+
+                //Создание команды отмены операции
+                RelayCommand undone = new RelayCommand(objUnDone => DeleteJournal(journal), null);
+
+                //Создание операции
+                Operation operation = new Operation("Добавлен новый журнал", done, undone);
+
+                NirsSystem.StackOperations.AddOperation(operation);
+                operation.DoneCommand.Execute(null);
+            });
+        }
+
+
+
+
+
+
+
+
+
+        //Получение списка конференций
+        private async void GetConferences() => await Task.Run(() =>
+        {
+            Conferences = (List<Conference>)NirsSystem.GetListObject<Conference>();
+            if (Conferences == null)
+                Conferences = new List<Conference>();
+            Conferences.Insert(0, new Conference { ConferenceId = 0, ConferenceName = "(пусто)" });
+            SelectedConference = Conferences.FirstOrDefault(u => u.ConferenceId == _work.ConferenceId);
+            OnPropertyChanged("Conferences");
+            OnPropertyChanged("SelectedConference");
+        });
+
+        
 
         //Добавление конференции
         private async void AddConference(Conference conference) => await Task.Run(() =>
@@ -597,15 +655,7 @@ namespace NIRSManagerClient.ViewModels
 
         
 
-        /// <summary>
-        /// Список журналов
-        /// </summary>
-        public List<Journal> Journals { get; private set; }
-
-        /// <summary>
-        /// Выбранный журнал
-        /// </summary>
-        public Journal SelectedJournal { get; set; }
+        
 
         /// <summary>
         /// Список конференций
@@ -623,15 +673,7 @@ namespace NIRSManagerClient.ViewModels
 
         
 
-        /// <summary>
-        /// Название журнала
-        /// </summary>
-        public string NameJournal { get; set; }
-
-        /// <summary>
-        /// Дата публикации журнала
-        /// </summary>
-        public DateTime DateJournal { get; set; }
+        
 
         /// <summary>
         /// Название конференции
@@ -645,7 +687,8 @@ namespace NIRSManagerClient.ViewModels
 
 
 
-        
+
+
 
         
 
@@ -653,28 +696,9 @@ namespace NIRSManagerClient.ViewModels
 
         
 
-        /// <summary>
-        /// Команда Добавление журнала
-        /// </summary>
-        public RelayCommand CommandAddJournal
-        {
-            get => new RelayCommand(obj =>
-            {
-                Journal journal = new Journal { JournalName = NameJournal, JournalDate = DateJournal };
+        
 
-                //Создание команды выполнения операции
-                RelayCommand done = new RelayCommand(objDone => AddJournal(journal), null);
-
-                //Создание команды отмены операции
-                RelayCommand undone = new RelayCommand(objUnDone => DeleteJournal(journal), null);
-
-                //Создание операции
-                Operation operation = new Operation("Добавлен новый журнал", done, undone);
-
-                NirsSystem.StackOperations.AddOperation(operation);
-                operation.DoneCommand.Execute(null);
-            });
-        }
+        
 
         /// <summary>
         /// Команда Добавление конференции
