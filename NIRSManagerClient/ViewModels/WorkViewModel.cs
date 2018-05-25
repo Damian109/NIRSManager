@@ -586,27 +586,8 @@ namespace NIRSManagerClient.ViewModels
             });
         }
 
-
-
-
-
-
-
-
-
-        //Получение списка конференций
-        private async void GetConferences() => await Task.Run(() =>
-        {
-            Conferences = (List<Conference>)NirsSystem.GetListObject<Conference>();
-            if (Conferences == null)
-                Conferences = new List<Conference>();
-            Conferences.Insert(0, new Conference { ConferenceId = 0, ConferenceName = "(пусто)" });
-            SelectedConference = Conferences.FirstOrDefault(u => u.ConferenceId == _work.ConferenceId);
-            OnPropertyChanged("Conferences");
-            OnPropertyChanged("SelectedConference");
-        });
-
-        
+        //Дополнительный список под конференции
+        private List<Conference> _conferences;
 
         //Добавление конференции
         private async void AddConference(Conference conference) => await Task.Run(() =>
@@ -621,6 +602,86 @@ namespace NIRSManagerClient.ViewModels
             NirsSystem.DeleteObject(conference);
             GetConferences();
         });
+
+        //Получение списка конференций
+        private async void GetConferences() => await Task.Run(() =>
+        {
+            _conferences = (List<Conference>)NirsSystem.GetListObject<Conference>();
+            if (_conferences == null)
+                _conferences = new List<Conference>();
+            _conferences.Insert(0, new Conference { ConferenceId = 0, ConferenceName = "(пусто)" });
+            SelectedConference = _conferences.FirstOrDefault(u => u.ConferenceId == _work.ConferenceId);
+            OnPropertyChanged("Conferences");
+            OnPropertyChanged("SelectedConference");
+        });
+
+        /// <summary>
+        /// Список конференций
+        /// </summary>
+        public ObservableCollection<Conference> Conferences
+        {
+            get
+            {
+                ObservableCollection<Conference> conferences = new ObservableCollection<Conference>();
+                if (_conferences != null)
+                    foreach (var elem in _conferences)
+                        conferences.Add(elem);
+                return conferences;
+            }
+        }
+
+        /// <summary>
+        /// Выбранная конференция
+        /// </summary>
+        public Conference SelectedConference { get; set; }
+
+        /// <summary>
+        /// Название конференции
+        /// </summary>
+        public string NameConference { get; set; }
+
+        /// <summary>
+        /// Дата проведения конференции
+        /// </summary>
+        public DateTime DateConference { get; set; }
+
+        /// <summary>
+        /// Команда Добавление конференции
+        /// </summary>
+        public RelayCommand CommandAddConference
+        {
+            get => new RelayCommand(obj =>
+            {
+                Conference conference = new Conference { ConferenceName = NameConference, ConferenceDate = DateConference };
+
+                //Создание команды выполнения операции
+                RelayCommand done = new RelayCommand(objDone => AddConference(conference), null);
+
+                //Создание команды отмены операции
+                RelayCommand undone = new RelayCommand(objUnDone => DeleteConference(conference), null);
+
+                //Создание операции
+                Operation operation = new Operation("Добавлена новая конференция", done, undone);
+
+                NirsSystem.StackOperations.AddOperation(operation);
+                operation.DoneCommand.Execute(null);
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //Очистка всех таблиц, связанных с работой
         private async void DeleteAllFromTables(int id) => await Task.Run(() =>
@@ -657,15 +718,7 @@ namespace NIRSManagerClient.ViewModels
 
         
 
-        /// <summary>
-        /// Список конференций
-        /// </summary>
-        public List<Conference> Conferences { get; private set; }
-
-        /// <summary>
-        /// Выбранная конференция
-        /// </summary>
-        public Conference SelectedConference { get; set; }
+        
 
         
 
@@ -675,15 +728,7 @@ namespace NIRSManagerClient.ViewModels
 
         
 
-        /// <summary>
-        /// Название конференции
-        /// </summary>
-        public string NameConference { get; set; }
-
-        /// <summary>
-        /// Дата проведения конференции
-        /// </summary>
-        public DateTime DateConference { get; set; }
+        
 
 
 
@@ -700,28 +745,7 @@ namespace NIRSManagerClient.ViewModels
 
         
 
-        /// <summary>
-        /// Команда Добавление конференции
-        /// </summary>
-        public RelayCommand CommandAddConference
-        {
-            get => new RelayCommand(obj =>
-            {
-                Conference conference = new Conference { ConferenceName = NameConference, ConferenceDate = DateConference };
-
-                //Создание команды выполнения операции
-                RelayCommand done = new RelayCommand(objDone => AddConference(conference), null);
-
-                //Создание команды отмены операции
-                RelayCommand undone = new RelayCommand(objUnDone => DeleteConference(conference), null);
-
-                //Создание операции
-                Operation operation = new Operation("Добавлена новая конференция", done, undone);
-
-                NirsSystem.StackOperations.AddOperation(operation);
-                operation.DoneCommand.Execute(null);
-            });
-        }
+        
 
         
 
