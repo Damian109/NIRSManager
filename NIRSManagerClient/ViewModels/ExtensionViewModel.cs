@@ -6,9 +6,6 @@ using System.ComponentModel;
 using NIRSManagerClient.Views;
 using System.Windows.Controls;
 using MaterialDesignThemes.Wpf;
-using NIRSCore.StackOperations;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -19,8 +16,17 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Получение последней выполненной операции
         /// </summary>
-        private void GetLastOperation() =>
-            LastOperation = NirsSystem.StackOperations.Operations.FirstOrDefault()?.Name;
+        private void GetLastOperation()
+        {
+            string tmpOper = NirsSystem.StackOperations.Operations.FirstOrDefault()?.Name;
+            if (tmpOper == null || tmpOper == "")
+                LastOperation = "(отсутствует)";
+            if (tmpOper.Length > 50)
+                LastOperation = tmpOper.Substring(0, 50);
+            else
+                LastOperation = tmpOper;
+        }
+            
 
         /// <summary>
         /// Обработка закрытия окна
@@ -54,22 +60,11 @@ namespace NIRSManagerClient.ViewModels
             OnPropertyChanged("ServerStatus");
         }
 
-        //Получение коллекции операций
-        private ObservableCollection<Operation> GetOperations()
-        {
-            ObservableCollection<Operation> operations = new ObservableCollection<Operation>();
-            foreach (Operation elem in NirsSystem.StackOperations.Operations)
-                operations.Add(elem);
-            return operations;
-        }
-
         //
         private void StackOperations_ChangeStatusEvent()
         {
             GetLastOperation();
-            Operations = GetOperations();
             OnPropertyChanged("LastOperation");
-            OnPropertyChanged("Operations");
         }
 
         /// <summary>
@@ -113,18 +108,12 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public string ServerStatus { get; private set; }
 
-        /// <summary>
-        /// Список операций
-        /// </summary>
-        public ObservableCollection<Operation> Operations { get; private set; }
-
         public ExtensionViewModel(bool status) : base("Главная форма")
         {
             NirsSystem.User.ChangeFIOEvent += _user_ChangeFIOEvent;
             NirsSystem.StackOperations.ChangeStatusEvent += StackOperations_ChangeStatusEvent;
             GetFio();
             GetLastOperation();
-            Operations = GetOperations();
 
             //Настройки интерфейса
             new PaletteHelper().SetLightDark(NirsSystem.User.IsDarkTheme);
@@ -178,6 +167,15 @@ namespace NIRSManagerClient.ViewModels
             get => new RelayCommand(obj => LoadChild(new StaticTablesView()));
         }
 
+
+
+        /// <summary>
+        /// Команда Стек операций
+        /// </summary>
+        public RelayCommand CommandStackLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new StackView()));
+        }
 
         /// <summary>
         /// Команда Настройки профиля
@@ -258,7 +256,5 @@ namespace NIRSManagerClient.ViewModels
         {
             get => new RelayCommand(obj => LoadChild(new ExchangeView()));
         }
-
-        
     }
 }

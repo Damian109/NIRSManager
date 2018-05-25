@@ -113,7 +113,7 @@
                         />
                         <materialDesign:Badged
                             Badge="0"
-                            Margin="20 10 20 10">
+                            Margin="20 15 20 10">
                             <Button
                                 Content="{materialDesign:PackIcon HumanGreeting}"
                                 ToolTip="Запросы на обмен БД"
@@ -122,105 +122,27 @@
                         </materialDesign:Badged>
                         <materialDesign:Badged
                             Badge="5"
-                            Margin="20 10 20 10">
+                            Margin="20 15 20 10">
                             <Button
                                 Content="{materialDesign:PackIcon InformationOutline}"
                                 Command="{Binding CommandErrorsLoad}"
                                 ToolTip="Информация об ошибках">
                             </Button>
                         </materialDesign:Badged>
+                        <Button
+                            Command="{Binding CommandStackLoad}"
+                            Background="{DynamicResource PrimaryHueLightBrush}"
+                            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            Content="{Binding LastOperation}"
+                            HorizontalAlignment="Right"
+                            Margin="20 0"
+                            Width="200">
+                        </Button>
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <Grid x:Name="mainGrid" Grid.Row="1"
                       Background="{DynamicResource MaterialDesignPaper}">
                 </Grid>
-                <materialDesign:Flipper 
-                        Style="{DynamicResource MaterialDesignCardFlipper}" 
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Grid.RowSpan="2"
-                        Padding="10">
-                    <materialDesign:Flipper.FrontContent>
-                        <Button
-                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                        Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                        Content="{Binding LastOperation}"
-                                        Width="auto">
-                        </Button>
-                    </materialDesign:Flipper.FrontContent>
-                    <materialDesign:Flipper.BackContent>
-                        <Grid
-                                        Height="400" 
-                                        Width="650">
-                            <Grid.RowDefinitions>
-                                <RowDefinition
-                                                Height="Auto" />
-                                <RowDefinition
-                                                Height="*" />
-                            </Grid.RowDefinitions>
-                            <materialDesign:ColorZone
-                                            Mode="Accent"
-                                            Padding="6">
-                                <StackPanel
-                                                Orientation="Horizontal">
-                                    <Button
-                                                    Style="{StaticResource MaterialDesignToolForegroundButton}"
-                                                    Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                                    HorizontalAlignment="Left">
-                                        <materialDesign:PackIcon
-                                                        Kind="ArrowLeft"
-                                                        HorizontalAlignment="Right" 
-                                                    />
-                                    </Button>
-                                </StackPanel>
-                            </materialDesign:ColorZone>
-                            <ListView Margin="5 40 0 0"
-                                            SelectedIndex="0" 
-                                            ItemsSource="{Binding Operations}">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn
-                                                DisplayMemberBinding="{Binding Name}"
-                                                Header="Название операции">
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="Отмена операции">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Margin="6,2,6,2">
-                                                        <Button  
-                                                                IsEnabled="{Binding IsUnDone}"
-                                                                Command="{Binding UnDoneCommand}"
-                                                                Style="{StaticResource MaterialDesignFlatButton}"
-                                                                Background="{DynamicResource PrimaryHueLightBrush}"
-                                                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
-                                                            Отменить операцию
-                                                        </Button>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="Применение операции">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Margin="6,2,6,2">
-                                                        <Button  
-                                                                IsEnabled="{Binding IsDone}"
-                                                                Command="{Binding DoneCommand}"
-                                                                Style="{StaticResource MaterialDesignFlatButton}"
-                                                                Background="{DynamicResource PrimaryHueDarkBrush}"
-                                                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                                                            Применить операцию
-                                                        </Button>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </Grid>
-                    </materialDesign:Flipper.BackContent>
-                </materialDesign:Flipper>
             </Grid>
         </materialDesign:DrawerHost>
     </Grid>
