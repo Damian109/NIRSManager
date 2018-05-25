@@ -669,21 +669,6 @@ namespace NIRSManagerClient.ViewModels
             });
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         //Очистка всех таблиц, связанных с работой
         private async void DeleteAllFromTables(int id) => await Task.Run(() =>
         {
@@ -715,41 +700,6 @@ namespace NIRSManagerClient.ViewModels
                 NirsSystem.AddObject(new RewardWork { RewardId = elem.RewardId, WorkId = id });
         });
 
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-
-
-
-
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
         /// <summary>
         /// Команда сохранить
         /// </summary>
@@ -777,8 +727,8 @@ namespace NIRSManagerClient.ViewModels
                     //Создание команды выполнения операции
                     RelayCommand done = new RelayCommand(objDone =>
                     {
-                        AddAllToTables(_work.WorkId);
                         NirsSystem.AddObject(_work);
+                        AddAllToTables(_work.WorkId);
                     }, null);
 
                     //Создание команды отмены операции
