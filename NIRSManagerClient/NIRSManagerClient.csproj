@@ -117,6 +117,7 @@
     <Compile Include="ViewModels\SettingsViewModels\MainSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\ProgramSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\UserInterfaceSettingsViewModel.cs" />
+    <Compile Include="ViewModels\StackViewModel.cs" />
     <Compile Include="ViewModels\StaticTablesViewModel.cs" />
     <Compile Include="ViewModels\WorksViewModel.cs" />
     <Compile Include="ViewModels\WorkViewModel.cs" />
