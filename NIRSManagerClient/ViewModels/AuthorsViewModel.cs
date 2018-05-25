@@ -6,6 +6,7 @@ using NIRSCore.DataBaseModels;
 using NIRSManagerClient.Views;
 using System.Collections.Generic;
 using NIRSManagerClient.HelpfulModels;
+using System.Collections.ObjectModel;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -31,25 +32,37 @@ namespace NIRSManagerClient.ViewModels
             set => _search = value;
         }
 
+        //Список авторов
+        private List<AuthorHelper> _authors;
+
         /// <summary>
         /// Список авторов
         /// </summary>
-        public List<AuthorHelper> Authors { get; private set; }
+        public ObservableCollection<AuthorHelper> Authors
+        {
+            get
+            {
+                ObservableCollection<AuthorHelper> authors = new ObservableCollection<AuthorHelper>();
+                if (_authors != null)
+                    foreach (var elem in _authors)
+                        authors.Add(elem);
+                return authors;
+            }
+        }
 
         /// <summary>
         /// Получение списка авторов с учетом правил поиска
         /// </summary>
         private async void GetAuthors() => await Task.Run(() =>
         {
-            List<AuthorHelper> authors = new List<AuthorHelper>();
+            _authors = new List<AuthorHelper>();
             _authorsFull = (List<Author>)NirsSystem.GetListObject<Author>();
             if (_authorsFull == null || _authorsFull.Count < 1)
                 return;
             if (_search == string.Empty)
             {
                 foreach (var elem in _authorsFull)
-                    authors.Add(new AuthorHelper(elem));
-                Authors = authors;
+                    _authors.Add(new AuthorHelper(elem));
                 OnPropertyChanged("Authors");
                 return;
             }
@@ -60,12 +73,12 @@ namespace NIRSManagerClient.ViewModels
                     if(IsAccuracy)
                     {
                         if (elem.AuthorName == _search)
-                            authors.Add(new AuthorHelper(elem));
+                            _authors.Add(new AuthorHelper(elem));
                     }
                     else
                     {
                         if (elem.AuthorName.Contains(_search))
-                            authors.Add(new AuthorHelper(elem));
+                            _authors.Add(new AuthorHelper(elem));
                     }
                     
                 }
@@ -78,12 +91,12 @@ namespace NIRSManagerClient.ViewModels
                         if (IsAccuracy)
                         {
                             if (organization.OrganizationName == _search)
-                                authors.Add(new AuthorHelper(elem));
+                                _authors.Add(new AuthorHelper(elem));
                         }
                         else
                         {
                             if (organization.OrganizationName.Contains(_search))
-                                authors.Add(new AuthorHelper(elem));
+                                _authors.Add(new AuthorHelper(elem));
                         }
                     }
                 }
@@ -96,12 +109,12 @@ namespace NIRSManagerClient.ViewModels
                         if (IsAccuracy)
                         {
                             if (faculty.FacultyName == _search)
-                                authors.Add(new AuthorHelper(elem));
+                                _authors.Add(new AuthorHelper(elem));
                         }
                         else
                         {
                             if (faculty.FacultyName.Contains(_search))
-                                authors.Add(new AuthorHelper(elem));
+                                _authors.Add(new AuthorHelper(elem));
                         }
                     }
                 }
@@ -114,12 +127,12 @@ namespace NIRSManagerClient.ViewModels
                         if (IsAccuracy)
                         {
                             if (department.DepartmentName == _search)
-                                authors.Add(new AuthorHelper(elem));
+                                _authors.Add(new AuthorHelper(elem));
                         }
                         else
                         {
                             if (department.DepartmentName.Contains(_search))
-                                authors.Add(new AuthorHelper(elem));
+                                _authors.Add(new AuthorHelper(elem));
                         }
                     }
                 }
@@ -132,17 +145,16 @@ namespace NIRSManagerClient.ViewModels
                         if (IsAccuracy)
                         {
                             if (group.GroupName == _search)
-                                authors.Add(new AuthorHelper(elem));
+                                _authors.Add(new AuthorHelper(elem));
                         }
                         else
                         {
                             if (group.GroupName.Contains(_search))
-                                authors.Add(new AuthorHelper(elem));
+                                _authors.Add(new AuthorHelper(elem));
                         }
                     }
                 }
             }
-            Authors = authors;
             OnPropertyChanged("Authors");
             return;
         });

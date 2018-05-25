@@ -6,6 +6,7 @@ using NIRSCore.DataBaseModels;
 using NIRSManagerClient.Views;
 using System.Collections.Generic;
 using NIRSManagerClient.HelpfulModels;
+using System.Collections.ObjectModel;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -26,10 +27,23 @@ namespace NIRSManagerClient.ViewModels
             set => _search = value;
         }
 
+        //Список работ
+        private List<WorkHelper> _works;
+
         /// <summary>
         /// Список работ
         /// </summary>
-        public List<WorkHelper> Works { get; private set; }
+        public ObservableCollection<WorkHelper> Works
+        {
+            get
+            {
+                ObservableCollection<WorkHelper> works = new ObservableCollection<WorkHelper>();
+                if (_works != null)
+                    foreach (var elem in _works)
+                        works.Add(elem);
+                return works;
+            }
+        }
 
         /// <summary>
         /// Базовый конструктор
@@ -87,15 +101,14 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         private async void GetWorks() => await Task.Run(() =>
         {
-            List<WorkHelper> works = new List<WorkHelper>();
+            _works = new List<WorkHelper>();
             _worksFull = (List<Work>)NirsSystem.GetListObject<Work>();
             if (_worksFull == null || _worksFull.Count < 1)
                 return;
             if (_search == string.Empty)
             {
                 foreach (var elem in _worksFull)
-                    works.Add(new WorkHelper(elem));
-                Works = works;
+                    _works.Add(new WorkHelper(elem));
                 OnPropertyChanged("Works");
                 return;
             }
@@ -106,12 +119,12 @@ namespace NIRSManagerClient.ViewModels
                     if (IsAccuracy)
                     {
                         if (elem.WorkName == _search)
-                            Works.Add(new WorkHelper(elem));
+                            _works.Add(new WorkHelper(elem));
                     }
                     else
                     {
                         if (elem.WorkName.Contains(_search))
-                            Works.Add(new WorkHelper(elem));
+                            _works.Add(new WorkHelper(elem));
                     }
                 }
 
@@ -123,12 +136,12 @@ namespace NIRSManagerClient.ViewModels
                         if (IsAccuracy)
                         {
                             if (author.AuthorName == _search)
-                                Works.Add(new WorkHelper(elem));
+                                _works.Add(new WorkHelper(elem));
                         }
                         else
                         {
                             if (author.AuthorName.Contains(_search))
-                                Works.Add(new WorkHelper(elem));
+                                _works.Add(new WorkHelper(elem));
                         }
                     }
                 }
@@ -145,12 +158,18 @@ namespace NIRSManagerClient.ViewModels
                                 if (IsAccuracy)
                                 {
                                     if (author.AuthorName == _search)
-                                        Works.Add(new WorkHelper(elem));
+                                    {
+                                        _works.Add(new WorkHelper(elem));
+                                        break;
+                                    }
                                 }
                                 else
                                 {
                                     if (author.AuthorName.Contains(_search))
-                                        Works.Add(new WorkHelper(elem));
+                                    {
+                                        _works.Add(new WorkHelper(elem));
+                                        break;
+                                    } 
                                 }
                             }
                     }
@@ -168,18 +187,23 @@ namespace NIRSManagerClient.ViewModels
                                 if (IsAccuracy)
                                 {
                                     if (direction.DirectionName == _search)
-                                        Works.Add(new WorkHelper(elem));
+                                    {
+                                        _works.Add(new WorkHelper(elem));
+                                        break;
+                                    }
                                 }
                                 else
                                 {
                                     if (direction.DirectionName.Contains(_search))
-                                        Works.Add(new WorkHelper(elem));
+                                    {
+                                        _works.Add(new WorkHelper(elem));
+                                        break;
+                                    }
                                 }
                             }
                     }
                 }
             }
-            Works = works;
             OnPropertyChanged("Works");
             return;
         });
