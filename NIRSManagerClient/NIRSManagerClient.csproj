@@ -184,8 +184,8 @@
     <Compile Include="Views\ServerSettingsView.xaml.cs">
       <DependentUpon>ServerSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StackView.xaml.cs">
-      <DependentUpon>StackView.xaml</DependentUpon>
+    <Compile Include="Views\StackWindowView.xaml.cs">
+      <DependentUpon>StackWindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StaticTablesView.xaml.cs">
       <DependentUpon>StaticTablesView.xaml</DependentUpon>
@@ -277,7 +277,7 @@
     <Page Include="Views\ServerSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StackView.xaml">
+    <Page Include="Views\StackWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StaticTablesView.xaml">

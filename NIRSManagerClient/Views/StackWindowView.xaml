@@ -1,20 +1,20 @@
-﻿<UserControl x:Class="NIRSManagerClient.Views.StackView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window x:Class="NIRSManagerClient.Views.StackWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Width="661.333">
     <Grid>
         <Border Background="{DynamicResource MaterialDesignBackground}">
             <GroupBox Header="Стек операций" 
                 HorizontalAlignment="Center" 
-                MinHeight="500" 
+                MinHeight="450" 
                 MinWidth="600"
                 VerticalAlignment="Center" 
-                Margin="20"
+                Margin="10"
                 Style="{DynamicResource MaterialDesignGroupBox}"
                 UseLayoutRounding="True"
-                SnapsToDevicePixels="True">
+                SnapsToDevicePixels="True" Height="486" Width="635">
                 <ScrollViewer>
                     <ListView Margin="10"
                         SelectedIndex="0" 
@@ -62,4 +62,4 @@
             </GroupBox>
         </Border>
     </Grid>
-</UserControl>
+</Window>

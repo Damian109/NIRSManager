@@ -1,11 +1,11 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
 using NIRSManagerClient.ViewModels;
 
 namespace NIRSManagerClient.Views
 {
-    public partial class StackView : UserControl
+    public partial class StackWindowView : Window
     {
-        public StackView()
+        public StackWindowView()
         {
             InitializeComponent();
             DataContext = new StackViewModel();
