@@ -9,6 +9,11 @@ namespace NIRSCore
     public static partial class NirsSystem
     {
         /// <summary>
+        /// Реализация события - изменение состояния операции
+        /// </summary>
+        public static event eventSender ChangeDatabase;
+
+        /// <summary>
         /// Инициализация базы данных некоторыми изначальными данными
         /// </summary>
         public async static void InitialiseDB()
@@ -99,6 +104,7 @@ namespace NIRSCore
                 }
                 IsDatabaseContextCreated = true;
                 User.DateLastEditDatabase = DateTime.Now;
+                ChangeDatabase?.Invoke();
             }
             catch (Exception)
             {
@@ -322,6 +328,7 @@ namespace NIRSCore
                     }
                     context.SaveChanges();
                     User.DateLastEditDatabase = DateTime.Now;
+                    ChangeDatabase?.Invoke();
                 }
             }
             catch (Exception)
@@ -435,6 +442,7 @@ namespace NIRSCore
                     }
                     context.SaveChanges();
                     User.DateLastEditDatabase = DateTime.Now;
+                    ChangeDatabase?.Invoke();
                 }
             }
             catch (Exception)
