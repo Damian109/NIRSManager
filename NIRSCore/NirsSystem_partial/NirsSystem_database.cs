@@ -98,6 +98,7 @@ namespace NIRSCore
                     context.SaveChanges();
                 }
                 IsDatabaseContextCreated = true;
+                User.DateLastEditDatabase = DateTime.Now;
             }
             catch (Exception)
             {
@@ -320,6 +321,7 @@ namespace NIRSCore
                         query.WorkId = elem.WorkId;
                     }
                     context.SaveChanges();
+                    User.DateLastEditDatabase = DateTime.Now;
                 }
             }
             catch (Exception)
@@ -432,6 +434,7 @@ namespace NIRSCore
                             context.RewardWorks.Remove(query);
                     }
                     context.SaveChanges();
+                    User.DateLastEditDatabase = DateTime.Now;
                 }
             }
             catch (Exception)
