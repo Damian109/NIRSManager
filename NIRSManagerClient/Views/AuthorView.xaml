@@ -66,6 +66,7 @@
                     </TextBlock>
 
                     <ComboBox Grid.Column="1"
+                            MaxDropDownHeight="150"
                             Grid.Row="5"
                             FontSize="16" 
                             Background="Transparent"
@@ -126,6 +127,7 @@
                     </TextBlock>
 
                     <ComboBox Grid.Column="3"
+                              MaxDropDownHeight="150"
                             Grid.Row="1"
                             FontSize="16" 
                             Background="Transparent"
@@ -156,6 +158,7 @@
                     </TextBlock>
 
                     <ComboBox Grid.Column="3"
+                              MaxDropDownHeight="150"
                             Grid.Row="2"
                             FontSize="16" 
                             Background="Transparent"
@@ -186,6 +189,7 @@
                     </TextBlock>
 
                     <ComboBox Grid.Column="3"
+                              MaxDropDownHeight="150"
                             Grid.Row="3"
                             FontSize="16" 
                             Background="Transparent"
@@ -216,6 +220,7 @@
                     </TextBlock>
 
                     <ComboBox Grid.Column="3"
+                              MaxDropDownHeight="150"
                             Grid.Row="4"
                             FontSize="16" 
                             Background="Transparent"
@@ -246,6 +251,7 @@
                     </TextBlock>
 
                     <ComboBox Grid.Column="3"
+                              MaxDropDownHeight="150"
                             Grid.Row="5"
                             FontSize="16" 
                             Background="Transparent"
