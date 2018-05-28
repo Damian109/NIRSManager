@@ -19,7 +19,7 @@ namespace NIRSManagerClient.ViewModels
 
         private async void AddOrganizationAsync(Organization organization) => await Task.Run(() =>
         {
-            _organizationName = string.Empty;
+            OrganizationName = string.Empty;
             OnPropertyChanged("OrganizationName");
             NirsSystem.AddObject(organization);
             SetOrganizationsAsync();
@@ -40,7 +40,7 @@ namespace NIRSManagerClient.ViewModels
 
         private async void AddFacultyAsync(Faculty faculty) => await Task.Run(() =>
         {
-            _facultyName = string.Empty;
+            FacultyName = string.Empty;
             OnPropertyChanged("FacultyName");
             NirsSystem.AddObject(faculty);
             SetFacultiesAsync();
@@ -61,7 +61,7 @@ namespace NIRSManagerClient.ViewModels
 
         private async void AddDepartmentAsync(Department department) => await Task.Run(() =>
         {
-            _departmentName = string.Empty;
+            DepartmentName = string.Empty;
             OnPropertyChanged("DepartmentName");
             NirsSystem.AddObject(department);
             SetDepartmentsAsync();
@@ -82,7 +82,7 @@ namespace NIRSManagerClient.ViewModels
 
         private async void AddGroupAsync(Group group) => await Task.Run(() =>
         {
-            _groupName = string.Empty;
+            GroupName = string.Empty;
             OnPropertyChanged("GroupName");
             NirsSystem.AddObject(group);
             SetGroupsAsync();
@@ -103,7 +103,7 @@ namespace NIRSManagerClient.ViewModels
 
         private async void AddPositionAsync(Position position) => await Task.Run(() =>
         {
-            _positionName = string.Empty;
+            PositionName = string.Empty;
             OnPropertyChanged("PositionName");
             NirsSystem.AddObject(position);
             SetPositionsAsync();
@@ -124,7 +124,7 @@ namespace NIRSManagerClient.ViewModels
 
         private async void AddAcademicDegreeAsync(AcademicDegree academicDegree) => await Task.Run(() =>
         {
-            _academicDegreeName = string.Empty;
+            AcademicDegreeName = string.Empty;
             OnPropertyChanged("AcademicDegreeName");
             NirsSystem.AddObject(academicDegree);
             SetAcademicDegreesAsync();
@@ -145,7 +145,7 @@ namespace NIRSManagerClient.ViewModels
 
         private async void AddDirectionAsync(Direction direction) => await Task.Run(() =>
         {
-            _directionName = string.Empty;
+            DirectionName = string.Empty;
             OnPropertyChanged("DirectionName");
             NirsSystem.AddObject(direction);
             SetDirectionsAsync();
@@ -166,7 +166,7 @@ namespace NIRSManagerClient.ViewModels
 
         private async void AddRewardAsync(Reward reward) => await Task.Run(() =>
         {
-            _rewardName = string.Empty;
+            RewardName = string.Empty;
             OnPropertyChanged("RewardName");
             NirsSystem.AddObject(reward);
             SetRewardsAsync();
