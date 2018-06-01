@@ -115,16 +115,21 @@ namespace NIRSManagerClient.HelpfulModels
                     }
             }
 
-            DirectionsWork = "Направления работы: ";
+            DirectionsWork = "";
             List<DirectionWork> directionWorks = (List<DirectionWork>)NirsSystem.GetListObject<DirectionWork>();
             if(directionWorks != null)
             {
-                foreach(var elem in directionWorks)
-                    if(elem.WorkId == work.WorkId)
-                    {
-                        Direction direction = (Direction)NirsSystem.GetObject<Direction>(elem.DirectionId);
-                        DirectionsWork += direction.DirectionName + ";";
-                    }
+                if(directionWorks.Count(u => u.WorkId == WorkId) > 0)
+                {
+                    DirectionsWork = "Направления работы: ";
+
+                    foreach (var elem in directionWorks)
+                        if (elem.WorkId == work.WorkId)
+                        {
+                            Direction direction = (Direction)NirsSystem.GetObject<Direction>(elem.DirectionId);
+                            DirectionsWork += direction.DirectionName + ";";
+                        }
+                }
             }
         }
     }
