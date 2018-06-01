@@ -1,4 +1,6 @@
-﻿using NIRSCore;
+﻿using System;
+using NIRSCore;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using Microsoft.Win32;
@@ -10,10 +12,10 @@ using System.Collections.Generic;
 using NIRSManagerClient.HelpfulModels;
 
 using Xceed.Words.NET;
-
 using iTextSharp.text.pdf;
-using System.IO;
-using System;
+using OfficeOpenXml;
+using System.Drawing;
+using OfficeOpenXml.Style;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -212,6 +214,7 @@ namespace NIRSManagerClient.ViewModels
         //Создание отчета
         private void CreateReport()
         {
+            _report.ReportElemHelpers.Clear();
             foreach (var elem in _authors)
             {
                 IsDone = Visibility.Visible;
@@ -326,7 +329,6 @@ namespace NIRSManagerClient.ViewModels
             IsDone = Visibility.Hidden;
             OnPropertyChanged("IsDone");
         });
-
 
         private async void SaveAsPdf(string filename) => await Task.Run(() =>
         {
@@ -475,15 +477,109 @@ namespace NIRSManagerClient.ViewModels
             OnPropertyChanged("IsDone");
         });
 
-        private void SaveAsXlsx(string filename)
+        private async void SaveAsXlsx(string filename) => await Task.Run(() =>
         {
             CreateReport();
             StatusString = "Выполняется сохранения отчета";
             OnPropertyChanged("StatusString");
+
+            //Открываем документ
+            if (File.Exists(filename))
+                File.Delete(filename);
+            FileInfo file = new FileInfo(filename);
+
+            using (ExcelPackage package = new ExcelPackage(file))
+            {
+                //Формирование заголовка
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(_report.Header);
+
+                //Формирование размеров колонок
+                worksheet.Column(1).Width = 27;
+                worksheet.Column(2).Width = 16;
+                worksheet.Column(3).Width = 27;
+                worksheet.Column(4).Width = 27;
+                worksheet.Column(5).Width = 16;
+                worksheet.Column(6).Width = 16;
+                worksheet.Column(7).Width = 32;
+                worksheet.Column(8).Width = 16;
+
+                int rowCounter = 1;
+
+                foreach (var elem in _report.ReportElemHelpers)
+                {
+                    //Формирование заполнения информацией об авторе
+                    using (var range = worksheet.Cells[rowCounter, 1, rowCounter, 8])
+                    {
+                        range.Style.Font.Bold = true;
+                        range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        range.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+                        range.Style.Font.Color.SetColor(Color.Black);
+                    }
+
+                    //Заполнение ФИО и степени
+                    worksheet.Cells[rowCounter, 1].Value = elem.Author.AuthorName;
+                    worksheet.Cells[rowCounter, 2].Value = elem.Author.AcademicDegreeName;
+
+                    //Заполнение Организации/Факультета/Кафедры
+                    if (elem.Author.OrganizationName != "")
+                        worksheet.Cells[rowCounter, 3].Value = elem.Author.OrganizationName;
+                    if (elem.Author.FacultyName != "")
+                        worksheet.Cells[rowCounter, 4].Value = elem.Author.FacultyName;
+                    if (elem.Author.DepartmentName != "")
+                        worksheet.Cells[rowCounter, 5].Value = elem.Author.DepartmentName;
+
+                    //Заполнение должности или группы обучения
+                    if (elem.Author.PositionName != "")
+                        worksheet.Cells[rowCounter, 6].Value = elem.Author.PositionName;
+                    else if (elem.Author.GroupName != "")
+                        worksheet.Cells[rowCounter, 6].Value = elem.Author.GroupName;
+
+                    //Заполнение статистики по работам
+                    int count = elem.Works.Count;
+                    worksheet.Cells[rowCounter, 7].Value = "Работ написано: " + count.ToString();
+
+                    if (elem.CountHeader > 0)
+                        worksheet.Cells[rowCounter, 8].Value = "Является руководителем " + elem.CountHeader.ToString() + " работ";
+
+                    rowCounter++;
+
+                    if (IsPrintListWorks && elem.Works.Count > 0)
+                    {
+                        foreach (var work in elem.Works)
+                        {
+                            //Заполнение информации о работах
+
+                            using (var range = worksheet.Cells[rowCounter, 1, rowCounter, 8])
+                            {
+                                range.Style.Font.Bold = false;
+                                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                range.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                                range.Style.Font.Color.SetColor(Color.Black);
+                            }
+
+                            worksheet.Cells[rowCounter, 1].Value = work.WorkName;
+                            worksheet.Cells[rowCounter, 2].Value = work.MarkWork;
+                            worksheet.Cells[rowCounter, 3].Value = work.HeadAuthor;
+
+                            //Вывод подробной информации о работе
+                            if (IsPrintFullWork)
+                            {
+                                worksheet.Cells[rowCounter, 4].Value = work.Authors;
+                                worksheet.Cells[rowCounter, 5].Value = work.DirectionsWork;
+                                worksheet.Cells[rowCounter, 6].Value = work.JournalOrConference;
+                                worksheet.Cells[rowCounter, 7].Value = work.SizeWork;
+                            }
+                            rowCounter++;
+                        }
+                    }
+                    rowCounter++;
+                }
+                package.Save();
+            }
+
             Thread.Sleep(1000);
             IsDone = Visibility.Hidden;
             OnPropertyChanged("IsDone");
-        }
-
+        });
     }
 }
