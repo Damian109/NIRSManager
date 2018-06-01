@@ -9,6 +9,8 @@ using NIRSCore.StackOperations;
 using System.Collections.Generic;
 using NIRSManagerClient.HelpfulModels;
 
+using Xceed.Words.NET;
+
 namespace NIRSManagerClient.ViewModels
 {
     /// <summary>
@@ -248,7 +250,75 @@ namespace NIRSManagerClient.ViewModels
             CreateReport();
             StatusString = "Выполняется сохранения отчета";
             OnPropertyChanged("StatusString");
-            Thread.Sleep(5000);
+
+            using (var docx = DocX.Create(filename))
+            {
+                //Формирование заголовка
+                docx.InsertParagraph(_report.Header).FontSize(25.0d).Bold().Alignment = Alignment.center;
+
+                foreach(var elem in _report.ReportElemHelpers)
+                {
+                    //Формирование заполнения информацией об авторе
+                    Paragraph authorParagraph = docx.InsertParagraph();
+                    authorParagraph.Alignment = Alignment.right;
+
+                    //Заполнение ФИО и степени
+                    authorParagraph.AppendLine(elem.Author.AuthorName).Bold().FontSize(20.0d).Append("  " + 
+                        elem.Author.AcademicDegreeName).Italic().FontSize(12.0d);
+
+                    //Заполнение Организации/Факультета/Кафедры
+                    authorParagraph.AppendLine();
+                    if (elem.Author.OrganizationName != "")
+                        authorParagraph.Append(elem.Author.OrganizationName + " / ").FontSize(14.0d);
+                    if (elem.Author.FacultyName != "")
+                        authorParagraph.Append(elem.Author.FacultyName + " / ").FontSize(14.0d);
+                    if (elem.Author.DepartmentName != "")
+                        authorParagraph.Append(elem.Author.DepartmentName + " / ").FontSize(14.0d);
+
+                    //Заполнение должности или группы обучения
+                    authorParagraph.AppendLine();
+                    if (elem.Author.PositionName != "")
+                        authorParagraph.Append(elem.Author.PositionName).FontSize(12.0d);
+                    else if (elem.Author.GroupName != "")
+                        authorParagraph.Append(elem.Author.GroupName).FontSize(12.0d);
+
+                    //Заполнение статистики по работам
+                    int count = elem.Works.Count;
+                    authorParagraph.AppendLine("Работ написано: " + count.ToString()).FontSize(10.0d);
+                    if(elem.CountHeader > 0)
+                        authorParagraph.AppendLine("Является руководителем " + elem.CountHeader.ToString() + " работ").FontSize(10.0d);
+
+                    authorParagraph.InsertHorizontalLine(size:3);
+
+                    if(IsPrintListWorks && elem.Works.Count > 0)
+                    {
+                        foreach(var work in elem.Works)
+                        {
+                            //Заполнение информации о работах
+                            Paragraph workParagraph = docx.InsertParagraph();
+
+                            workParagraph.AppendLine(work.WorkName).FontSize(14.0d);
+                            if(work.MarkWork != "")
+                                workParagraph.AppendLine(work.MarkWork).FontSize(10.0d);
+                            if (work.SizeWork != "")
+                                workParagraph.AppendLine(work.SizeWork).FontSize(10.0d);
+
+                            //Вывод подробной информации о работе
+                            if (IsPrintFullWork)
+                            {
+                                workParagraph.AppendLine(work.Authors).FontSize(10.0d);
+                                if (work.DirectionsWork != "")
+                                    workParagraph.AppendLine(work.DirectionsWork).FontSize(10.0d);
+                                if (work.JournalOrConference != "")
+                                    workParagraph.AppendLine(work.JournalOrConference).FontSize(10.0d);
+                            }
+                        }
+                    }
+                }
+
+                docx.Save();
+            }
+            Thread.Sleep(2000);
             IsDone = Visibility.Hidden;
             OnPropertyChanged("IsDone");
         });
