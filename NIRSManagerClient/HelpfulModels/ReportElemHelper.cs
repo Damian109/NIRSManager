@@ -18,14 +18,21 @@ namespace NIRSManagerClient.HelpfulModels
         public List<WorkHelper> Works { get; private set; }
 
         /// <summary>
+        /// Сколькими работами автор руководил
+        /// </summary>
+        public int CountHeader { get; private set; }
+
+        /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="author">Автор</param>
         /// <param name="works">Список работ данного автора</param>
-        public ReportElemHelper(AuthorHelper author, List<WorkHelper> works)
+        /// <param name="countHeader">Сколько работ написано под руководством автора</param>
+        public ReportElemHelper(AuthorHelper author, List<WorkHelper> works, int countHeader)
         {
             Author = author;
             Works = works;
+            CountHeader = countHeader;
         }
     }
 }

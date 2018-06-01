@@ -124,7 +124,7 @@ namespace NIRSManagerClient.ViewModels
         //Обработка события изменения базы данных
         private void NirsSystem_ChangeDatabase()
         {
-            GetTables();
+            //GetTables();
             GetConferences();
             GetJournals();
         }
@@ -701,11 +701,11 @@ namespace NIRSManagerClient.ViewModels
         private async void AddAllToTables(int id) => await Task.Run(() =>
         {
             DeleteAllFromTables(id);
-            foreach (var elem in AddedAuthors)
+            foreach (var elem in _addedAuthors)
                 NirsSystem.AddObject(new CoAuthor { AuthorId = elem.AuthorId, Contribution = 100, WorkId = id });
-            foreach (var elem in AddedDirections)
+            foreach (var elem in _addedDirections)
                 NirsSystem.AddObject(new DirectionWork { DirectionId = elem.DirectionId, WorkId = id });
-            foreach (var elem in AddedRewards)
+            foreach (var elem in _addedRewards)
                 NirsSystem.AddObject(new RewardWork { RewardId = elem.RewardId, WorkId = id });
         });
 
@@ -757,9 +757,9 @@ namespace NIRSManagerClient.ViewModels
                 {
                     //Создание команды выполнения операции
                     RelayCommand done = new RelayCommand(objDone =>
-                    {
-                        AddAllToTables(_work.WorkId);
+                    {    
                         NirsSystem.UpdateObject(_work);
+                        AddAllToTables(_work.WorkId);
                     }, null);
 
                     //Создание операции
