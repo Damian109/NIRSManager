@@ -11,6 +11,10 @@ using NIRSManagerClient.HelpfulModels;
 
 using Xceed.Words.NET;
 
+using iTextSharp.text.pdf;
+using System.IO;
+using System;
+
 namespace NIRSManagerClient.ViewModels
 {
     /// <summary>
@@ -242,7 +246,7 @@ namespace NIRSManagerClient.ViewModels
                 ReportElemHelper reportElemHelper = new ReportElemHelper(elem, workHelpers, countHeader);
                 _report.ReportElemHelpers.Add(reportElemHelper);
             }
-            Thread.Sleep(3000);
+            Thread.Sleep(1000);
         }
 
         private async void SaveAsDocx(string filename) => await Task.Run(() =>
@@ -318,28 +322,165 @@ namespace NIRSManagerClient.ViewModels
 
                 docx.Save();
             }
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             IsDone = Visibility.Hidden;
             OnPropertyChanged("IsDone");
         });
 
 
-        private void SaveAsPdf(string filename)
+        private async void SaveAsPdf(string filename) => await Task.Run(() =>
         {
             CreateReport();
             StatusString = "Выполняется сохранения отчета";
             OnPropertyChanged("StatusString");
-            Thread.Sleep(5000);
+
+            //Открываем документ
+            iTextSharp.text.Document document = new iTextSharp.text.Document();
+            PdfWriter.GetInstance(document, new FileStream(filename, FileMode.Create));
+            document.Open();
+
+            //Формирование шрифта для отображения русских букв
+            string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "times.TTF");
+            BaseFont baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont);
+            font.Color = iTextSharp.text.BaseColor.BLACK;
+
+            //Формирование заголовка
+            iTextSharp.text.Paragraph header = new iTextSharp.text.Paragraph
+            {
+                Alignment = 1,
+                SpacingAfter = 20.0f
+            };
+            font.Size = 25.0f;
+            font.SetStyle("bold");
+            iTextSharp.text.Phrase headerPhrase = new iTextSharp.text.Phrase(_report.Header, font);
+            header.Add(headerPhrase);
+            document.Add(header);
+
+            foreach (var elem in _report.ReportElemHelpers)
+            {
+                //Формирование заполнения информацией об авторе
+                iTextSharp.text.Paragraph authorParagraph = new iTextSharp.text.Paragraph
+                {
+                    Alignment = 2,
+                    SpacingAfter = 20.0f,
+                    Leading = 20.0f
+                };
+
+                //Заполнение ФИО и степени
+                font = new iTextSharp.text.Font(baseFont, 20.0f, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
+                iTextSharp.text.Chunk fio = new iTextSharp.text.Chunk(elem.Author.AuthorName, font);
+                authorParagraph.Add(fio);
+                font = new iTextSharp.text.Font(baseFont, 12.0f, iTextSharp.text.Font.ITALIC, iTextSharp.text.BaseColor.BLACK);
+                iTextSharp.text.Chunk acDegree = new iTextSharp.text.Chunk("  " + elem.Author.AcademicDegreeName + "\n", font);
+                authorParagraph.Add(acDegree);
+
+                //Заполнение Организации/Факультета/Кафедры
+                font = new iTextSharp.text.Font(baseFont, 14.0f, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+                if (elem.Author.OrganizationName != "")
+                {
+                    iTextSharp.text.Chunk org = new iTextSharp.text.Chunk(elem.Author.OrganizationName + " / ", font);
+                    authorParagraph.Add(org);
+                }
+                if (elem.Author.FacultyName != "")
+                {
+                    iTextSharp.text.Chunk fac = new iTextSharp.text.Chunk(elem.Author.FacultyName + " / ", font);
+                    authorParagraph.Add(fac);
+                }
+                if (elem.Author.DepartmentName != "")
+                {
+                    iTextSharp.text.Chunk dep = new iTextSharp.text.Chunk(elem.Author.DepartmentName + " / ", font);
+                    authorParagraph.Add(dep);
+                }
+                authorParagraph.Add("\n");
+
+                //Заполнение должности или группы обучения
+                font = new iTextSharp.text.Font(baseFont, 12.0f, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+                if (elem.Author.PositionName != "")
+                {
+                    iTextSharp.text.Chunk pos = new iTextSharp.text.Chunk(elem.Author.PositionName + "\n", font);
+                    authorParagraph.Add(pos);
+                }
+                else if (elem.Author.GroupName != "")
+                {
+                    iTextSharp.text.Chunk gro = new iTextSharp.text.Chunk(elem.Author.GroupName + "\n", font);
+                    authorParagraph.Add(gro);
+                }
+
+                //Заполнение статистики по работам
+                int count = elem.Works.Count;
+                font = new iTextSharp.text.Font(baseFont, 10.0f, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+                iTextSharp.text.Chunk cou = new iTextSharp.text.Chunk("Работ написано: " + count.ToString() + "\n", font);
+                authorParagraph.Add(cou);
+
+                if (elem.CountHeader > 0)
+                {
+                    iTextSharp.text.Chunk couh = new iTextSharp.text.Chunk("Является руководителем " + elem.CountHeader.ToString() + " работ" + "\n", font);
+                    authorParagraph.Add(couh);
+                }
+
+                document.Add(authorParagraph);
+
+                if (IsPrintListWorks && elem.Works.Count > 0)
+                {
+                    foreach (var work in elem.Works)
+                    {
+                        //Заполнение информации о работах
+                        iTextSharp.text.Paragraph workParagraph = new iTextSharp.text.Paragraph
+                        {
+                            Alignment = 0,
+                            SpacingAfter = 20.0f,
+                            Leading = 20.0f
+                        };
+
+                        font = new iTextSharp.text.Font(baseFont, 14.0f, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+                        iTextSharp.text.Chunk wn = new iTextSharp.text.Chunk(work.WorkName + "\n", font);
+                        workParagraph.Add(wn);
+                        font = new iTextSharp.text.Font(baseFont, 10.0f, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+                        if (work.MarkWork != "")
+                        {
+                            iTextSharp.text.Chunk mw = new iTextSharp.text.Chunk(work.MarkWork + "\n", font);
+                            workParagraph.Add(mw);
+                        }
+                        if (work.SizeWork != "")
+                        {
+                            iTextSharp.text.Chunk sw = new iTextSharp.text.Chunk(work.SizeWork + "\n", font);
+                            workParagraph.Add(sw);
+                        }
+
+                        //Вывод подробной информации о работе
+                        if (IsPrintFullWork)
+                        {
+                            iTextSharp.text.Chunk aw = new iTextSharp.text.Chunk(work.Authors + "\n", font);
+                            workParagraph.Add(aw);
+                            if (work.DirectionsWork != "")
+                            {
+                                iTextSharp.text.Chunk dw = new iTextSharp.text.Chunk(work.DirectionsWork + "\n", font);
+                                workParagraph.Add(dw);
+                            }
+                            if (work.JournalOrConference != "")
+                            {
+                                iTextSharp.text.Chunk jw = new iTextSharp.text.Chunk(work.JournalOrConference + "\n", font);
+                                workParagraph.Add(jw);
+                            }
+                        }
+                        document.Add(workParagraph);
+                    }
+                }
+            }
+
+            document.Close();
+            Thread.Sleep(1000);
             IsDone = Visibility.Hidden;
             OnPropertyChanged("IsDone");
-        }
+        });
 
         private void SaveAsXlsx(string filename)
         {
             CreateReport();
             StatusString = "Выполняется сохранения отчета";
             OnPropertyChanged("StatusString");
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
             IsDone = Visibility.Hidden;
             OnPropertyChanged("IsDone");
         }
