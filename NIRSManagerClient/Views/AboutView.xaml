@@ -75,15 +75,15 @@
                                  HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                  Margin="32">
                         <StackPanel>
-                            <Button ToolTip="GitHub">
-                                <materialDesign:PackIcon Kind="GithubCircle" Height="20" Width="20" />
+                            <Button ToolTip="GitHub" Click="Button_Click">
+                                <materialDesign:PackIcon Kind="GithubCircle" Height="20" Width="20"/>
                             </Button>
-                            <Button ToolTip="Vkontakte"
+                            <Button ToolTip="Vkontakte" Click="Button_Click_1"
                                 Background="{DynamicResource PrimaryHueMidBrush}"
                                 Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
                                 <materialDesign:PackIcon Kind="VkCircle" />
                             </Button>
-                            <Button ToolTip="Email"
+                            <Button ToolTip="Email" Click="Button_Click_2"
                                     Background="{DynamicResource SecondaryAccentBrush}"
                                     Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
                                     >
