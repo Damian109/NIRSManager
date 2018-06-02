@@ -8,7 +8,7 @@ namespace NIRSCore.FileOperations
     /// <summary>
     /// Отвечает за обработку файла, хранящего лог ошибок
     /// </summary>
-    internal sealed class FileErrors : FileCore
+    public sealed class FileErrors : FileCore
     {
         /// <summary>
         /// Список ошибок, возможно и считывать и записывать только в пределах сборки
