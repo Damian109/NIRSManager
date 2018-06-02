@@ -30,7 +30,7 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public RelayCommand CommandSetToServer
         {
-            get => new RelayCommand(obj => NirsSystem.ErrorManager.SetToServer());
+            get => new RelayCommand(obj => NirsSystem.ErrorManager.SetToServer(NirsSystem.ProgramSettings.AdressServer));
         }
 
         /// <summary>

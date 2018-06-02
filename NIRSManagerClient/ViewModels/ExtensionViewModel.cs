@@ -108,9 +108,21 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public string ServerStatus { get; private set; }
 
+        /// <summary>
+        /// Количество новых ошибок
+        /// </summary>
+        public int CountErrors => NirsSystem.ErrorManager.GetCountNewErrors();
+
+        /// <summary>
+        /// Реакиця на изменения диспетчера ошибок
+        /// </summary>
+        private void ErrorManager_ChangeStatusEvent() => OnPropertyChanged("CountErrors");
+
+
         public ExtensionViewModel(bool status) : base("Главная форма")
         {
             NirsSystem.User.ChangeFIOEvent += _user_ChangeFIOEvent;
+            NirsSystem.ErrorManager.ChangeStatusEvent += ErrorManager_ChangeStatusEvent;
             NirsSystem.StackOperations.ChangeStatusEvent += StackOperations_ChangeStatusEvent;
             GetFio();
             GetLastOperation();

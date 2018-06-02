@@ -121,7 +121,7 @@
                             </Button>
                         </materialDesign:Badged>
                         <materialDesign:Badged
-                            Badge="5"
+                            Badge="{Binding CountErrors}"
                             Margin="20 15 20 10">
                             <Button
                                 Content="{materialDesign:PackIcon InformationOutline}"
