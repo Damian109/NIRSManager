@@ -1,6 +1,7 @@
 ﻿using NIRSCore;
 using NIRSCore.ErrorManager;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -12,25 +13,42 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         private void GetErrors()
         {
-            Errors = NirsSystem.ErrorManager.GetErrors();
+            _errors = NirsSystem.ErrorManager.GetErrors();
             OnPropertyChanged("Errors");
         }
 
         #endregion
 
-        public ErrorsViewModel() : base("Главная форма") { }
+        public ErrorsViewModel() : base("Главная форма") => GetErrors();
+
+        private List<NirsError> _errors;
 
         /// <summary>
         /// Список ошибок
         /// </summary>
-        public List<NirsError> Errors { get; set; }
+        public ObservableCollection<NirsError> Errors
+        {
+            get
+            {
+                ObservableCollection<NirsError> errors = new ObservableCollection<NirsError>();
+                if (_errors != null)
+                    foreach (var elem in _errors)
+                        errors.Add(elem);
+                return errors;
+            }
+        }
 
         /// <summary>
         /// Команда Отправить на сервер
         /// </summary>
         public RelayCommand CommandSetToServer
         {
-            get => new RelayCommand(obj => NirsSystem.ErrorManager.SetToServer(NirsSystem.ProgramSettings.AdressServer));
+            get => new RelayCommand(obj =>
+            {
+                NirsSystem.ErrorManager.SetToServer(NirsSystem.ProgramSettings.AdressServer);
+                _errors.Clear();
+                OnPropertyChanged("Errors");
+            });
         }
 
         /// <summary>
@@ -38,7 +56,12 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public RelayCommand CommandClear
         {
-            get => new RelayCommand(obj => NirsSystem.ErrorManager.Clear());
+            get => new RelayCommand(obj =>
+            {
+                NirsSystem.ErrorManager.Clear();
+                _errors.Clear();
+                OnPropertyChanged("Errors");
+            });
         }
     }
 }

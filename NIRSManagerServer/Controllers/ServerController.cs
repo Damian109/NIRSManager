@@ -1,6 +1,7 @@
-﻿using NIRSCore.ErrorManager;
-using NIRSCore.FileOperations;
+﻿using NIRSCore.FileOperations;
+using NIRSCore.Syncronization;
 using System.Collections.Generic;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace NIRSManagerServer.Controllers
@@ -8,34 +9,34 @@ namespace NIRSManagerServer.Controllers
     /// <summary>
     /// Контроллер отвечающий за ответы на запросы клиента, касательно служебной информации
     /// </summary>
-    [RoutePrefix("Server")]
+    [System.Web.Mvc.RoutePrefix("Server")]
     public class ServerController : Controller
     {
         /// <summary>
         /// Проверка работоспособности сервера и его доступности
         /// </summary>
         /// <returns>Всегда истина</returns>
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public bool Ping() => true;
 
         /// <summary>
         /// Получение от клиента списка ошибок и сохранение в логе
         /// </summary>
-        /// <param name="errors">Список ошибок</param>
+        /// <param name="errors"></param>
         /// <returns></returns>
-        [HttpPost]
-        public bool ErrorsSet(List<NirsError> errors) 
+        [System.Web.Mvc.HttpPost]
+        public bool ErrorsSet([FromBody]ErrorsData errors) 
         {
-            if (errors.Count <= 0)
+            if (errors.NirsErrors == null || errors.NirsErrors.Length <= 0)
                 return false;
-            FileErrors file = new FileErrors();
+            FileErrors file = new FileErrors(Request.MapPath("..//data//"));
             file.Read();
             List<FileErrorsItem> items;
             if (file.ErrorsItems == null)
                 items = new List<FileErrorsItem>();
             else
                 items = file.ErrorsItems;
-            foreach (var elem in errors)
+            foreach (var elem in errors.NirsErrors)
                 items.Add(new FileErrorsItem()
                 {
                     Message = elem.Message,

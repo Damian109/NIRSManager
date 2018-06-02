@@ -38,7 +38,7 @@
                 </StackPanel>
             </DockPanel>
         </materialDesign:ColorZone>
-        <DataGrid Margin="0 8 0 0" Grid.Row="1" ItemsSource="{Binding Errors}" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
+        <DataGrid Margin="0 8 0 0" Grid.Row="1" ItemsSource="{Binding Errors, UpdateSourceTrigger=PropertyChanged}" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
                           materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                           IsReadOnly="True">
             <DataGrid.Columns>

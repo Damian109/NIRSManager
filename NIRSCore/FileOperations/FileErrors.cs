@@ -24,6 +24,12 @@ namespace NIRSCore.FileOperations
             ErrorsItems = new List<FileErrorsItem>();
         }
 
+        public FileErrors(string prevName)
+        {
+            _filename = prevName + "Errors.log";
+            ErrorsItems = new List<FileErrorsItem>();
+        }
+
         /// <summary>
         /// Открыть файл Лог ошибок
         /// </summary>

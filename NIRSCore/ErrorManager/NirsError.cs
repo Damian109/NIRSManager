@@ -7,22 +7,22 @@ namespace NIRSCore.ErrorManager
         /// <summary>
         /// Название класса, вызвавшего исключение
         /// </summary>
-        public string NameSource { get; }
+        public string NameSource { get; set; }
 
         /// <summary>
         /// Название подсистемы, в которой сгенерировалось исключение
         /// </summary>
-        public string NameSystem { get; }
+        public string NameSystem { get; set; }
 
         /// <summary>
         /// Сообщение ошибки
         /// </summary>
-        public string Message { get; }
+        public string Message { get; set; }
 
         /// <summary>
         /// Дата возникновения ошибки
         /// </summary>
-        public DateTime DateError { get; }
+        public DateTime DateError { get; set; }
 
         public bool IsNew { get; set; }
 
@@ -40,5 +40,7 @@ namespace NIRSCore.ErrorManager
             DateError = date;
             IsNew = isNew;
         }
+
+        public NirsError() { }
     }
 }

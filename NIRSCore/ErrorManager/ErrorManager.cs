@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NIRSCore.FileOperations;
 using System.Collections.Generic;
+using NIRSCore.Syncronization;
 
 namespace NIRSCore.ErrorManager
 {
@@ -66,7 +67,18 @@ namespace NIRSCore.ErrorManager
         /// Получение всех ошибок, полученных в результате работы программы и не отправленных на сервер
         /// </summary>
         /// <returns>Список ошибок</returns>
-        public List<NirsError> GetErrors() => _nirsErrors;
+        public List<NirsError> GetErrors()
+        {
+            List<NirsError> errors = new List<NirsError>();
+            foreach(var elem in _nirsErrors)
+            {
+                elem.IsNew = false;
+                errors.Add(elem);
+            }
+            errors.Reverse();
+            ChangeStatusEvent?.Invoke();
+            return errors;
+        }
 
         /// <summary>
         /// Отправить ошибки на сервер и очистка списка
@@ -80,7 +92,12 @@ namespace NIRSCore.ErrorManager
             {
                 try
                 {
-                    HttpResponseMessage message = client.PostAsJsonAsync(adress + "Server/ErrorsSet", _nirsErrors).Result;
+                    NirsError[] errors = new NirsError[_nirsErrors.Count];
+                    int countr = 0;
+                    foreach (var elem in _nirsErrors)
+                        errors[countr++] = new NirsError(elem.NameSource, elem.NameSystem, elem.Message, elem.DateError);
+                    ErrorsData data = new ErrorsData(errors);
+                    HttpResponseMessage message2 = client.PostAsJsonAsync(adress + "Server/ErrorsSet", data).Result;
                 }
                 catch (Exception)
                 {

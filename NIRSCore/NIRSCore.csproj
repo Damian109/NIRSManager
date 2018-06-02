@@ -132,6 +132,7 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="StackOperations\Operation.cs" />
     <Compile Include="StackOperations\StackOperations.cs" />
+    <Compile Include="Syncronization\ErrorsData.cs" />
     <Compile Include="Syncronization\LoginData.cs" />
     <Compile Include="Syncronization\RegistrationData.cs" />
     <Compile Include="User.cs" />
