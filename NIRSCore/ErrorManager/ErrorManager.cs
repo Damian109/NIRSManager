@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using NIRSCore.FileOperations;
 using System.Collections.Generic;
 
@@ -53,8 +56,11 @@ namespace NIRSCore.ErrorManager
         /// Добавление нового исключения в стек системы ошибок
         /// </summary>
         /// <param name="exception">Исключение</param>
-        public void ExecuteException(NirsException exception) =>
-            _nirsErrors.Add(new NirsError(exception.NameSource, exception.NameSystem, exception.Message, DateTime.Now));
+        public void ExecuteException(NirsException exception)
+        {
+            _nirsErrors.Add(new NirsError(exception.NameSource, exception.NameSystem, exception.Message, DateTime.Now, true));
+            ChangeStatusEvent?.Invoke();
+        }
 
         /// <summary>
         /// Получение всех ошибок, полученных в результате работы программы и не отправленных на сервер
@@ -65,30 +71,24 @@ namespace NIRSCore.ErrorManager
         /// <summary>
         /// Отправить ошибки на сервер и очистка списка
         /// </summary>
-        public void SetToServer()
+        public void SetToServer(string adress) => SetToServerAsync(adress);
+
+        //Асинхронная отправка ошибок на сервер
+        private async void SetToServerAsync(string adress) => await Task.Run(() =>
         {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //
-            //
-            //
-            //
-            //
-            //
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage message = client.PostAsJsonAsync(adress + "Server/ErrorsSet", _nirsErrors).Result;
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+            }
             Clear();
-        }
+        });
 
         /// <summary>
         /// Удаление списка ошибок
@@ -99,5 +99,17 @@ namespace NIRSCore.ErrorManager
             FileErrors file = new FileErrors();
             file.Delete();
         }
+
+        /// <summary>
+        /// Реализация события - изменение состояния
+        /// </summary>
+        public delegate void eventSender();
+        public event eventSender ChangeStatusEvent;
+
+        /// <summary>
+        /// Получение списка новых возникших ошибок
+        /// </summary>
+        /// <returns></returns>
+        public int GetCountNewErrors() => _nirsErrors.Count(u => u.IsNew == true);
     }
 }

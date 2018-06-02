@@ -24,18 +24,21 @@ namespace NIRSCore.ErrorManager
         /// </summary>
         public DateTime DateError { get; }
 
+        public bool IsNew { get; set; }
+
         /// <summary>
         /// Конструктор класса ошибки
         /// </summary>
         /// <param name="nameSource">Класс, в котором произошла ошибка</param>
         /// <param name="nameSystem">Подсистема, в которой произошла ошибка</param>
         /// <param name="message">Сообщение ошибки</param>
-        public NirsError(string nameSource, string nameSystem, string message, DateTime date)
+        public NirsError(string nameSource, string nameSystem, string message, DateTime date, bool isNew = false)
         {
             NameSource = nameSource;
             NameSystem = nameSystem;
             Message = message;
             DateError = date;
+            IsNew = isNew;
         }
     }
 }
