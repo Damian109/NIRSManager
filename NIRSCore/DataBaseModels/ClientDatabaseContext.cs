@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using SQLite.CodeFirst;
+using System.Data.Entity;
 
 namespace NIRSCore.DataBaseModels
 {
@@ -7,11 +8,35 @@ namespace NIRSCore.DataBaseModels
     /// </summary>
     public class ClientDatabaseContext : DbContext
     {
+        private bool _sqlite = false;
+
         /// <summary>
         /// Создание контекста данных
         /// </summary>
         /// <param name="connectionString">Строка подключения</param>
         public ClientDatabaseContext(string conn) : base(conn) { }
+
+        /// <summary>
+        /// Создание контекста данных из sqlite
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="sqlite"></param>
+        public ClientDatabaseContext(string conn, bool sqlite) : base(new System.Data.SQLite.SQLiteConnection() { ConnectionString = conn }, true)
+        {
+            _sqlite = sqlite;
+        }
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            if (_sqlite)
+            {
+                var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<ClientDatabaseContext>(modelBuilder);
+                Database.SetInitializer(sqliteConnectionInitializer);
+            }
+            else
+                base.OnModelCreating(modelBuilder);
+        }
 
         /// <summary>
         /// Таблица организаций
