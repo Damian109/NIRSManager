@@ -262,6 +262,11 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
                         NirsSystem.User.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename='" + path + "'; Integrated Security = " +
                             NirsSystem.User.IntegratedSecurity.ToString() + "; ";
                     }
+                    if (NirsSystem.User.DBMSName == "SQLite")
+                    {
+                        NirsSystem.User.ConnectionString = @"Data Source=" + path + ";";
+                    }
+
                     NirsSystem.InitialiseDB();
                 });
 
