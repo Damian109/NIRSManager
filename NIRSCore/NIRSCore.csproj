@@ -77,6 +77,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Windows" />
@@ -91,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupManager\BackupManager.cs" />
     <Compile Include="DataBaseModels\AcademicDegree.cs" />
     <Compile Include="DataBaseModels\Author.cs" />
     <Compile Include="DataBaseModels\ClientDatabaseContext.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="FileOperations\UserDirectory.cs" />
     <Compile Include="HashForSecurity.cs" />
     <Compile Include="HelpfulEnumsStructs\AuthorizationStatus.cs" />
+    <Compile Include="HelpfulEnumsStructs\FileToUpload.cs" />
     <Compile Include="HelpfulEnumsStructs\RegistrationStatus.cs" />
     <Compile Include="NirsSystem.cs" />
     <Compile Include="NirsSystem_partial\NirsSystem_database.cs" />
@@ -133,6 +136,9 @@
     <Compile Include="StackOperations\Operation.cs" />
     <Compile Include="StackOperations\StackOperations.cs" />
     <Compile Include="Syncronization\ErrorsData.cs" />
+    <Compile Include="Syncronization\FileData.cs" />
+    <Compile Include="Syncronization\FileInfoData.cs" />
+    <Compile Include="Syncronization\ListFileInfoData.cs" />
     <Compile Include="Syncronization\LoginData.cs" />
     <Compile Include="Syncronization\RegistrationData.cs" />
     <Compile Include="User.cs" />
@@ -146,6 +152,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
