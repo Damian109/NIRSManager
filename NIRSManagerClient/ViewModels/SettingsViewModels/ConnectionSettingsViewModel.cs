@@ -50,8 +50,8 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
             {
                 case "MSSQL$SQLEXPRESS":
                     return new DatabaseSelection("MS SQL Express", "System.Data.EntityClient");
-                case "MySQL":
-                    return new DatabaseSelection("MySQL", "MySql.Data.MySqlClient");
+                /*case "MySQL":
+                    return new DatabaseSelection("MySQL", "MySql.Data.MySqlClient");*/
                 default:
                     return null;
             }
