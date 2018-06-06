@@ -6,7 +6,7 @@ namespace NIRSCore.Syncronization
     /// <summary>
     /// Объект содержит информацию о файле для синхронизации с сервером
     /// </summary>
-    public sealed class FileInfoData
+    public class FileInfoData
     {
         /// <summary>
         /// Название файла, включая каталоги
