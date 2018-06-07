@@ -139,7 +139,7 @@ namespace NIRSCore
                 _md5 = HashForSecurity.GetMd5Hash(login + password);
                 RegistrationFunc(isServer);
                 StackOperations.AddOperation(new Operation("Регистрация", null, null));
-                Close();
+                Close(false);
                 return RegistrationStatus.RegGood;
             }
 
@@ -198,9 +198,6 @@ namespace NIRSCore
             if (User == null)
                 User = new User();
             User.Changer = true;
-
-            //Выполнение синхронизации
-            Synchronization();
 
             if (User.DateLastEditDatabase != DateTime.MinValue)
                 IsDatabaseContextCreated = true;
