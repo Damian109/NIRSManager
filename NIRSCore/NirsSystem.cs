@@ -38,11 +38,6 @@ namespace NIRSCore
         public static bool IsMainUser { get; set; }
 
         /// <summary>
-        /// Клиентская база данных
-        /// </summary>
-        public static ClientDatabaseContext ClientDatabaseContext { get; set; }
-
-        /// <summary>
         /// Существует ли клиентская БД
         /// </summary>
         public static bool IsDatabaseContextCreated { get; private set; }
