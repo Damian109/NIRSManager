@@ -66,9 +66,9 @@ namespace NIRSCore
         /// <param name="obj">Любой преобразованный элемент из моделей БД</param>
         public static void AddObject(object obj)
         {
+            ClientDatabaseContext context = null;
             try
             {
-                ClientDatabaseContext context;
                 if (User.DBMSName == "SQLite")
                     context = new ClientDatabaseContext(User.ConnectionString, true);
                 else
@@ -105,8 +105,6 @@ namespace NIRSCore
                 if (obj is RewardWork)
                     context.RewardWorks.Add((RewardWork)obj);
                 context.SaveChanges();
-
-                context.Dispose();
                 IsDatabaseContextCreated = true;
                 User.DateLastEditDatabase = DateTime.Now;
                 ChangeDatabase?.Invoke();
@@ -115,6 +113,10 @@ namespace NIRSCore
             {
                 ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при добавлении элемента",
                     "База данных", "Работа с базой данных"));
+            }
+            finally
+            {
+                context.Dispose();
             }
         }
 
@@ -128,9 +130,9 @@ namespace NIRSCore
         {
             if (!IsDatabaseContextCreated)
                 return null;
+            ClientDatabaseContext context = null;
             try
             {
-                ClientDatabaseContext context;
                 if (User.DBMSName == "SQLite")
                     context = new ClientDatabaseContext(User.ConnectionString, true);
                 else
@@ -166,12 +168,15 @@ namespace NIRSCore
                     return context.DirectionWorks.Where(u => u.DirectionWorkId == id).ToList().FirstOrDefault();
                 if (typeof(T) == typeof(RewardWork))
                     return context.RewardWorks.Where(u => u.RewardWorkId == id).ToList().FirstOrDefault();
-                context.Dispose();
             }
             catch (Exception)
             {
                 ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при поиске элемента",
                     "База данных", "Работа с базой данных"));
+            }
+            finally
+            {
+                context.Dispose();
             }
             return null;
         }
@@ -185,9 +190,9 @@ namespace NIRSCore
         {
             if (!IsDatabaseContextCreated)
                 return null;
+            ClientDatabaseContext context = null;
             try
             {
-                ClientDatabaseContext context;
                 if (User.DBMSName == "SQLite")
                     context = new ClientDatabaseContext(User.ConnectionString, true);
                 else
@@ -223,13 +228,15 @@ namespace NIRSCore
                     return context.DirectionWorks.ToList();
                 if (typeof(T) == typeof(RewardWork))
                     return context.RewardWorks.ToList();
-
-                context.Dispose();
             }
             catch (Exception)
             {
                 ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при выборке данных",
                     "База данных", "Работа с базой данных"));
+            }
+            finally
+            {
+                context.Dispose();
             }
             return null;
         }
@@ -242,9 +249,9 @@ namespace NIRSCore
         {
             if (!IsDatabaseContextCreated)
                 return;
+            ClientDatabaseContext context = null;
             try
             {
-                ClientDatabaseContext context;
                 if (User.DBMSName == "SQLite")
                     context = new ClientDatabaseContext(User.ConnectionString, true);
                 else
@@ -347,12 +354,15 @@ namespace NIRSCore
                 context.SaveChanges();
                 User.DateLastEditDatabase = DateTime.Now;
                 ChangeDatabase?.Invoke();
-                context.Dispose();
             }
             catch (Exception)
             {
                 ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при изменении элемента",
                     "База данных", "Работа с базой данных"));
+            }
+            finally
+            {
+                context.Dispose();
             }
         }
 
@@ -364,9 +374,9 @@ namespace NIRSCore
         {
             if (!IsDatabaseContextCreated)
                 return;
+            ClientDatabaseContext context = null;
             try
             {
-                ClientDatabaseContext context;
                 if (User.DBMSName == "SQLite")
                     context = new ClientDatabaseContext(User.ConnectionString, true);
                 else
@@ -465,12 +475,15 @@ namespace NIRSCore
                 context.SaveChanges();
                 User.DateLastEditDatabase = DateTime.Now;
                 ChangeDatabase?.Invoke();
-                context.Dispose();
             }
             catch (Exception)
             {
                 ErrorManager.ExecuteException(new ErrorManager.NirsException("Ошибка при удалении элемента",
                     "База данных", "Работа с базой данных"));
+            }
+            finally
+            {
+                context.Dispose();
             }
         }
     }
