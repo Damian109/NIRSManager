@@ -89,17 +89,11 @@ namespace NIRSCore
                     case FileToUpload.Backup:
                         dir = "Backup";
                         break;
-                    case FileToUpload.Database:
-                        dir = "Database";
-                        break;
                     case FileToUpload.Document:
                         dir = "Document";
                         break;
                     case FileToUpload.Photo:
                         dir = "Photo";
-                        break;
-                    case FileToUpload.Settings:
-                        dir = "Setting";
                         break;
                 }
 
@@ -125,7 +119,7 @@ namespace NIRSCore
         /// Отправка файла на сервер
         /// </summary>
         /// <param name="name">Название файла</param>
-        public static async void PostFileFromServerAsync(string name) => await Task.Run(() =>
+        public static void PostFileFromServerAsync(string name)
         {
             using (var client = new HttpClient())
             {
@@ -133,8 +127,9 @@ namespace NIRSCore
                 string sfile = Convert.ToBase64String(file);
                 FileData fileData = new FileData(_login + "\\" + name, sfile);
                 HttpResponseMessage message = client.PostAsJsonAsync(ProgramSettings.AdressServer + "Server/PostFile", fileData).Result;
+                string t = message.ToString();
             }
-        });
+        }
 
         /// <summary>
         /// Синхронизация с сервером
@@ -175,14 +170,15 @@ namespace NIRSCore
                     FileInfoData fileDatabase = new FileInfoData("database.db", "", true, User.DateLastEditDatabase, FileToUpload.Database, false, false);
                     fileInfos.Add(fileDatabase);
                 }
-                else
+                //Отсутствует поддержка синхронизации файлов SQL Server
+                /*else
                 {
                     FileInfoData fileDatabase = new FileInfoData("database.mdf", "", true, User.DateLastEditDatabase, FileToUpload.Database, false, false);
                     fileInfos.Add(fileDatabase);
-                    FileInfoData fileDatabaseLog = new FileInfoData("database_log.mdf", "", true, User.DateLastEditDatabase, FileToUpload.Database,
+                    FileInfoData fileDatabaseLog = new FileInfoData("database_log.ldf", "", true, User.DateLastEditDatabase, FileToUpload.Database,
                         false, false);
                     fileInfos.Add(fileDatabaseLog);
-                }
+                }*/
             }
 
             //Файлы резервных копий

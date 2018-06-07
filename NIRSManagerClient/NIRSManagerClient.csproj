@@ -140,6 +140,7 @@
     <Compile Include="ViewModels\SettingsViewModels\ConnectionSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\MainSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\ProgramSettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\ServerSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\UserInterfaceSettingsViewModel.cs" />
     <Compile Include="ViewModels\StackViewModel.cs" />
     <Compile Include="ViewModels\StaticTablesViewModel.cs" />

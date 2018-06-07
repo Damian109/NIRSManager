@@ -260,11 +260,11 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
                     if (NirsSystem.User.DBMSName == "MS SQL Express")
                     {
                         NirsSystem.User.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename='" + path + "'; Integrated Security = " +
-                            NirsSystem.User.IntegratedSecurity.ToString() + "; ";
+                            NirsSystem.User.IntegratedSecurity.ToString() + ";pooling=false;";
                     }
                     if (NirsSystem.User.DBMSName == "SQLite")
                     {
-                        NirsSystem.User.ConnectionString = @"Data Source=" + path + ";";
+                        NirsSystem.User.ConnectionString = @"Data Source=" + path + ";pooling=false;";
                     }
 
                     NirsSystem.InitialiseDB();

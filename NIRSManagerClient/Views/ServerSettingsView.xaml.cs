@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using NIRSManagerClient.ViewModels.SettingsViewModels;
 
 namespace NIRSManagerClient.Views
 {
@@ -7,6 +8,7 @@ namespace NIRSManagerClient.Views
         public ServerSettingsView()
         {
             InitializeComponent();
+            DataContext = new ServerSettingsViewModel();
         }
     }
 }

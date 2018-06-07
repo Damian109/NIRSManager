@@ -9,122 +9,94 @@
         <Border
                 Background="{DynamicResource MaterialDesignBackground}">
             <GroupBox
-                Header="Настройки синхронизации с сервером" HorizontalAlignment="Center" MinHeight="500" MinWidth="600"
+                Header="Настройки синхронизации с сервером" HorizontalAlignment="Center" MinHeight="400" MinWidth="600"
                 VerticalAlignment="Center" Margin="20"
                  Style="{DynamicResource MaterialDesignGroupBox}"
                     UseLayoutRounding="True"
                     SnapsToDevicePixels="True">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <CheckBox
-                        Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        FontSize="28" 
-                        HorizontalAlignment="Center"
-                        MinHeight="50" 
-                        Margin="50 20 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
-                        Синхронизация с сервером
-                    </CheckBox>
-
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Логин для подключения"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox
+                            Style="{StaticResource MaterialDesignCheckBox}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding Login}" 
+                            FontSize="38" 
+                            HorizontalAlignment="Center"
+                            Margin="30"
+                            IsChecked="{Binding IsSyncServer}">
+                            Синхронизация с сервером
+                        </CheckBox>
+                        <Button
+                            Margin="60 35"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            ToolTip="Синхронизировать сейчас"
+                            Command="{Binding CommandSync}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             FontSize="24" 
-                            MinHeight="50" 
-                            TextAlignment="Right"
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="50 20 50 20">
-                    </TextBox>
-
-                    <TextBox
-                            materialDesign:HintAssist.Hint="Пароль для подключения"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Background="Transparent"
+                            MinHeight="55">
+                            Синхронизировать
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox
+                            Style="{StaticResource MaterialDesignCheckBox}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
                             Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                            Text="{Binding Password}" 
-                            FontSize="24" 
-                            MinHeight="50" 
-                            TextAlignment="Right"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="50 20 50 20">
-                    </TextBox>
-
-                    <CheckBox
-                        Style="{StaticResource MaterialDesignCheckBox}"
+                            FontSize="28" 
+                            HorizontalAlignment="Center"
+                            Margin="30"
+                            IsEnabled="{Binding IsSyncServer}"
+                            IsChecked="{Binding IsSyncSettings}">
+                            Синхронизировать настройки
+                        </CheckBox>
+                        <CheckBox
+                            Style="{StaticResource MaterialDesignCheckBox}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            FontSize="28" 
+                            HorizontalAlignment="Center"
+                            Margin="80 30"
+                            IsEnabled="{Binding IsSyncServer}"
+                            IsChecked="{Binding IsSyncDatabase}">
+                            Синхронизировать базу данных
+                        </CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                       <CheckBox
+                            Style="{StaticResource MaterialDesignCheckBox}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            FontSize="26" 
+                            HorizontalAlignment="Center"
+                            Margin="30"
+                            IsEnabled="{Binding IsSyncServer}"
+                            IsChecked="{Binding IsSyncBackups}">
+                            Хранить резервные копии на сервере
+                        </CheckBox>
+                        <CheckBox
+                            Style="{StaticResource MaterialDesignCheckBox}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
+                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                            FontSize="26" 
+                            HorizontalAlignment="Center"
+                            Margin="10 30"
+                            IsEnabled="{Binding IsSyncServer}"
+                            IsChecked="{Binding IsSyncDocuments}">
+                            Хранить документы на сервере
+                        </CheckBox>
+                    </StackPanel>
+                    <ProgressBar IsIndeterminate="True" Visibility="{Binding IsDone}" MinHeight="10" Margin="10" />
+                    <TextBlock Margin="15 2"
+                        MinWidth="150" 
+                        FontSize="20" 
                         Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        FontSize="24" 
-                        HorizontalAlignment="Center"
-                        MinHeight="50" 
-                        Margin="50 20 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
-                        Синхронизация настроек с сервером
-                    </CheckBox>
-
-                    <CheckBox
-                        Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        FontSize="24" 
-                        HorizontalAlignment="Center"
-                        MinHeight="50" 
-                        Margin="50 20 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
-                        Синхронизация БД с сервером
-                    </CheckBox>
-
-                    <CheckBox
-                        Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        FontSize="24" 
-                        HorizontalAlignment="Center"
-                        MinHeight="50" 
-                        Margin="50 20 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
-                        Хранить резервные копии на сервере
-                    </CheckBox>
-
-                    <CheckBox
-                        Style="{StaticResource MaterialDesignCheckBox}"
-                        Background="Transparent"
-                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        FontSize="24" 
-                        HorizontalAlignment="Center"
-                        MinHeight="50" 
-                        Margin="50 20 50 20"
-                        IsChecked="{Binding IntegratedSecurity}">
-                        Хранить документы на сервере
-                    </CheckBox>
-
-                </Grid>
+                        TextAlignment="Left"
+                        Text="{Binding StatusString}"
+                        Visibility="{Binding IsDone}"
+                        Foreground="{DynamicResource PrimaryHueDarkBrush}" 
+                    />
+                </StackPanel>
             </GroupBox>
         </Border>
     </Grid>
