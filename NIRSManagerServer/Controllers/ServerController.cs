@@ -89,104 +89,117 @@ namespace NIRSManagerServer.Controllers
             string[] masb = Directory.GetFiles(mainPath + "\\Backups");
             string[] masp = Directory.GetFiles(mainPath + "\\Photos");
             string[] masd = Directory.GetFiles(mainPath + "\\Documents");
+            string[] masm = Directory.GetFiles(mainPath);
 
             //Получение списков имен файлов
             List<string> backupFileNames = new List<string>();
             List<string> photoFileNames = new List<string>();
             List<string> documentFileNames = new List<string>();
+            List<string> mainFileNames = new List<string>();
+
             foreach(var elem in masb)
             {
                 FileInfo infFile = new FileInfo(elem);
                 backupFileNames.Add(infFile.Name);
             }
-
             foreach (var elem in masp)
             {
                 FileInfo infFile = new FileInfo(elem);
                 photoFileNames.Add(infFile.Name);
             }
-
             foreach (var elem in masd)
             {
                 FileInfo infFile = new FileInfo(elem);
                 documentFileNames.Add(infFile.Name);
             }
-
-
-            foreach (var elem in list.FilesInfo)
+            foreach( var elem in masm)
             {
-                switch(elem.FileType)
+                FileInfo infFile = new FileInfo(elem);
+                mainFileNames.Add(infFile.Name);
+            }
+
+            if (list.FilesInfo != null)
+            {
+                foreach (var elem in list.FilesInfo)
                 {
-                    case FileToUpload.Settings:
-                        {
-                            using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
-                            {
-                                UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
-                                if (user.DateEditSetting < elem.DateChange)
-                                {
-                                    user.DateEditSetting = elem.DateChange;
-                                    databaseContext.SaveChanges();
-                                    elem.IsUpload = true;
-                                }
-                                else
-                                {
-                                    if (System.IO.File.Exists(mainPath + "\\" + elem))
-                                        elem.IsDownload = true;
-                                }
-                            }
-                            break;
-                        }
-                    case FileToUpload.Database:
-                        {
-                            using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
-                            {
-                                UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
-                                if (user.DateEditDatabase < elem.DateChange)
-                                {
-                                    user.DateEditDatabase = elem.DateChange;
-                                    databaseContext.SaveChanges();
-                                    elem.IsUpload = true;
-                                }
-                                else
-                                {
-                                    if (System.IO.File.Exists(mainPath + "\\" + elem))
-                                        elem.IsDownload = true;
-                                }
-                            }
-                            break;
-                        }
-                    case FileToUpload.Backup:
-                        {
-                            if (!backupFileNames.Contains(elem.NameFile))
+                    switch (elem.FileType)
+                    {
+                        case FileToUpload.Settings:
                             {
                                 using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                                 {
                                     UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
-                                    databaseContext.Backups.Add(new BackupTable { BackupName = elem.NameFile, DateOfCreate = DateTime.Now, UserId = user.UserId });
-                                    databaseContext.SaveChanges();
-                                    elem.IsUpload = true;
+                                    if (user.DateEditSetting == null || user.DateEditSetting < elem.DateChange)
+                                    {
+                                        user.DateEditSetting = elem.DateChange;
+                                        databaseContext.SaveChanges();
+                                        elem.IsUpload = true;
+                                    }
+                                    else
+                                    {
+                                        if (System.IO.File.Exists(mainPath + "\\" + elem))
+                                            elem.IsDownload = true;
+                                    }
+                                    if (mainFileNames.Contains(elem.NameFile))
+                                        mainFileNames.Remove(elem.NameFile);
                                 }
-                            }  
-                            else
-                                backupFileNames.Remove(elem.NameFile);
-                            break;
-                        }
-                    case FileToUpload.Document:
-                        {
-                            if (!documentFileNames.Contains(elem.NameFile))
-                                elem.IsUpload = true;
-                            else
-                                documentFileNames.Remove(elem.NameFile);
-                            break;
-                        }
-                    case FileToUpload.Photo:
-                        {
-                            if (!photoFileNames.Contains(elem.NameFile))
-                                elem.IsUpload = true;
-                            else
-                                photoFileNames.Remove(elem.NameFile);
-                            break;
-                        }
+                                break;
+                            }
+                        case FileToUpload.Database:
+                            {
+                                using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+                                {
+                                    UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
+                                    if (user.DateEditDatabase == null || user.DateEditDatabase < elem.DateChange)
+                                    {
+                                        user.DateEditDatabase = elem.DateChange;
+                                        databaseContext.SaveChanges();
+                                        elem.IsUpload = true;
+                                    }
+                                    else
+                                    {
+                                        if (System.IO.File.Exists(mainPath + "\\" + elem))
+                                            elem.IsDownload = true;
+                                    }
+                                    if (mainFileNames.Contains(elem.NameFile))
+                                        mainFileNames.Remove(elem.NameFile);
+                                }
+                                break;
+                            }
+                        case FileToUpload.Backup:
+                            {
+                                if (!backupFileNames.Contains(elem.NameFile))
+                                {
+                                    using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+                                    {
+                                        UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
+                                        databaseContext.Backups.Add(new BackupTable { BackupName = elem.NameFile, DateOfCreate = DateTime.Now,
+                                            UserId = user.UserId });
+                                        databaseContext.SaveChanges();
+                                        elem.IsUpload = true;
+                                    }
+                                }
+                                else
+                                    backupFileNames.Remove(elem.NameFile);
+                                break;
+                            }
+                        case FileToUpload.Document:
+                            {
+                                if (!documentFileNames.Contains(elem.NameFile))
+                                    elem.IsUpload = true;
+                                else
+                                    documentFileNames.Remove(elem.NameFile);
+                                break;
+                            }
+                        case FileToUpload.Photo:
+                            {
+                                if (!photoFileNames.Contains(elem.NameFile))
+                                    elem.IsUpload = true;
+                                else
+                                    photoFileNames.Remove(elem.NameFile);
+                                break;
+                            }
+                    }
                 }
             }
 
@@ -220,6 +233,27 @@ namespace NIRSManagerServer.Controllers
                         PathFile = ""
                     });
                 }
+
+            if(mainFileNames.Count > 0)
+                foreach(var elem in mainFileNames)
+                {
+                    FileToUpload fileTo;
+                    if (elem == "Settings.bin")
+                        fileTo = FileToUpload.Settings;
+                    else
+                        fileTo = FileToUpload.Database;
+                    newList.Add(new FileInfoData
+                    {
+                        DateChange = DateTime.Now,
+                        FileType = fileTo,
+                        IsChanged = false,
+                        IsDownload = true,
+                        IsUpload = false,
+                        NameFile = elem,
+                        PathFile = ""
+                    });
+                }
+
             list = new ListFileInfoData(newList.ToArray());
             return Json(list);
         }
@@ -240,8 +274,16 @@ namespace NIRSManagerServer.Controllers
             switch (File)
             {
                 case FileToUpload.Backup:
-                    fullPath = mainPath + "\\Backups\\" + Name;
-                    break;
+                    {
+                        fullPath = mainPath + "\\Backups\\" + Name;
+                        using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+                        {
+                            UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == Login);
+                            databaseContext.Backups.Add(new BackupTable { BackupName = Name, DateOfCreate = DateTime.Now, UserId = user.UserId });
+                            databaseContext.SaveChanges();
+                        }
+                        break;
+                    }                    
                 case FileToUpload.Database:
                     fullPath = mainPath + "\\" + Name;
                     break;
