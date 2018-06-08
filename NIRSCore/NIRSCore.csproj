@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupManager\BackupElem.cs" />
     <Compile Include="BackupManager\BackupManager.cs" />
     <Compile Include="DataBaseModels\AcademicDegree.cs" />
     <Compile Include="DataBaseModels\Author.cs" />
