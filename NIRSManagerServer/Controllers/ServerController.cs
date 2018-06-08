@@ -150,13 +150,13 @@ namespace NIRSManagerServer.Controllers
                                 using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                                 {
                                     UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
-                                    if (user.DateEditDatabase == null || user.DateEditDatabase.Value.Date - elem.DateChange.Date > TimeSpan.FromMinutes(1))
+                                    if (user.DateEditDatabase == null || elem.DateChange - user.DateEditDatabase.Value > TimeSpan.FromMinutes(1))
                                     {
                                         user.DateEditDatabase = DateTime.Now;
                                         databaseContext.SaveChanges();
                                         elem.IsUpload = true;
                                     }
-                                    else if(elem.DateChange.Date - user.DateEditDatabase.Value.Date > TimeSpan.FromMinutes(1))
+                                    else if(user.DateEditDatabase.Value - elem.DateChange > TimeSpan.FromMinutes(1))
                                     {
                                         if (System.IO.File.Exists(mainPath + "\\" + elem.NameFile))
                                             elem.IsDownload = true;
