@@ -24,6 +24,10 @@ namespace NIRSCore
         private int _backupIntervals;
         private DateTime _lastBackup;
 
+        private bool _change = false;
+
+        public void Change() => _change = true;
+
         #endregion
         #region MainPropertyes
         /// <summary>
@@ -40,7 +44,7 @@ namespace NIRSCore
             set
             {
                 _surName = value;
-                if(Changer)
+                if(_change)
                 {
                     ChangeFIOEvent?.Invoke();
                     DateLastEditSettings = DateTime.Now;
@@ -57,7 +61,7 @@ namespace NIRSCore
             set
             {
                 _name = value;
-                if (Changer)
+                if (_change)
                 {
                     ChangeFIOEvent?.Invoke();
                     DateLastEditSettings = DateTime.Now;
@@ -74,7 +78,7 @@ namespace NIRSCore
             set
             {
                 _secondName = value;
-                if (Changer)
+                if (_change)
                 {
                     ChangeFIOEvent?.Invoke();
                     DateLastEditSettings = DateTime.Now;
@@ -90,7 +94,7 @@ namespace NIRSCore
             set
             {
                 _position = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
@@ -108,7 +112,7 @@ namespace NIRSCore
             set
             {
                 _dBMSName = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
@@ -124,7 +128,7 @@ namespace NIRSCore
             set
             {
                 _databaseLogin = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
@@ -140,7 +144,7 @@ namespace NIRSCore
             set
             {
                 _databasePassword = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
@@ -156,7 +160,7 @@ namespace NIRSCore
             set
             {
                 _integratedSecurity = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
@@ -172,7 +176,7 @@ namespace NIRSCore
             set
             {
                 _databaseProviderName = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
@@ -188,7 +192,7 @@ namespace NIRSCore
             set
             {
                 _backupIntervals = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
@@ -204,7 +208,7 @@ namespace NIRSCore
             set
             {
                 _lastBackup = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
@@ -220,7 +224,7 @@ namespace NIRSCore
             set
             {
                 _connectionString = value;
-                if (Changer)
+                if (_change)
                 {
                     DateLastEditSettings = DateTime.Now;
                 }
