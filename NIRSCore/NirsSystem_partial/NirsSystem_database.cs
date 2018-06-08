@@ -116,7 +116,7 @@ namespace NIRSCore
             }
             finally
             {
-                context?.Dispose();
+                context.Dispose();
             }
         }
 
@@ -176,7 +176,7 @@ namespace NIRSCore
             }
             finally
             {
-                context?.Dispose();
+                context.Dispose();
             }
             return null;
         }
@@ -236,7 +236,7 @@ namespace NIRSCore
             }
             finally
             {
-                context?.Dispose();
+                context.Dispose();
             }
             return null;
         }
@@ -362,7 +362,7 @@ namespace NIRSCore
             }
             finally
             {
-                context?.Dispose();
+                context.Dispose();
             }
         }
 
@@ -483,7 +483,7 @@ namespace NIRSCore
             }
             finally
             {
-                context?.Dispose();
+                context.Dispose();
             }
         }
     }

@@ -124,7 +124,7 @@ namespace NIRSCore
             };
             fileSettings.Write();
             if(sync)
-                Synchronization(true);
+                Synchronization();
         }
 
         /// <summary>

@@ -8,8 +8,6 @@ using NIRSCore.Syncronization;
 using System.Collections.Generic;
 using NIRSCore.HelpfulEnumsStructs;
 
-using NIRSCore.FileOperations;
-
 namespace NIRSCore
 {
     public static partial class NirsSystem
@@ -75,7 +73,7 @@ namespace NIRSCore
         /// </summary>
         /// <param name="fileExt">Тип файла</param>
         /// <param name="name">Название файла для сохранения</param>
-        public static void GetFileFromServerAsync(FileToUpload fileExt, string name)
+        public static async void GetFileFromServerAsync(FileToUpload fileExt, string name) => await Task.Run(async () =>
         {
             using (var client = new HttpClient())
             {
@@ -97,12 +95,6 @@ namespace NIRSCore
                     case FileToUpload.Photo:
                         dir = "Photo";
                         break;
-                    case FileToUpload.Database:
-                        dir = "Database";
-                        break;
-                    case FileToUpload.Settings:
-                        dir = "Settings";
-                        break;
                 }
 
                 query += dir + "&Name=" + name;
@@ -113,57 +105,15 @@ namespace NIRSCore
                 if (!message.IsSuccessStatusCode)
                     return;
 
-                if (fileExt != FileToUpload.Settings)
+                //Сохранение файла
+                string path = Environment.CurrentDirectory + "\\data\\" + _login + "\\" + dir + "s\\" + name;
+
+                using (FileStream file = new FileStream(path, FileMode.Create))
                 {
-                    //Сохранение файла
-                    string path = Environment.CurrentDirectory + "\\data\\" + _login;
-                    if (fileExt == FileToUpload.Settings || fileExt == FileToUpload.Database)
-                        path += "\\" + name;
-                    else
-                        path += "\\" + dir + "s\\" + name;
-
-                    FileInfo fileE = new FileInfo(path);
-                    if (fileE.Exists)
-                        fileE.Delete();
-
-                    using (FileStream file = new FileStream(path, FileMode.Create))
-                    {
-                        message.Content.CopyToAsync(file).GetAwaiter().GetResult();
-                    }
+                    await message.Content.CopyToAsync(file);
                 }
-
-                /*
-                //Изменение пути к БД
-                if(fileExt == FileToUpload.Settings)
-                {
-                    try
-                    {
-                        FileSettings fileSettings = new FileSettings(_login, _md5);
-                        fileSettings.Read();
-
-                        string newPathDB = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\database";
-                        if (fileSettings.User.DBMSName == "MS SQL Express")
-                            newPathDB += ".mdf";
-                        else
-                            newPathDB += ".db";
-                        if (fileSettings.User.DBMSName == "MS SQL Express")
-                        {
-                            fileSettings.User.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename='" + newPathDB + "'; Integrated Security = " +
-                                fileSettings.User.IntegratedSecurity.ToString() + ";pooling=false;";
-                        }
-                        if (fileSettings.User.DBMSName == "SQLite")
-                        {
-                            fileSettings.User.ConnectionString = @"Data Source=" + newPathDB + ";pooling=false;";
-                        }
-                        fileSettings.Write();
-                    }
-                    catch(ErrorManager.NirsException e)
-                    {
-                        ErrorManager.ExecuteException(e);
-                    }
-                }*/
             }
-        }
+        });
 
         /// <summary>
         /// Отправка файла на сервер
@@ -187,7 +137,7 @@ namespace NIRSCore
         /// <param name="exec">Обязательная синхронизация</param>
         public static int Synchronization(bool exec = false)
         {
-            if (!User.IsConnectToServer)
+            if (!User.IsConnectToServer && !exec)
                 return 1;
             if (!IsServer)
                 return 2;
@@ -218,8 +168,7 @@ namespace NIRSCore
                 if (User.DBMSName == "SQLite")
                 {
                     FileInfoData fileDatabase = new FileInfoData("database.db", "", true, User.DateLastEditDatabase, FileToUpload.Database, false, false);
-                    if (File.Exists(Environment.CurrentDirectory + "\\data\\" + _login + "\\database.db"))
-                        fileInfos.Add(fileDatabase);
+                    fileInfos.Add(fileDatabase);
                 }
                 //Отсутствует поддержка синхронизации файлов SQL Server
                 /*else
@@ -272,7 +221,7 @@ namespace NIRSCore
             //Начало отправки/загрузки файлов
             foreach(var elem in list.FilesInfo)
             {
-                if(elem.IsUpload && exec)
+                if(elem.IsUpload)
                 {
                     string prevPath = "";
                     switch(elem.FileType)
@@ -289,7 +238,7 @@ namespace NIRSCore
                     }
                     PostFileFromServerAsync(prevPath + elem.NameFile);
                 }
-                if(elem.IsDownload && !exec)
+                if(elem.IsDownload)
                 {
                     GetFileFromServerAsync(elem.FileType, elem.NameFile);
                 }
@@ -302,6 +251,7 @@ namespace NIRSCore
             if(User.IsSynchronizeDocumentsWithServer)
                 foreach (var elem in backupFileNames)
                     File.Delete(elem);
+
             return 0;
         }
 
