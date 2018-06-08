@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using NIRSCore.FileOperations;
-using NIRSCore.DataBaseModels;
 
 namespace NIRSCore
 {
@@ -124,7 +123,7 @@ namespace NIRSCore
             };
             fileSettings.Write();
             if(sync)
-                Synchronization();
+                Synchronization(true);
         }
 
         /// <summary>

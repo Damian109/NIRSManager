@@ -172,6 +172,7 @@ namespace NIRSCore
         {
             if (_login == string.Empty)
                 return false;
+
             FileSettings fileSettings = new FileSettings(_login, _md5);
             try
             {
@@ -182,7 +183,7 @@ namespace NIRSCore
                     IsDatabaseContextCreated = true;
 
                 User = fileSettings.User;
-                
+                User.Change();
             }
             catch(NirsException exception)
             {
@@ -192,12 +193,13 @@ namespace NIRSCore
                 {
                     Changer = true
                 };
+                User.Change();
                 return false;
             }
 
             if (User == null)
                 User = new User();
-            User.Changer = true;
+            User.Change();
 
             if (User.DateLastEditDatabase != DateTime.MinValue)
                 IsDatabaseContextCreated = true;
