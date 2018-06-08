@@ -1,6 +1,7 @@
 ﻿using NIRSCore;
 using System.Windows;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace NIRSManagerClient.ViewModels.SettingsViewModels
 {
@@ -64,6 +65,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// Выполняется ли какая-то операция (Видимость)
         /// </summary>
         public Visibility IsDone { get; private set; } = Visibility.Hidden;
+        public Visibility IsDoneS { get; private set; } = Visibility.Hidden;
 
         /// <summary>
         /// Статус выполнения операции
@@ -77,31 +79,49 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         {
             get => new RelayCommand(obj =>
             {
-                IsDone = Visibility.Visible;
-                OnPropertyChanged("IsDone");
-                StatusString = "Выполняется синхронизация";
-                OnPropertyChanged("StatusString");
-                int status = NirsSystem.Synchronization(true);
-                switch(status)
+                Sync();
+                /*while(_status == 10)
                 {
-                    case 1:
-                        StatusString = "Возможно отключена синхронизация. Включите и попробуйте снова";
-                        break;
-                    case 2:
-                        StatusString = "Отсутствует соединение с сервером";
-                        break;
-                    case 3:
-                        StatusString = "Данные для авторизации на сервере не совпадают";
-                        break;
-                    default:
-                        StatusString = "Синхронизация выполнена успешна. Для загрузки настроек перезагрузите приложение";
-                        break;
-                }
-                OnPropertyChanged("StatusString");
-                Thread.Sleep(1000);
-                IsDone = Visibility.Hidden;
-                OnPropertyChanged("IsDone");
+                    if(_status == 0)
+                    {
+                        ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+                        window = new ExtensionView(NirsSystem.OpenUserSettings());
+                    }
+                }*/
             });
         }
+
+        private int _status = 10;
+
+        private async void Sync() => await Task.Run(() =>
+        {
+            IsDone = Visibility.Visible;
+            IsDoneS = Visibility.Visible;
+            OnPropertyChanged("IsDone");
+            OnPropertyChanged("IsDoneS");
+            StatusString = "Выполняется синхронизация";
+            OnPropertyChanged("StatusString");
+            int status = NirsSystem.Synchronization();
+            switch (status)
+            {
+                case 1:
+                    StatusString = "Возможно отключена синхронизация. Включите и попробуйте снова";
+                    break;
+                case 2:
+                    StatusString = "Отсутствует соединение с сервером";
+                    break;
+                case 3:
+                    StatusString = "Данные для авторизации на сервере не совпадают";
+                    break;
+                default:
+                    StatusString = "Синхронизация выполнена успешна. Для загрузки настроек приложение перезагрузится";
+                    break;
+            }
+            Thread.Sleep(1000);
+            IsDone = Visibility.Hidden;
+            OnPropertyChanged("StatusString");
+            OnPropertyChanged("IsDone");
+            _status = 0;
+        });
     }
 }

@@ -9,7 +9,7 @@
         <Border
                 Background="{DynamicResource MaterialDesignBackground}">
             <GroupBox
-                Header="Настройки синхронизации с сервером" HorizontalAlignment="Center" MinHeight="400" MinWidth="600"
+                Header="Настройки синхронизации с сервером" HorizontalAlignment="Center" MinHeight="500" MinWidth="600"
                 VerticalAlignment="Center" Margin="20"
                  Style="{DynamicResource MaterialDesignGroupBox}"
                     UseLayoutRounding="True"
@@ -93,7 +93,7 @@
                         Background="Transparent"
                         TextAlignment="Left"
                         Text="{Binding StatusString}"
-                        Visibility="{Binding IsDone}"
+                        Visibility="{Binding IsDoneS}"
                         Foreground="{DynamicResource PrimaryHueDarkBrush}" 
                     />
                 </StackPanel>
