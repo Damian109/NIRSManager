@@ -129,16 +129,16 @@ namespace NIRSManagerServer.Controllers
                                 using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                                 {
                                     UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
-                                    if (user.DateEditSetting == null || user.DateEditSetting < elem.DateChange)
+                                    if (user.DateEditSetting == null || user.DateEditSetting.Value - elem.DateChange > TimeSpan.FromMinutes(1))
                                     {
-                                        user.DateEditSetting = elem.DateChange;
+                                        if (System.IO.File.Exists(mainPath + "\\" + elem.NameFile))
+                                            elem.IsDownload = true; 
+                                    }
+                                    else if(elem.DateChange - user.DateEditSetting.Value > TimeSpan.FromMinutes(1))
+                                    {
+                                        user.DateEditSetting = DateTime.Now;
                                         databaseContext.SaveChanges();
                                         elem.IsUpload = true;
-                                    }
-                                    else
-                                    {
-                                        if (System.IO.File.Exists(mainPath + "\\" + elem))
-                                            elem.IsDownload = true;
                                     }
                                     if (mainFileNames.Contains(elem.NameFile))
                                         mainFileNames.Remove(elem.NameFile);
@@ -150,15 +150,15 @@ namespace NIRSManagerServer.Controllers
                                 using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                                 {
                                     UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
-                                    if (user.DateEditDatabase == null || user.DateEditDatabase < elem.DateChange)
+                                    if (user.DateEditDatabase == null || user.DateEditDatabase.Value.Date - elem.DateChange.Date > TimeSpan.FromMinutes(1))
                                     {
-                                        user.DateEditDatabase = elem.DateChange;
+                                        user.DateEditDatabase = DateTime.Now;
                                         databaseContext.SaveChanges();
                                         elem.IsUpload = true;
                                     }
-                                    else
+                                    else if(elem.DateChange.Date - user.DateEditDatabase.Value.Date > TimeSpan.FromMinutes(1))
                                     {
-                                        if (System.IO.File.Exists(mainPath + "\\" + elem))
+                                        if (System.IO.File.Exists(mainPath + "\\" + elem.NameFile))
                                             elem.IsDownload = true;
                                     }
                                     if (mainFileNames.Contains(elem.NameFile))
@@ -266,7 +266,7 @@ namespace NIRSManagerServer.Controllers
         /// <param name="Name">Имя файла</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpGet]
-        public bool GetFile(string Login, FileToUpload File, string Name)
+        public void GetFile(string Login, FileToUpload File, string Name)
         {
             //Формирование полного пути
             string mainPath = Request.MapPath("..//data//" + Login);
@@ -298,7 +298,6 @@ namespace NIRSManagerServer.Controllers
                     break;
             }
             Response.WriteFile(fullPath);
-            return true;
         }
 
         /// <summary>
