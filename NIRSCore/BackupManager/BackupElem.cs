@@ -22,5 +22,7 @@ namespace NIRSCore.BackupManager
         /// Дата создания
         /// </summary>
         public DateTime DateOfCreate { get; set; }
+
+        public BackupElem() { }
     }
 }

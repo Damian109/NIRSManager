@@ -72,6 +72,8 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -111,6 +113,7 @@
     <Compile Include="DataBaseModels\RewardWork.cs" />
     <Compile Include="DataBaseModels\Work.cs" />
     <Compile Include="ErrorManager\ErrorManager.cs" />
+    <Compile Include="FileOperations\FileBackupReadme.cs" />
     <Compile Include="FileOperations\FileCore.cs" />
     <Compile Include="FileOperations\FileErrors.cs" />
     <Compile Include="FileOperations\FileErrorsItem.cs" />
