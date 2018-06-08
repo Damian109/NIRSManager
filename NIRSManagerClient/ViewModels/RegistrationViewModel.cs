@@ -18,6 +18,8 @@ namespace NIRSManagerClient.ViewModels
         //Завершение регистрации
         private void DoneRegistration()
         {
+            if (_status != RegistrationStatus.RegOK)
+                return;
             _status = NirsSystem.Registration(Login, Password, IsServer, true);
             OnPropertyChanged("Status");
             OnPropertyChanged("StatusColor");
