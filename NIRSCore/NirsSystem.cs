@@ -1,4 +1,7 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using NIRSCore.BackupManager;
 using NIRSCore.FileOperations;
 
 namespace NIRSCore
@@ -131,5 +134,28 @@ namespace NIRSCore
         /// </summary>
         /// <returns></returns>
         public static string GetLogin() => _login;
+
+        /// <summary>
+        /// Получить список резервных копий
+        /// </summary>
+        /// <returns></returns>
+        public static List<BackupElem> GetListBackups() => BackupManager.BackupManager.GetListOfBackups(Environment.CurrentDirectory + "\\data\\" + _login,
+            _login);
+
+        /// <summary>
+        /// Создать новую резервную копию
+        /// </summary>
+        public static void CreateBackup()
+        {
+            BackupManager.BackupManager.CreateBackup(Environment.CurrentDirectory + "\\data\\" + _login, _login, User.DBMSName);
+            User.LastBackup = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Восстановить базу данных из резервной копии
+        /// </summary>
+        /// <param name="name">Название резервной копии</param>
+        public static void CreateDB(string name) => BackupManager.BackupManager.CreateDatabase(Environment.CurrentDirectory + "\\data\\" + _login, 
+            name, User.DBMSName);
     }
 }
