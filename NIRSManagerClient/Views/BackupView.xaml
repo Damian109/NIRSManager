@@ -6,24 +6,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d">
     <Grid MinWidth="600">
-        <DataGrid Margin="0 8 0 0" Grid.Row="1" ItemsSource="{Binding Backups}" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
-                          materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                          IsReadOnly="True" x:Name="t">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}"
-                                        Header="Название"/>
-                <DataGridTextColumn Binding="{Binding Date}"
-                                        Header="Дата создания"/>
-                <DataGridTemplateColumn Header="Восстановить">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button>
-                                Восстановить
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <StackPanel Orientation="Vertical">
+            <DataGrid Margin="0 8 0 0" Grid.Row="1" ItemsSource="{Binding Backups, UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedItem="{Binding SelectedBackup, UpdateSourceTrigger=PropertyChanged}"
+                      CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
+                materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}"
+                        Header="Название"/>
+                    <DataGridTextColumn Binding="{Binding DateOfCreate}"
+                        Header="Дата создания"/>
+                    <DataGridTextColumn Binding="{Binding DBMSName}"
+                        Header="Название СУБД"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Orientation="Horizontal">
+                <Button
+                                    Margin="30 10"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Command="{Binding CommandCreateDatabase}"
+                                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                                    FontSize="18" 
+                                    IsEnabled="{Binding IsCreateDatabase}"
+                                    MinHeight="40">
+                                    Восстановить
+                                </Button>
+                                <Button
+                                    Margin="30 10"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Command="{Binding CommandCreateBackup}"
+                                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                                    FontSize="18" 
+                                    IsEnabled="{Binding IsCreateBackup}"
+                                    MinHeight="40">
+                                    Создать новую
+                                </Button>
+                                <Button
+                                    Margin="30 10"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Command="{Binding CommandXlsx}"
+                                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                                    FontSize="18" 
+                                    IsEnabled="{Binding IsGetBackup}"
+                                    MinHeight="40">
+                                    Получить с сервера
+                                </Button>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>
