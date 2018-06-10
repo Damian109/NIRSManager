@@ -249,6 +249,18 @@ namespace NIRSManagerClient.ViewModels
                 ReportElemHelper reportElemHelper = new ReportElemHelper(elem, workHelpers, countHeader);
                 _report.ReportElemHelpers.Add(reportElemHelper);
             }
+            //Начальная сортировка
+            if (IsCountWork)
+            {
+                List<ReportElemHelper> sorting = _report.ReportElemHelpers.OrderByDescending(u => u.Works.Count).ToList();
+                _report.ReportElemHelpers = sorting;
+            }
+            if(IsName)
+            {
+                List<ReportElemHelper> sorting = _report.ReportElemHelpers.OrderBy(u => u.Author.AuthorName).ToList();
+                _report.ReportElemHelpers = sorting;
+            }
+
             Thread.Sleep(1000);
         }
 
