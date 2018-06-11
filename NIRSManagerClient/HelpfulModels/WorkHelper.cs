@@ -55,6 +55,8 @@ namespace NIRSManagerClient.HelpfulModels
         /// </summary>
         public string JournalOrConference { get; private set; }
 
+        public DateTime DateOfPublic { get; private set; }
+
         /// <summary>
         /// Команда - Изменить работу
         /// </summary>
@@ -77,6 +79,7 @@ namespace NIRSManagerClient.HelpfulModels
             WorkId = work.WorkId;
             WorkName = work.WorkName;
             PhotoPath = Environment.CurrentDirectory + "\\data\\work.png";
+            DateOfPublic = DateTime.MinValue;
 
             if (work.HeadAuthorId != null)
             {
@@ -94,11 +97,15 @@ namespace NIRSManagerClient.HelpfulModels
             {
                 Conference conference = (Conference)NirsSystem.GetObject<Conference>((int)work.ConferenceId);
                 JournalOrConference = "Работа была представлена на конференции: " + conference.ConferenceName;
+                if (conference.ConferenceDate != DateTime.MinValue && conference.ConferenceDate != null)
+                    DateOfPublic = conference.ConferenceDate;
             }
             else if (work.JournalId != null)
             {
                 Journal journal = (Journal)NirsSystem.GetObject<Journal>((int)work.JournalId);
                 JournalOrConference = "Работа опубликована в журнале: " + journal.JournalName;
+                if (journal.JournalDate != DateTime.MinValue && journal.JournalDate != null)
+                    DateOfPublic = journal.JournalDate;
             }
             else
                 JournalOrConference = "Работа не публиковалась";
