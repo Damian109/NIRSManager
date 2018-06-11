@@ -31,5 +31,9 @@ namespace NIRSManagerClient.HelpfulModels
             Header = header;
             ReportElemHelpers = new List<ReportElemHelper>();
         }
+
+        public ReportHelper(bool works) : this("Отчет по работам") { }
+
+        public ReportHelper(bool works, string header) : this(header) { }
     }
 }

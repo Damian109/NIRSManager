@@ -15,7 +15,7 @@ namespace NIRSManagerClient.HelpfulModels
         /// <summary>
         /// Работы автора
         /// </summary>
-        public List<WorkHelper> Works { get; private set; }
+        public List<WorkHelper> Works { get; set; }
 
         /// <summary>
         /// Сколькими работами автор руководил
