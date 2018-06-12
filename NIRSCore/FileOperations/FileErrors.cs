@@ -52,7 +52,7 @@ namespace NIRSCore.FileOperations
         public sealed override void Write()
         {
             //Выполняется десериализация в список объектов
-            using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
+            using (FileStream fileStream = new FileStream(_filename, FileMode.Create))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(FileErrorsItem[]));
                 serializer.Serialize(fileStream, ErrorsItems.ToArray());

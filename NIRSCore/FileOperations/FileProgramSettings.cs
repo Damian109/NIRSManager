@@ -40,7 +40,7 @@ namespace NIRSCore.FileOperations
                     ProgramSettings = (ProgramSettings)serializer.Deserialize(fileStream);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new NirsException("Ошибка при загрузке файла настроек программы", "Файл настроек программы", "Файловая система");
             }
@@ -54,7 +54,7 @@ namespace NIRSCore.FileOperations
             try
             {
                 //Выполняется десериализация в список объектов
-                using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
+                using (FileStream fileStream = new FileStream(_filename, FileMode.Create))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(ProgramSettings));
                     serializer.Serialize(fileStream, ProgramSettings);

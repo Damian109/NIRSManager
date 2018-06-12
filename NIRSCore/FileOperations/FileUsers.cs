@@ -68,7 +68,7 @@ namespace NIRSCore.FileOperations
                 Directory.CreateDirectory("data//");
             try
             {
-                using (FileStream fileStream = new FileStream(_filename, FileMode.OpenOrCreate))
+                using (FileStream fileStream = new FileStream(_filename, FileMode.Create))
                 {
                     TripleDESCryptoServiceProvider serviceProvider = new TripleDESCryptoServiceProvider();
                     //Поток шифрования файла
