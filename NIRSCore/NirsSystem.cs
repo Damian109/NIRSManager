@@ -125,6 +125,11 @@ namespace NIRSCore
                 User = User
             };
             fileSettings.Write();
+            FileProgramSettings fileProgramSettings = new FileProgramSettings
+            {
+                ProgramSettings = ProgramSettings
+            };
+            fileProgramSettings.Write();
             if(sync)
                 Synchronization(true);
         }
