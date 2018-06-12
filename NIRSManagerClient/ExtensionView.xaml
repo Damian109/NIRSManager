@@ -4,9 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NIRSManagerClient"
         mc:Ignorable="d"
-        Title="ExtensionView" Height="800" Width="1200"
+        Title="ExtensiView" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -71,7 +70,7 @@
                             </StackPanel>
                         </Expander>
                         <MenuItem Header="О программе" FontSize="16" Margin="5" Command="{Binding CommandAboutLoad}"/>
-                        <MenuItem Header="Выход" FontSize="16" Margin="5"/>
+                        <MenuItem Header="Выход" FontSize="16" Margin="5" Command="{Binding CommandExit}"/>
                     </StackPanel>
                 </DockPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>

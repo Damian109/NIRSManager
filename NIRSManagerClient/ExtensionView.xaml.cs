@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls;
@@ -11,6 +12,8 @@ namespace NIRSManagerClient
     /// </summary>
     public partial class ExtensionView : Window
     {
+        public NotifyIcon notifyIcon;
+
         public ExtensionView(bool status)
         {
             InitializeComponent();
