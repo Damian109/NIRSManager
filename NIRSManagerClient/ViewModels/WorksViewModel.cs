@@ -77,10 +77,21 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public bool IsDirection { get; set; }
 
+        private bool _isAccuracy = false;
+
         /// <summary>
         /// Искать ли с точным совпадением?
         /// </summary>
-        public bool IsAccuracy { get; set; } = false;
+        public bool IsAccuracy
+        {
+            get => _isAccuracy;
+            set
+            {
+                _isAccuracy = value;
+                GetWorks();
+                OnPropertyChanged("IsAccuracy");
+            }
+        }
 
         /// <summary>
         /// Команда - Добавить работу
@@ -214,5 +225,27 @@ namespace NIRSManagerClient.ViewModels
             OnPropertyChanged("Works");
             return;
         });
+
+        /// <summary>
+        /// Команда - Перейти к отчетам
+        /// </summary>
+        public RelayCommand CommandReport
+        {
+            get => new RelayCommand(obj =>
+            {
+                int n = 0;
+                if (IsName)
+                    n = 1;
+                if (IsHeadAuthor)
+                    n = 2;
+                if (IsAuthor)
+                    n = 3;
+                if (IsDirection)
+                    n = 4;
+                ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+                window.mainGrid.Children.Clear();
+                window.mainGrid.Children.Add(new ReportWorkView(_works, n, _search));
+            });
+        }
     }
 }
