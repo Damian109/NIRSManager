@@ -267,7 +267,7 @@ namespace NIRSManagerClient.ViewModels
         private async void SaveAsDocx(string filename) => await Task.Run(() =>
         {
             CreateReport();
-            StatusString = "Выполняется сохранения отчета";
+            StatusString = "Выполняется сохранение отчета";
             OnPropertyChanged("StatusString");
 
             using (var docx = DocX.Create(filename))
@@ -326,6 +326,7 @@ namespace NIRSManagerClient.ViewModels
                             if (IsPrintFullWork)
                             {
                                 workParagraph.AppendLine(work.Authors).FontSize(10.0d);
+                                workParagraph.AppendLine(work.HeadAuthor).FontSize(10.0d);
                                 if (work.DirectionsWork != "")
                                     workParagraph.AppendLine(work.DirectionsWork).FontSize(10.0d);
                                 if (work.JournalOrConference != "")
@@ -345,7 +346,7 @@ namespace NIRSManagerClient.ViewModels
         private async void SaveAsPdf(string filename) => await Task.Run(() =>
         {
             CreateReport();
-            StatusString = "Выполняется сохранения отчета";
+            StatusString = "Выполняется сохранение отчета";
             OnPropertyChanged("StatusString");
 
             //Открываем документ
@@ -465,7 +466,7 @@ namespace NIRSManagerClient.ViewModels
                         //Вывод подробной информации о работе
                         if (IsPrintFullWork)
                         {
-                            iTextSharp.text.Chunk aw = new iTextSharp.text.Chunk(work.Authors + "\n", font);
+                            iTextSharp.text.Chunk aw = new iTextSharp.text.Chunk(work.Authors + "\n" + work.HeadAuthor + "\n", font);
                             workParagraph.Add(aw);
                             if (work.DirectionsWork != "")
                             {
@@ -492,7 +493,7 @@ namespace NIRSManagerClient.ViewModels
         private async void SaveAsXlsx(string filename) => await Task.Run(() =>
         {
             CreateReport();
-            StatusString = "Выполняется сохранения отчета";
+            StatusString = "Выполняется сохранение отчета";
             OnPropertyChanged("StatusString");
 
             //Открываем документ
