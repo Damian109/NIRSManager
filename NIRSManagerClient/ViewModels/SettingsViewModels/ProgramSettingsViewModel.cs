@@ -1,4 +1,6 @@
-﻿using NIRSCore;
+﻿using Microsoft.Win32;
+using NIRSCore;
+using System;
 
 namespace NIRSManagerClient.ViewModels.SettingsViewModels
 {
@@ -21,7 +23,22 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         public bool IsStartFromWindows
         {
             get => NirsSystem.ProgramSettings.IsStartFromWindows;
-            set => NirsSystem.ProgramSettings.IsStartFromWindows = value;
+            set
+            {
+                NirsSystem.ProgramSettings.IsStartFromWindows = value;
+                if(value)
+                {
+                    RegistryKey saveKey = Registry.LocalMachine.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
+                    saveKey.SetValue("NIRSManager", Environment.CurrentDirectory + "NIRSManagerClient.exe");
+                    saveKey.Close();
+                }
+                else
+                {
+                    RegistryKey saveKey = Registry.LocalMachine.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
+                    saveKey.DeleteValue("NIRSManager");
+                    saveKey.Close();
+                }
+            }
         }
 
         /// <summary>

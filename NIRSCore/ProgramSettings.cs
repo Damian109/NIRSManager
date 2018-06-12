@@ -9,6 +9,11 @@ namespace NIRSCore
     public sealed class ProgramSettings
     {
         /// <summary>
+        /// Адрес сервера
+        /// </summary>
+        public string AdressServer { get; set; }
+
+        /// <summary>
         /// Запускаться при запуске Windows? 
         /// </summary>
         public bool IsStartFromWindows { get; set; }
@@ -22,11 +27,6 @@ namespace NIRSCore
         /// Показывать уведомления?
         /// </summary>
         public bool IsShowNotifications { get; set; }
-
-        /// <summary>
-        /// Адрес сервера
-        /// </summary>
-        public string AdressServer { get; set; }
 
         /// <summary>
         /// Стандартный конструктор
