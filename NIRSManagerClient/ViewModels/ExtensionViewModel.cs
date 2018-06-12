@@ -26,7 +26,8 @@ namespace NIRSManagerClient.ViewModels
             else
                 LastOperation = tmpOper;
         }
-            
+
+        private bool isExit = false;
 
         /// <summary>
         /// Обработка закрытия окна
@@ -35,12 +36,30 @@ namespace NIRSManagerClient.ViewModels
         /// <param name="e"></param>
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            if(NirsSystem.ProgramSettings.IsMinimizeToTray)
+            if(NirsSystem.ProgramSettings.IsMinimizeToTray && !isExit)
             {
+                ExtensionView view = (ExtensionView)sender;
+                view.notifyIcon = new System.Windows.Forms.NotifyIcon();
+                view.notifyIcon.BalloonTipTitle = "NirsManager";
+                view.notifyIcon.Icon = new System.Drawing.Icon("data//notifyicon.ico");
+                view.notifyIcon.BalloonTipText = "Окно свернуто, но приложение продолжает работу";
+                view.notifyIcon.Text = "Окно свернуто, но приложение продолжает работу";
+                view.notifyIcon.Click += NotifyIcon_Click;
+                view.notifyIcon.Visible = true;
+                view.notifyIcon.ShowBalloonTip(1000);
+                view.Hide();
                 e.Cancel = true;
                 return;
             }
             NirsSystem.Close();
+        }
+
+        private void NotifyIcon_Click(object sender, System.EventArgs e)
+        {
+            ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+            System.Windows.Forms.NotifyIcon icon = (System.Windows.Forms.NotifyIcon)sender;
+            window.Show();
+            icon.Visible = false;
         }
 
         /// <summary>
@@ -116,7 +135,15 @@ namespace NIRSManagerClient.ViewModels
         /// <summary>
         /// Реакиця на изменения диспетчера ошибок
         /// </summary>
-        private void ErrorManager_ChangeStatusEvent() => OnPropertyChanged("CountErrors");
+        private void ErrorManager_ChangeStatusEvent(string name, string source)
+        {
+            OnPropertyChanged("CountErrors");
+
+            if (NirsSystem.ProgramSettings.IsShowNotifications)
+            {
+                MessageBoxResult result = MessageBox.Show(name, source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
 
         public ExtensionViewModel(bool status) : base("Главная форма")
@@ -244,7 +271,11 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public RelayCommand CommandErrorsLoad
         {
-            get => new RelayCommand(obj => LoadChild(new ErrorsView()));
+            get => new RelayCommand(obj =>
+            {
+                LoadChild(new ErrorsView());
+                OnPropertyChanged("CountErrors");
+            });
         }
 
         /// <summary>
@@ -269,6 +300,18 @@ namespace NIRSManagerClient.ViewModels
         public RelayCommand CommandExchangeLoad
         {
             get => new RelayCommand(obj => LoadChild(new ExchangeView()));
+        }
+
+        /// <summary>
+        /// Команда выхода
+        /// </summary>
+        public RelayCommand CommandExit
+        {
+            get => new RelayCommand(obj =>
+            {
+                isExit = true;
+                Application.Current.Shutdown();
+            });
         }
     }
 }
