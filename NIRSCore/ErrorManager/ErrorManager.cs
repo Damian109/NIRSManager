@@ -60,7 +60,7 @@ namespace NIRSCore.ErrorManager
         public void ExecuteException(NirsException exception)
         {
             _nirsErrors.Add(new NirsError(exception.NameSource, exception.NameSystem, exception.Message, DateTime.Now, true));
-            ChangeStatusEvent?.Invoke();
+            ChangeStatusEvent?.Invoke(exception.Message, exception.NameSystem);
         }
 
         /// <summary>
@@ -76,7 +76,6 @@ namespace NIRSCore.ErrorManager
                 errors.Add(elem);
             }
             errors.Reverse();
-            ChangeStatusEvent?.Invoke();
             return errors;
         }
 
@@ -120,7 +119,7 @@ namespace NIRSCore.ErrorManager
         /// <summary>
         /// Реализация события - изменение состояния
         /// </summary>
-        public delegate void eventSender();
+        public delegate void eventSender(string message, string source);
         public event eventSender ChangeStatusEvent;
 
         /// <summary>
