@@ -20,6 +20,8 @@ namespace NIRSCore
         {
             await Task.Run(() =>
             {
+                if (IsDatabaseContextCreated)
+                    return;
 
                 FileInitialiser file = new FileInitialiser();
                 file.Read();
