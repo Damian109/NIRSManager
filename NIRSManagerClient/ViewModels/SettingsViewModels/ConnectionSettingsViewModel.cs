@@ -264,7 +264,10 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
                     }
                     if (NirsSystem.User.DBMSName == "SQLite")
                     {
-                        NirsSystem.User.ConnectionString = @"Data Source=" + path + ";pooling=false;";
+                        NirsSystem.User.ConnectionString = @"Data Source=" + path;
+                        if (PasswordNext != "")
+                            NirsSystem.User.ConnectionString += ";Password=" + PasswordNext;
+                        NirsSystem.User.ConnectionString += ";pooling=false;";
                     }
 
                     NirsSystem.InitialiseDB();
