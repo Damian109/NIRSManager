@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="NIRSManagerClient.Views.ImportView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid>
+        <Border
+            Background="{DynamicResource MaterialDesignBackground}">
+            <GroupBox
+                Header="Формирование отчета" HorizontalAlignment="Center" MinHeight="600" MinWidth="700"
+                VerticalAlignment="Center" Margin="10"
+                Style="{DynamicResource MaterialDesignGroupBox}"
+                UseLayoutRounding="True"
+                SnapsToDevicePixels="True">
+                <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Margin="30 10"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            ToolTip="Импорт"
+                            Command="{Binding CommandImport}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Background="{DynamicResource PrimaryHueDarkBrush}"
+                            FontSize="18" 
+                            MinHeight="40">
+                            Импорт информации
+                        </Button>
+                    </StackPanel>
+                    <ProgressBar IsIndeterminate="True" Visibility="{Binding IsDone}" MinHeight="10" Margin="10" />
+                    <TextBlock Margin="15 2"
+                        MinWidth="150" 
+                        FontSize="20" 
+                        Background="Transparent"
+                        TextAlignment="Left"
+                        Text="{Binding StatusString}"
+                        Visibility="{Binding IsDone}"
+                        Foreground="{DynamicResource PrimaryHueDarkBrush}" />
+                </StackPanel>
+            </GroupBox>
+        </Border>
+    </Grid>
+</UserControl>
