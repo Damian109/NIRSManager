@@ -314,5 +314,83 @@ namespace NIRSCore
         /// Событие изменения статуса доступности сервера
         /// </summary>
         public static event eventSender ChangeStatusServer;
+
+
+
+        /// <summary>
+        /// Вернуть список доступных обменов с сервера
+        /// </summary>
+        /// <returns></returns>
+        public static ExchangesDataArray GetExchanges()
+        {
+            if (!IsServer || !User.IsConnectToServer)
+                return null;
+
+            ExchangesDataArray array = new ExchangesDataArray();
+
+            using (var client = new HttpClient())
+            {
+                //Формирование строки запроса
+                string query = ProgramSettings.AdressServer + "Server/GetExchangesToExchange?";
+                query += "Login=" + _login;
+
+                //Выполнение запроса
+                HttpResponseMessage message = client.GetAsync(query).Result;
+                string resp = message.Content.ReadAsStringAsync().Result;
+                array = JsonConvert.DeserializeObject<ExchangesDataArray>(resp);
+            }
+            return array;
+        }
+
+        /// <summary>
+        /// Вернуть список пользователей, доступных для обмена
+        /// </summary>
+        /// <returns></returns>
+        public static ListLoginsData GetUsers()
+        {
+            if (!IsServer || !User.IsConnectToServer)
+                return null;
+
+            ListLoginsData array = new ListLoginsData();
+
+            using (var client = new HttpClient())
+            {
+                //Формирование строки запроса
+                string query = ProgramSettings.AdressServer + "Server/GetLoginsToExchange?";
+                query += "Login=" + _login;
+
+                //Выполнение запроса
+                HttpResponseMessage message = client.GetAsync(query).Result;
+                string resp = message.Content.ReadAsStringAsync().Result;
+                array = JsonConvert.DeserializeObject<ListLoginsData>(resp);
+            }
+            return array;
+        }
+
+        /// <summary>
+        /// Отправить новый обмен на сервер
+        /// </summary>
+        /// <param name="loginSender">Логин получателя</param>
+        /// <param name="isOneWay">Односторонний ли обмен</param>
+        public static void AddExchange(string loginSender, bool isOneWay)
+        {
+            if (!IsServer || !User.IsConnectToServer)
+                return;
+
+            using (var client = new HttpClient())
+            {
+                //Формирование строки запроса
+                string query = ProgramSettings.AdressServer + "Server/ExchangeNew?";
+                query += "LoginSender=" + loginSender + "&LoginCreator=" + _login + "&";
+                if (isOneWay)
+                    query += "IsOneWay=1";
+                else
+                    query += "IsOneWay=0";
+
+                //Выполнение запроса
+                HttpResponseMessage message = client.GetAsync(query).Result;
+            }
+        }
+
     }
 }

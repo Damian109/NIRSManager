@@ -2,7 +2,7 @@
 {
     public sealed class ExchangesDataArray
     {
-        ListExchangesData[] Datas { get; set; }
+        public ListExchangesData[] Datas { get; set; }
 
         public ExchangesDataArray() => Datas = null;
 

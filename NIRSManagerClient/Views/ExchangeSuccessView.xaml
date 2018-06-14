@@ -6,59 +6,94 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d">
     <Grid MinWidth="600">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <TextBlock
-                            Grid.Row="0"
-                            FontSize="24" 
-                            MinHeight="50" 
-                            TextAlignment="Center"
-                            Margin="40"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
-            Предложения
-        </TextBlock>
-
-        <DataGrid Margin="0 8 0 0" Grid.Row="1" ItemsSource="{Binding Backups}" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
-                          materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                          IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}"
-                                        Header="От кого"/>
-                <DataGridTextColumn Binding="{Binding Date}"
-                                        Header="Статус"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <TextBlock
-                            Grid.Row="2"
-                            FontSize="24" 
-                            MinHeight="50" 
-                            TextAlignment="Center"
-                            Margin="40"
-                            Background="Transparent"
-                            Foreground="{DynamicResource PrimaryHueDarkBrush}">
-            Мои предложения
-        </TextBlock>
-
-        <DataGrid Margin="0 8 0 0" Grid.Row="3" ItemsSource="{Binding Backups}" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
-                          materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                          IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}"
-                                        Header="Кому"/>
-                <DataGridTextColumn Binding="{Binding Date}"
-                                        Header="Статус"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <Button Grid.Row="4" Width="150">
-            Предложить
-        </Button>
+        <StackPanel Orientation="Vertical">
+            <DataGrid Margin="0 8 0 0" Grid.Row="1" ItemsSource="{Binding Exchanges, UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedItem="{Binding ExchangeSelected, UpdateSourceTrigger=PropertyChanged}"
+                      CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="False"
+                materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding LoginCreatorOrSender}"
+                        Header="Получатель / отправитель"/>
+                    <DataGridTextColumn Binding="{Binding IsSenderAccept}"
+                        Header="Статус"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Margin="30 10"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Command="{Binding CommandCreateDatabase}"
+                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                    FontSize="18" 
+                    IsEnabled="{Binding IsTrueEnabled}"
+                    MinHeight="40">
+                    Подтвердить
+                </Button>
+                <Button
+                    Margin="30 10"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Command="{Binding CommandCreateDatabase}"
+                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                    FontSize="18" 
+                    IsEnabled="{Binding IsFalseEnabled}"
+                    MinHeight="40">
+                    Отклонить
+                </Button>
+                <Button
+                    Margin="30 10"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Command="{Binding CommandCreateBackup}"
+                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                    FontSize="18" 
+                    IsEnabled="{Binding IsDoneEnabled}"
+                    MinHeight="40">
+                    Выполнить
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Margin="30 10"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Command="{Binding CommandAddExchange}"
+                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                    FontSize="18" 
+                    IsEnabled="{Binding IsAddEnabled}"
+                    MinHeight="40">
+                    Предложить
+                </Button>
+                <ComboBox FontSize="20" 
+                     Background="Transparent"
+                     materialDesign:HintAssist.Hint="Поиск"
+                     IsEditable="True"
+                     materialDesign:HintAssist.HintOpacity=".26"
+                     Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                     ItemsSource="{Binding Logins}"
+                     SelectedItem="{Binding LoginSelected}"
+                     Margin="15" 
+                     MinWidth="300"
+                     TextSearch.TextPath=""
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center">
+                     <ComboBox.ItemTemplate>
+                         <DataTemplate>
+                             <StackPanel Orientation="Horizontal">
+                                 <TextBlock Text="{Binding}"/>
+                             </StackPanel>
+                         </DataTemplate>
+                     </ComboBox.ItemTemplate>
+                </ComboBox>
+                <CheckBox Content="Односторонний обмен"
+                    Margin="20 10"
+                    FontSize="24"
+                    Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                    Background="{DynamicResource PrimaryHueDarkBrush}"
+                    IsChecked="{Binding IsOneWay}" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

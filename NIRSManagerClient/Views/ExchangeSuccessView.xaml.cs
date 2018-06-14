@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using NIRSManagerClient.ViewModels;
+using System.Windows.Controls;
 
 namespace NIRSManagerClient.Views
 {
@@ -7,6 +8,7 @@ namespace NIRSManagerClient.Views
         public ExchangeSuccessView()
         {
             InitializeComponent();
+            DataContext = new ExchangeViewModel();
         }
     }
 }

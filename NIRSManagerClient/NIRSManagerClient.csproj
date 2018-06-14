@@ -135,6 +135,7 @@
     <Compile Include="ViewModels\BackupViewModel.cs" />
     <Compile Include="ViewModels\ErrorsViewModel.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
+    <Compile Include="ViewModels\ExchangeViewModel.cs" />
     <Compile Include="ViewModels\ExtensionViewModel.cs" />
     <Compile Include="ViewModels\ImportViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
