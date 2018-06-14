@@ -28,7 +28,7 @@
         /// <summary>
         /// Принял ли получатель обмен
         /// </summary>
-        public bool IsSenderAccept { get; set; }
+        public bool? IsSenderAccept { get; set; }
 
         /// <summary>
         /// Выполнил ли создатель обмен

@@ -54,7 +54,6 @@ namespace NIRSManagerServer.Controllers
             return true;
         }
 
-
         /// <summary>
         /// Регистрация пользователя
         /// </summary>
@@ -311,6 +310,150 @@ namespace NIRSManagerServer.Controllers
             byte[] sfile = Convert.FromBase64String(file.FileBytes);
             System.IO.File.WriteAllBytes(Request.MapPath("..//data//") + file.FileName, sfile);
             return true;
+        }
+
+        /// <summary>
+        /// Принятие или отказ от обмена
+        /// </summary>
+        /// <param name="Id">Идентификатор обмена</param>
+        /// <param name="Accepting">Принять обмен - 1, Отказаться - 0</param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpGet]
+        public bool ExchangeAccept(int Id, int Accepting)
+        {
+            using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+            {
+                DatabaseExchangeTable exchange = databaseContext.Exchanges.First(u => u.DatabaseExchangeId == Id);
+                if (Accepting == 0)
+                    exchange.IsSenderAccept = false;
+                else
+                    exchange.IsSenderAccept = true;
+                databaseContext.SaveChanges();
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Выполнение обмена
+        /// </summary>
+        /// <param name="Id">Идентификатор обмена</param>
+        /// <param name="Doned">У кого выполнен обмен (получатель - 0, создатель - 1)</param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpGet]
+        public bool ExchangeDone(int Id, int Doned)
+        {
+            using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+            {
+                DatabaseExchangeTable exchange = databaseContext.Exchanges.First(u => u.DatabaseExchangeId == Id);
+                if (Doned == 0)
+                    exchange.IsSenderDone = false;
+                else
+                    exchange.IsCreatorDone = true;
+                databaseContext.SaveChanges();
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Создать новый обмен БД
+        /// </summary>
+        /// <param name="LoginSender">Логин получателя</param>
+        /// <param name="LoginCreator">Логин создателя</param>
+        /// <param name="IsOneWay">Односторонний или нет</param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpGet]
+        public bool ExchangeNew(string LoginSender, string LoginCreator, int IsOneWay)
+        {
+            using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+            {
+                UserTable creator = databaseContext.Users.First(u => u.Login == LoginCreator);
+                UserTable sender = databaseContext.Users.First(u => u.Login == LoginSender);
+                bool isOne = false;
+                if (IsOneWay == 1)
+                    isOne = true;
+                DatabaseExchangeTable exchange = new DatabaseExchangeTable
+                {
+                    IsCreatorDone = false,
+                    IsOneWay = isOne,
+                    IsSenderAccept = null,
+                    IsSenderDone = false,
+                    UserCreatorId = creator.UserId,
+                    UserSenderId = sender.UserId
+                };
+                if (IsOneWay == 1)
+                    exchange.IsSenderDone = true;
+
+                databaseContext.Exchanges.Add(exchange);
+                databaseContext.SaveChanges();
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Получить список пользователей, доступных для обмена
+        /// </summary>
+        /// <param name="Login"></param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpGet]
+        public JsonResult GetLoginsToExchange(string Login)
+        {
+            List<string> logins = new List<string>();
+            using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+            {
+                List<UserTable> userTables = databaseContext.Users.ToList();
+                foreach (var elem in userTables)
+                    if (elem.Login != Login)
+                        logins.Add(elem.Login);
+            }
+            ListLoginsData listLoginsData = new ListLoginsData(logins.ToArray());
+            return Json(listLoginsData);
+        }
+
+        /// <summary>
+        /// Получить все входящие и исходящие запросы на обмен
+        /// </summary>
+        /// <param name="Login">Логин пользователя</param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpGet]
+        public JsonResult GetExchangesToExchange(string Login)
+        {
+            List<ListExchangesData> exchangesDatas = new List<ListExchangesData>();
+            using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+            {
+                UserTable user = databaseContext.Users.First(u => u.Login == Login);
+                List<DatabaseExchangeTable> exchanges = databaseContext.Exchanges.ToList();
+                if(exchanges != null)
+                    foreach(var elem in exchanges)
+                        if((elem.UserCreatorId == user.UserId && !elem.IsCreatorDone) || (elem.UserSenderId == user.UserId && !elem.IsSenderDone))
+                        {
+                            ListExchangesData data = new ListExchangesData
+                            {
+                                ExchangeId = elem.DatabaseExchangeId,
+                                IsCreatorDone = elem.IsCreatorDone,
+                                IsIAmCreator = false,
+                                IsOneWay = elem.IsOneWay,
+                                IsSenderAccept = elem.IsSenderAccept,
+                                IsSenderDone = elem.IsSenderDone,
+                                LoginCreatorOrSender = ""
+                            };
+
+                            if (user.UserId == elem.UserCreatorId)
+                            {
+                                data.IsIAmCreator = true;
+                                UserTable userTo = databaseContext.Users.First(u => u.UserId == elem.UserSenderId);
+                                data.LoginCreatorOrSender = userTo.Login;
+                            }
+                            else
+                            {
+                                UserTable userTo = databaseContext.Users.First(u => u.UserId == elem.UserCreatorId);
+                                data.LoginCreatorOrSender = userTo.Login;
+                            }
+
+                            exchangesDatas.Add(data);
+                        }
+            }
+            ExchangesDataArray array = new ExchangesDataArray(exchangesDatas.ToArray());
+            return Json(array);
         }
     }
 }

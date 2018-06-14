@@ -140,6 +140,7 @@
     <Compile Include="StackOperations\Operation.cs" />
     <Compile Include="StackOperations\StackOperations.cs" />
     <Compile Include="Syncronization\ErrorsData.cs" />
+    <Compile Include="Syncronization\ExchangesDataArray.cs" />
     <Compile Include="Syncronization\FileData.cs" />
     <Compile Include="Syncronization\FileInfoData.cs" />
     <Compile Include="Syncronization\ListExchangesData.cs" />
