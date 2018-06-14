@@ -18,7 +18,7 @@ namespace NIRSManagerServer.Controllers
         {
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
-                var query = databaseContext.Users.FirstOrDefault(u => u.Login == login);
+                var query = databaseContext.UserTables.FirstOrDefault(u => u.Login == login);
                 if (query != null)
                     return true;
             }
@@ -58,14 +58,14 @@ namespace NIRSManagerServer.Controllers
                 return false;
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
-                databaseContext.AddUser(new UserTable()
+                databaseContext.UserTables.Add(new UserTable()
                 {
                     Login = data.Login,
                     Md5 = data.Md5,
                     DateEditDatabase = null,
                     DateEditSetting = null
                 });
-
+                databaseContext.SaveChanges();
                 GenerateStructDirectoryes(data.Login);
             }
             return true;

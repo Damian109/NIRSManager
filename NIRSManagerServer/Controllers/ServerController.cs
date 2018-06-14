@@ -65,7 +65,7 @@ namespace NIRSManagerServer.Controllers
         {
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
-                UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == data.Login && u.Md5 == data.Md5);
+                UserTable user = databaseContext.UserTables.FirstOrDefault(u => u.Login == data.Login && u.Md5 == data.Md5);
                 if (user == null)
                     return false;
                 else
@@ -127,7 +127,7 @@ namespace NIRSManagerServer.Controllers
                             {
                                 using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                                 {
-                                    UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
+                                    UserTable user = databaseContext.UserTables.FirstOrDefault(u => u.Login == list.Login);
                                     if (user.DateEditSetting == null || user.DateEditSetting.Value - elem.DateChange > TimeSpan.FromMinutes(1))
                                     {
                                         if (System.IO.File.Exists(mainPath + "\\" + elem.NameFile))
@@ -148,7 +148,7 @@ namespace NIRSManagerServer.Controllers
                             {
                                 using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                                 {
-                                    UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
+                                    UserTable user = databaseContext.UserTables.FirstOrDefault(u => u.Login == list.Login);
                                     if (user.DateEditDatabase == null || elem.DateChange - user.DateEditDatabase.Value > TimeSpan.FromMinutes(1))
                                     {
                                         user.DateEditDatabase = DateTime.Now;
@@ -171,8 +171,8 @@ namespace NIRSManagerServer.Controllers
                                 {
                                     using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                                     {
-                                        UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == list.Login);
-                                        databaseContext.Backups.Add(new BackupTable { BackupName = elem.NameFile, DateOfCreate = DateTime.Now,
+                                        UserTable user = databaseContext.UserTables.FirstOrDefault(u => u.Login == list.Login);
+                                        databaseContext.BackupTables.Add(new BackupTable { BackupName = elem.NameFile, DateOfCreate = DateTime.Now,
                                             UserId = user.UserId });
                                         databaseContext.SaveChanges();
                                         elem.IsUpload = true;
@@ -277,8 +277,8 @@ namespace NIRSManagerServer.Controllers
                         fullPath = mainPath + "\\Backups\\" + Name;
                         using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                         {
-                            UserTable user = databaseContext.Users.FirstOrDefault(u => u.Login == Login);
-                            databaseContext.Backups.Add(new BackupTable { BackupName = Name, DateOfCreate = DateTime.Now, UserId = user.UserId });
+                            UserTable user = databaseContext.UserTables.FirstOrDefault(u => u.Login == Login);
+                            databaseContext.BackupTables.Add(new BackupTable { BackupName = Name, DateOfCreate = DateTime.Now, UserId = user.UserId });
                             databaseContext.SaveChanges();
                         }
                         break;
@@ -323,7 +323,7 @@ namespace NIRSManagerServer.Controllers
         {
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
-                DatabaseExchangeTable exchange = databaseContext.Exchanges.First(u => u.DatabaseExchangeId == Id);
+                DatabaseExchangeTable exchange = databaseContext.DatabaseExchangeTables.Where(u => u.DatabaseExchangeId == Id).FirstOrDefault();
                 if (Accepting == 0)
                     exchange.IsSenderAccept = false;
                 else
@@ -344,7 +344,7 @@ namespace NIRSManagerServer.Controllers
         {
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
-                DatabaseExchangeTable exchange = databaseContext.Exchanges.First(u => u.DatabaseExchangeId == Id);
+                DatabaseExchangeTable exchange = databaseContext.DatabaseExchangeTables.Where(u => u.DatabaseExchangeId == Id).FirstOrDefault();
                 if (Doned == 0)
                     exchange.IsSenderDone = false;
                 else
@@ -366,8 +366,8 @@ namespace NIRSManagerServer.Controllers
         {
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
-                UserTable creator = databaseContext.Users.First(u => u.Login == LoginCreator);
-                UserTable sender = databaseContext.Users.First(u => u.Login == LoginSender);
+                UserTable creator = databaseContext.UserTables.Where(u => u.Login == LoginCreator).FirstOrDefault();
+                UserTable sender = databaseContext.UserTables.Where(u => u.Login == LoginSender).FirstOrDefault();
                 bool isOne = false;
                 if (IsOneWay == 1)
                     isOne = true;
@@ -383,7 +383,7 @@ namespace NIRSManagerServer.Controllers
                 if (IsOneWay == 1)
                     exchange.IsSenderDone = true;
 
-                databaseContext.Exchanges.Add(exchange);
+                databaseContext.DatabaseExchangeTables.Add(exchange);
                 databaseContext.SaveChanges();
             }
             return true;
@@ -400,13 +400,13 @@ namespace NIRSManagerServer.Controllers
             List<string> logins = new List<string>();
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
-                List<UserTable> userTables = databaseContext.Users.ToList();
+                List<UserTable> userTables = databaseContext.UserTables.ToList();
                 foreach (var elem in userTables)
                     if (elem.Login != Login)
                         logins.Add(elem.Login);
             }
             ListLoginsData listLoginsData = new ListLoginsData(logins.ToArray());
-            return Json(listLoginsData);
+            return Json(listLoginsData, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -420,8 +420,8 @@ namespace NIRSManagerServer.Controllers
             List<ListExchangesData> exchangesDatas = new List<ListExchangesData>();
             using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
             {
-                UserTable user = databaseContext.Users.First(u => u.Login == Login);
-                List<DatabaseExchangeTable> exchanges = databaseContext.Exchanges.ToList();
+                UserTable user = databaseContext.UserTables.Where(u => u.Login == Login).FirstOrDefault();
+                List<DatabaseExchangeTable> exchanges = databaseContext.DatabaseExchangeTables.ToList();
                 if(exchanges != null)
                     foreach(var elem in exchanges)
                         if((elem.UserCreatorId == user.UserId && !elem.IsCreatorDone) || (elem.UserSenderId == user.UserId && !elem.IsSenderDone))
@@ -440,12 +440,12 @@ namespace NIRSManagerServer.Controllers
                             if (user.UserId == elem.UserCreatorId)
                             {
                                 data.IsIAmCreator = true;
-                                UserTable userTo = databaseContext.Users.First(u => u.UserId == elem.UserSenderId);
+                                UserTable userTo = databaseContext.UserTables.First(u => u.UserId == elem.UserSenderId);
                                 data.LoginCreatorOrSender = userTo.Login;
                             }
                             else
                             {
-                                UserTable userTo = databaseContext.Users.First(u => u.UserId == elem.UserCreatorId);
+                                UserTable userTo = databaseContext.UserTables.First(u => u.UserId == elem.UserCreatorId);
                                 data.LoginCreatorOrSender = userTo.Login;
                             }
 
@@ -453,7 +453,7 @@ namespace NIRSManagerServer.Controllers
                         }
             }
             ExchangesDataArray array = new ExchangesDataArray(exchangesDatas.ToArray());
-            return Json(array);
+            return Json(array, JsonRequestBehavior.AllowGet);
         }
     }
 }
