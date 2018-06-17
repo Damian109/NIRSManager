@@ -303,6 +303,14 @@ namespace NIRSManagerClient.ViewModels
         }
 
         /// <summary>
+        /// Команда Импорт
+        /// </summary>
+        public RelayCommand CommandImportLoad
+        {
+            get => new RelayCommand(obj => LoadChild(new ImportView()));
+        }
+
+        /// <summary>
         /// Команда выхода
         /// </summary>
         public RelayCommand CommandExit

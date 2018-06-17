@@ -49,14 +49,7 @@
                                 <MenuItem Header="Таблицы" FontSize="16" Margin="5" Command="{Binding CommandStaticLoad}"/>
                             </StackPanel>
                         </Expander>
-                        <Expander Margin="5" FontSize="16"
-                            Header="Запросы к БД">
-                            <StackPanel Orientation="Vertical">
-                                <MenuItem Header="Конструктор" FontSize="16" Margin="5"/>
-                                <MenuItem Header="Редактор кода" FontSize="16" Margin="5"/>
-                                <MenuItem Header="Слияние БД" FontSize="16" Margin="5"/>
-                            </StackPanel>
-                        </Expander>
+                        <MenuItem Header="Импорт" FontSize="16" Margin="5" Command="{Binding CommandImportLoad}"/>
                         <MenuItem Header="Резервные копии" FontSize="16" Margin="5" Command="{Binding CommandBackupsLoad}"/>
                         <Expander Margin="5" FontSize="16"
                             Header="Настройки">
@@ -64,7 +57,6 @@
                                 <MenuItem Header="Настройки профиля" FontSize="16" Margin="5" Command="{Binding CommandMainSettingsLoad}"/>
                                 <MenuItem Header="Настройки подключения" FontSize="16" Margin="5" Command="{Binding CommandConnectionSettingsLoad}"/>
                                 <MenuItem Header="Настройки интерфейса" FontSize="16" Margin="5" Command="{Binding CommandUserInterfaceSettingsLoad}"/>
-                                <MenuItem Header="Настройки редактора" FontSize="16" Margin="5" Command="{Binding CommandEditorSettingsLoad}"/>
                                 <MenuItem Header="Настройки синхронизации" FontSize="16" Margin="5" Command="{Binding CommandServerSettingsLoad}"/>
                                 <MenuItem Header="Настройки поведения" FontSize="16" Margin="5" Command="{Binding CommandProgramSettingsLoad}"/>
                             </StackPanel>

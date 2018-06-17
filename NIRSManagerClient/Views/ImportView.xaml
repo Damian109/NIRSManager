@@ -10,7 +10,7 @@
         <Border
             Background="{DynamicResource MaterialDesignBackground}">
             <GroupBox
-                Header="Формирование отчета" HorizontalAlignment="Center" MinHeight="600" MinWidth="700"
+                Header="Импорт информации в базу данных" HorizontalAlignment="Center" MinHeight="600" MinWidth="700"
                 VerticalAlignment="Center" Margin="10"
                 Style="{DynamicResource MaterialDesignGroupBox}"
                 UseLayoutRounding="True"

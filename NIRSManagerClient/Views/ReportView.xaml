@@ -46,6 +46,13 @@
                                  IsEnabled="{Binding IsPrintListWorks}"
                                  Background="{DynamicResource PrimaryHueDarkBrush}"
                                  IsChecked="{Binding IsPrintFullWork}" />
+                             <CheckBox Content="Выводить информацию только о студентах"
+                                 Margin="20 10"
+                                 FontSize="24"
+                                 Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                 IsEnabled="{Binding IsPrintListWorks}"
+                                 Background="{DynamicResource PrimaryHueDarkBrush}"
+                                 IsChecked="{Binding IsStudent}" />
                             <TextBlock Margin="20"
                                  MinWidth="150" 
                                  FontSize="28" 
