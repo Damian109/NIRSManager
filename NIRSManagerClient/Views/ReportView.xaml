@@ -50,7 +50,6 @@
                                  Margin="20 10"
                                  FontSize="24"
                                  Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                 IsEnabled="{Binding IsPrintListWorks}"
                                  Background="{DynamicResource PrimaryHueDarkBrush}"
                                  IsChecked="{Binding IsStudent}" />
                             <TextBlock Margin="20"

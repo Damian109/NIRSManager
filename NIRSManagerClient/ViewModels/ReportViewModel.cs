@@ -112,6 +112,11 @@ namespace NIRSManagerClient.ViewModels
         public bool IsPrintFullWork { get; set; } = false;
 
         /// <summary>
+        /// Выводить информацию только о студентах?
+        /// </summary>
+        public bool IsStudent { get; set; } = false;
+
+        /// <summary>
         /// Выполняется ли какая-то операция (Видимость)
         /// </summary>
         public Visibility IsDone { get; private set; } = Visibility.Hidden;
@@ -277,6 +282,9 @@ namespace NIRSManagerClient.ViewModels
 
                 foreach(var elem in _report.ReportElemHelpers)
                 {
+                    if (IsStudent && elem.Author.GroupName == "")
+                        continue;
+
                     //Формирование заполнения информацией об авторе
                     Paragraph authorParagraph = docx.InsertParagraph();
                     authorParagraph.Alignment = Alignment.right;
@@ -374,6 +382,9 @@ namespace NIRSManagerClient.ViewModels
 
             foreach (var elem in _report.ReportElemHelpers)
             {
+                if (IsStudent && elem.Author.GroupName == "")
+                    continue;
+
                 //Формирование заполнения информацией об авторе
                 iTextSharp.text.Paragraph authorParagraph = new iTextSharp.text.Paragraph
                 {
@@ -520,6 +531,9 @@ namespace NIRSManagerClient.ViewModels
 
                 foreach (var elem in _report.ReportElemHelpers)
                 {
+                    if (IsStudent && elem.Author.GroupName == "")
+                        continue;
+
                     //Формирование заполнения информацией об авторе
                     using (var range = worksheet.Cells[rowCounter, 1, rowCounter, 8])
                     {
