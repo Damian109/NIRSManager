@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -315,6 +316,32 @@ namespace NIRSCore
         /// </summary>
         public static event eventSender ChangeStatusServer;
 
+        /// <summary>
+        /// Вернуть список доступных резервных копий с сервера
+        /// </summary>
+        /// <returns></returns>
+        public static List<BackupManager.BackupElem> GetBackupsFromServer()
+        {
+            if (!IsServer || !User.IsConnectToServer)
+                return null;
+
+            List<BackupManager.BackupElem> backups = new List<BackupManager.BackupElem>();
+
+            using (var client = new HttpClient())
+            {
+                //Формирование строки запроса
+                string query = ProgramSettings.AdressServer + "Server/GetListBackups?";
+                query += "Login=" + _login;
+
+                //Выполнение запроса
+                HttpResponseMessage message = client.GetAsync(query).Result;
+                string resp = message.Content.ReadAsStringAsync().Result;
+                BackupManager.BackupElem[] elems = JsonConvert.DeserializeObject<BackupManager.BackupElem[]>(resp);
+                if (elems != null)
+                    backups = elems.ToList();
+            }
+            return backups;
+        }
 
 
         /// <summary>
@@ -391,6 +418,36 @@ namespace NIRSCore
                 HttpResponseMessage message = client.GetAsync(query).Result;
             }
         }
+
+        /// <summary>
+        /// Принятие или отклонение обмена
+        /// </summary>
+        /// <param name="id">Идентификатор обмена</param>
+        /// <param name="status">Принят обмен или отклонен</param>
+        public static void TrueFalseExchange(int id, bool status)
+        {
+            if (!IsServer || !User.IsConnectToServer)
+                return;
+
+            using (var client = new HttpClient())
+            {
+                int t = 0;
+                if (status)
+                    t = 1;
+
+                //Формирование строки запроса
+                string query = ProgramSettings.AdressServer + "Server/ExchangeAccept?";
+                query += "Id=" + id + "&Accepting=" + t;
+
+                //Выполнение запроса
+                HttpResponseMessage message = client.GetAsync(query).Result;
+            }
+        }
+
+
+
+
+
 
     }
 }
