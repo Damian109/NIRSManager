@@ -107,8 +107,17 @@ namespace NIRSManagerClient.ViewModels
                 _exchangeSelected = value;
                 if(_exchangeSelected != null)
                 {
-                    IsTrueEnabled = true;
-                    IsFalseEnabled = true;
+                    if(!_exchangeSelected.IsIAmCreator && _exchangeSelected.IsSenderAccept == null)
+                    {
+                        IsTrueEnabled = true;
+                        IsFalseEnabled = true;
+                    }
+                    else
+                    {
+                        IsTrueEnabled = false;
+                        IsFalseEnabled = false;
+                    }
+
                     if (_exchangeSelected.IsIAmCreator && !_exchangeSelected.IsCreatorDone && _exchangeSelected.IsSenderAccept == true)
                         IsDoneEnabled = true;
                     if (!_exchangeSelected.IsIAmCreator && !_exchangeSelected.IsSenderDone && _exchangeSelected.IsSenderAccept == true)
@@ -162,5 +171,37 @@ namespace NIRSManagerClient.ViewModels
             });
         }
 
+        /// <summary>
+        /// Команда принять обмен
+        /// </summary>
+        public RelayCommand CommandTrueExchange
+        {
+            get => new RelayCommand(obj =>
+            {
+                NirsSystem.TrueFalseExchange(ExchangeSelected.ExchangeId, true);
+            });
+        }
+
+        /// <summary>
+        /// Команда отклонить обмен
+        /// </summary>
+        public RelayCommand CommandFalseExchange
+        {
+            get => new RelayCommand(obj =>
+            {
+                NirsSystem.TrueFalseExchange(ExchangeSelected.ExchangeId, false);
+            });
+        }
+
+        /// <summary>
+        /// Команда выполнить обмен
+        /// </summary>
+        public RelayCommand CommandDoneExchange
+        {
+            get => new RelayCommand(obj =>
+            {
+                NirsSystem.DoneExchange(ExchangeSelected.ExchangeId, ExchangeSelected.LoginCreatorOrSender, ExchangeSelected.IsIAmCreator);
+            });
+        }
     }
 }

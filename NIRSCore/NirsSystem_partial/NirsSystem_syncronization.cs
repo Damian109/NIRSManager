@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using NIRSCore.Syncronization;
 using System.Collections.Generic;
 using NIRSCore.HelpfulEnumsStructs;
+using NIRSCore.DataBaseModels;
 
 namespace NIRSCore
 {
@@ -444,10 +445,278 @@ namespace NIRSCore
             }
         }
 
+        /// <summary>
+        /// Выполнить получение данных из БД другого пользователя
+        /// </summary>
+        /// <param name="id">Идентификатор обмена</param>
+        /// <param name="login">Логин пользователя</param>
+        /// <returns>Успешна операция или нет</returns>
+        public static async void DoneExchange(int id, string login, bool iAmCreator)
+        {
+            //Отправить запрос на получение файла
+            string query = ProgramSettings.AdressServer + "Server/GetFile?";
+            query += "Login=" + login + "&";
+            query += "File=Database&Name=database.db";
+
+            string path = Environment.CurrentDirectory + "\\data\\" + _login + "\\temp\\database.db";
+
+            //Выполнение запроса
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage message = client.GetAsync(query).Result;
+
+                if (!message.IsSuccessStatusCode)
+                    return;
+
+                //Сохранение файла
+                using (FileStream file = new FileStream(path, FileMode.Create))
+                {
+                    await message.Content.CopyToAsync(file);
+                }
+            }
+
+            //Временно меняем строку подключения
+            string connOld = User.ConnectionString;
+            User.ConnectionString = @"Data Source=" + path + ";pooling=false;";
+
+            //Получение списков данных
+            List<AcademicDegree> academicDegrees = (List<AcademicDegree>)GetListObject<AcademicDegree>();
+            List<Author> authors = (List<Author>)GetListObject<Author>();
+            List<CoAuthor> coAuthors = (List<CoAuthor>)GetListObject<CoAuthor>();
+            List<Conference> conferences = (List<Conference>)GetListObject<Conference>();
+            List<Department> departments = (List<Department>)GetListObject<Department>();
+            List<Direction> directions = (List<Direction>)GetListObject<Direction>();
+            List<DirectionWork> directionWorks = (List<DirectionWork>)GetListObject<DirectionWork>();
+            List<Faculty> faculties = (List<Faculty>)GetListObject<Faculty>();
+            List<Group> groups = (List<Group>)GetListObject<Group>();
+            List<Journal> journals = (List<Journal>)GetListObject<Journal>();
+            List<Organization> organizations = (List<Organization>)GetListObject<Organization>();
+            List<Position> positions = (List<Position>)GetListObject<Position>();
+            List<Reward> rewards = (List<Reward>)GetListObject<Reward>();
+            List<RewardWork> rewardWorks = (List<RewardWork>)GetListObject<RewardWork>();
+            List<Work> works = (List<Work>)GetListObject<Work>();
+
+            //Возвращаем старую строку подключения
+            User.ConnectionString = connOld;
+
+            //Получаем данные из текущей БД
+            List<AcademicDegree> academicDegrees2 = (List<AcademicDegree>)GetListObject<AcademicDegree>();
+            List<Conference> conferences2 = (List<Conference>)GetListObject<Conference>();
+            List<Department> departments2 = (List<Department>)GetListObject<Department>();
+            List<Direction> directions2 = (List<Direction>)GetListObject<Direction>();
+            List<Faculty> faculties2 = (List<Faculty>)GetListObject<Faculty>();
+            List<Group> groups2 = (List<Group>)GetListObject<Group>();
+            List<Journal> journals2 = (List<Journal>)GetListObject<Journal>();
+            List<Organization> organizations2 = (List<Organization>)GetListObject<Organization>();
+            List<Position> positions2 = (List<Position>)GetListObject<Position>();
+            List<Reward> rewards2 = (List<Reward>)GetListObject<Reward>();
+
+            List<Author> authors2 = (List<Author>)GetListObject<Author>();
+            List<CoAuthor> coAuthors2 = (List<CoAuthor>)GetListObject<CoAuthor>();
+            List<DirectionWork> directionWorks2 = (List<DirectionWork>)GetListObject<DirectionWork>();
+            List<RewardWork> rewardWorks2 = (List<RewardWork>)GetListObject<RewardWork>();
+            List<Work> works2 = (List<Work>)GetListObject<Work>();
 
 
+            //Начинаем добавлять полученные данные
+            foreach (var elem in academicDegrees)
+            {
+                var varquery = academicDegrees2.FirstOrDefault(u => u.AcademicDegreeName == elem.AcademicDegreeName);
+                if(varquery == null)
+                    AddObject(elem);
+            }
+            academicDegrees2 = (List<AcademicDegree>)GetListObject<AcademicDegree>();
 
+            foreach (var elem in conferences)
+            {
+                var varquery = conferences2.FirstOrDefault(u => u.ConferenceName == elem.ConferenceName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            conferences2 = (List<Conference>)GetListObject<Conference>();
 
+            foreach (var elem in departments)
+            {
+                var varquery = departments2.FirstOrDefault(u => u.DepartmentName== elem.DepartmentName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            departments2 = (List<Department>)GetListObject<Department>();
 
+            foreach (var elem in directions)
+            {
+                var varquery = directions2.FirstOrDefault(u => u.DirectionName == elem.DirectionName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            directions2 = (List<Direction>)GetListObject<Direction>();
+
+            foreach (var elem in faculties)
+            {
+                var varquery = faculties2.FirstOrDefault(u => u.FacultyName == elem.FacultyName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            faculties2 = (List<Faculty>)GetListObject<Faculty>();
+
+            foreach (var elem in groups)
+            {
+                var varquery = groups2.FirstOrDefault(u => u.GroupName == elem.GroupName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            groups2 = (List<Group>)GetListObject<Group>();
+
+            foreach (var elem in journals)
+            {
+                var varquery = journals2.FirstOrDefault(u => u.JournalName == elem.JournalName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            journals2 = (List<Journal>)GetListObject<Journal>();
+
+            foreach (var elem in organizations)
+            {
+                var varquery = organizations2.FirstOrDefault(u => u.OrganizationName == elem.OrganizationName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            organizations2 = (List<Organization>)GetListObject<Organization>();
+
+            foreach (var elem in positions)
+            {
+                var varquery = positions2.FirstOrDefault(u => u.PositionName == elem.PositionName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            positions2 = (List<Position>)GetListObject<Position>();
+
+            foreach (var elem in rewards)
+            {
+                var varquery = rewards2.FirstOrDefault(u => u.RewardName == elem.RewardName);
+                if (varquery == null)
+                    AddObject(elem);
+            }
+            rewards2 = (List<Reward>)GetListObject<Reward>();
+
+            foreach (var elem in authors)
+            {
+                var varquery = authors2.FirstOrDefault(u => u.AuthorName == elem.AuthorName);
+                if(varquery == null)
+                {
+                    if(elem.AcademicDegreeId != null)
+                    {
+                        string oldADS = academicDegrees.First(u => u.AcademicDegreeId == elem.AcademicDegreeId).AcademicDegreeName;
+                        elem.AcademicDegreeId = academicDegrees2.First(u => u.AcademicDegreeName == oldADS).AcademicDegreeId;
+                    }
+                    
+                    if(elem.DepartmentId != null)
+                    {
+                        string oldD = departments.First(u => u.DepartmentId == elem.DepartmentId).DepartmentName;
+                        elem.DepartmentId = departments2.First(u => u.DepartmentName == oldD).DepartmentId;
+                    }
+
+                    if(elem.FacultyId != null)
+                    {
+                        string oldF = faculties.First(u => u.FacultyId == elem.FacultyId).FacultyName;
+                        elem.FacultyId = faculties2.First(u => u.FacultyName == oldF).FacultyId;
+                    }
+                    
+                    if(elem.GroupId != null)
+                    {
+                        string oldG = groups.First(u => u.GroupId == elem.GroupId).GroupName;
+                        elem.GroupId = groups2.First(u => u.GroupName == oldG).GroupId;
+                    }
+                    
+                    if(elem.OrganizationId != null)
+                    {
+                        string oldO = organizations.First(u => u.OrganizationId == elem.OrganizationId).OrganizationName;
+                        elem.OrganizationId = organizations2.First(u => u.OrganizationName == oldO).OrganizationId;
+                    }
+                    
+                    if(elem.PositionId != null)
+                    {
+                        string oldP = positions.First(u => u.PositionId == elem.PositionId).PositionName;
+                        elem.PositionId = positions2.First(u => u.PositionName == oldP).PositionId;
+                    }
+
+                    AddObject(elem);
+                }
+            }
+            authors2 = (List<Author>)GetListObject<Author>();
+
+            foreach (var elem in works)
+            {
+                var varquery = works2.FirstOrDefault(u => u.WorkName == elem.WorkName);
+                if(varquery == null)
+                {
+                    if(elem.ConferenceId != null)
+                    {
+                        string oldC = conferences.First(u => u.ConferenceId == elem.ConferenceId).ConferenceName;
+                        elem.ConferenceId = conferences2.First(u => u.ConferenceName == oldC).ConferenceId;
+                    }
+
+                    if(elem.HeadAuthorId != null)
+                    {
+                        string oldH = authors.First(u => u.AuthorId == elem.HeadAuthorId).AuthorName;
+                        elem.HeadAuthorId = authors2.First(u => u.AuthorName == oldH).AuthorId;
+                    }
+
+                    if(elem.JournalId != null)
+                    {
+                        string oldJ = journals.First(u => u.JournalId == elem.JournalId).JournalName;
+                        elem.JournalId = journals2.First(u => u.JournalName == oldJ).JournalId;
+                    }
+                    AddObject(elem);
+                }
+            }
+            works2 = (List<Work>)GetListObject<Work>();
+
+            foreach(var elem in coAuthors)
+            {
+                var work = works.First(u => u.WorkId == elem.WorkId);
+                var auth = authors.First(u => u.AuthorId == elem.AuthorId);
+
+                elem.WorkId = works2.First(u => u.WorkName == work.WorkName).WorkId;
+                elem.AuthorId = authors2.First(u => u.AuthorName == auth.AuthorName).AuthorId;
+
+                AddObject(elem);
+            }
+
+            foreach (var elem in directionWorks)
+            {
+                var work = works.First(u => u.WorkId == elem.WorkId);
+                var dir = directions.First(u => u.DirectionId == elem.DirectionId);
+
+                elem.WorkId = works2.First(u => u.WorkName == work.WorkName).WorkId;
+                elem.DirectionId = directions2.First(u => u.DirectionName == dir.DirectionName).DirectionId;
+
+                AddObject(elem);
+            }
+
+            foreach(var elem in rewardWorks)
+            {
+                var work = works.First(u => u.WorkId == elem.WorkId);
+                var rew = rewards.First(u => u.RewardId == elem.RewardId);
+
+                elem.WorkId = works2.First(u => u.WorkName == work.WorkName).WorkId;
+                elem.RewardId = rewards2.First(u => u.RewardName == rew.RewardName).RewardId;
+
+                AddObject(elem);
+            }
+
+            query = ProgramSettings.AdressServer + "Server/ExchangeDone?";
+            query += "Id=" + id + "&Doned=";
+            if (iAmCreator)
+                query += 1;
+            else
+                query += 0;
+
+            //Выполнение запроса
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage message = client.GetAsync(query).Result;
+            }
+        }
     }
 }

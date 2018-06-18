@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using NIRSCore.BackupManager;
 using NIRSCore.FileOperations;
@@ -132,6 +133,14 @@ namespace NIRSCore
             fileProgramSettings.Write();
             if(sync)
                 Synchronization(true);
+
+            //Уничтожение файлов
+            string[] masTemp = Directory.GetFiles(Environment.CurrentDirectory + "\\data\\" + _login + "\\temp\\");
+            foreach (var f in masTemp)
+            {
+                FileInfo info = new FileInfo(f);
+                info.Delete();
+            }
         }
 
         /// <summary>

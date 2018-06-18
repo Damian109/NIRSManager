@@ -478,11 +478,4 @@ namespace NIRSManagerServer.Controllers
             return Json(backups.ToArray(), JsonRequestBehavior.AllowGet);
         }
     }
-
-
-
 }
-
-
-
-//Вернуть данные для соединения с БД
