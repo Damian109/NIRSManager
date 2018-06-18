@@ -15,9 +15,7 @@
         /// </summary>
         public string FileBytes { get; set; }
 
-        public FileData()
-        {
-        }
+        public FileData() { }
 
         public FileData(string name, string filebytes)
         {

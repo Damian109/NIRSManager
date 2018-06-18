@@ -8,6 +8,7 @@ using NIRSCore.FileOperations;
 using NIRSManagerServer.Models;
 using System.Collections.Generic;
 using NIRSCore.HelpfulEnumsStructs;
+using NIRSCore.BackupManager;
 
 namespace NIRSManagerServer.Controllers
 {
@@ -128,12 +129,12 @@ namespace NIRSManagerServer.Controllers
                                 using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
                                 {
                                     UserTable user = databaseContext.UserTables.FirstOrDefault(u => u.Login == list.Login);
-                                    if (user.DateEditSetting == null || user.DateEditSetting.Value - elem.DateChange > TimeSpan.FromMinutes(1))
+                                    if (user.DateEditSetting == null || elem.DateChange - user.DateEditSetting.Value > TimeSpan.FromMinutes(1))
                                     {
                                         if (System.IO.File.Exists(mainPath + "\\" + elem.NameFile))
                                             elem.IsDownload = true; 
                                     }
-                                    else if(elem.DateChange - user.DateEditSetting.Value > TimeSpan.FromMinutes(1))
+                                    else if(user.DateEditSetting.Value - elem.DateChange > TimeSpan.FromMinutes(1))
                                     {
                                         user.DateEditSetting = DateTime.Now;
                                         databaseContext.SaveChanges();
@@ -273,16 +274,8 @@ namespace NIRSManagerServer.Controllers
             switch (File)
             {
                 case FileToUpload.Backup:
-                    {
-                        fullPath = mainPath + "\\Backups\\" + Name;
-                        using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
-                        {
-                            UserTable user = databaseContext.UserTables.FirstOrDefault(u => u.Login == Login);
-                            databaseContext.BackupTables.Add(new BackupTable { BackupName = Name, DateOfCreate = DateTime.Now, UserId = user.UserId });
-                            databaseContext.SaveChanges();
-                        }
-                        break;
-                    }                    
+                    fullPath = mainPath + "\\Backups\\" + Name;
+                    break;
                 case FileToUpload.Database:
                     fullPath = mainPath + "\\" + Name;
                     break;
@@ -424,7 +417,8 @@ namespace NIRSManagerServer.Controllers
                 List<DatabaseExchangeTable> exchanges = databaseContext.DatabaseExchangeTables.ToList();
                 if(exchanges != null)
                     foreach(var elem in exchanges)
-                        if((elem.UserCreatorId == user.UserId && !elem.IsCreatorDone) || (elem.UserSenderId == user.UserId && !elem.IsSenderDone))
+                        if((elem.UserCreatorId == user.UserId && !elem.IsCreatorDone) || (elem.UserSenderId == user.UserId && 
+                            (!elem.IsSenderDone || elem.IsSenderAccept == null)))
                         {
                             ListExchangesData data = new ListExchangesData
                             {
@@ -455,5 +449,40 @@ namespace NIRSManagerServer.Controllers
             ExchangesDataArray array = new ExchangesDataArray(exchangesDatas.ToArray());
             return Json(array, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// Получить список резервных копий пользователя на сервере
+        /// </summary>
+        /// <param name="Login">Логин пользователя</param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpGet]
+        public JsonResult GetListBackups(string Login)
+        {
+            List<BackupElem> backups = new List<BackupElem>();
+
+            using (ServerDatabaseContext databaseContext = new ServerDatabaseContext())
+            {
+                UserTable user = databaseContext.UserTables.Where(u => u.Login == Login).FirstOrDefault();
+
+                List<BackupTable> backupTables = databaseContext.BackupTables.ToList();
+                if (backupTables != null)
+                    foreach (var elem in backupTables)
+                        if (elem.UserId == user.UserId)
+                            backups.Add(new BackupElem
+                            {
+                                DateOfCreate = (DateTime)elem.DateOfCreate,
+                                DBMSName = "",
+                                Name = elem.BackupName
+                            });
+            }
+            return Json(backups.ToArray(), JsonRequestBehavior.AllowGet);
+        }
     }
+
+
+
 }
+
+
+
+//Вернуть данные для соединения с БД
