@@ -47,7 +47,7 @@
                                 <Button
                                     Margin="30 10"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
-                                    Command="{Binding CommandXlsx}"
+                                    Command="{Binding CommandGetBackupsFromServer}"
                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                     Background="{DynamicResource PrimaryHueDarkBrush}"
                                     FontSize="18" 

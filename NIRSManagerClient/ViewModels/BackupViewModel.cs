@@ -1,11 +1,10 @@
-﻿using NIRSCore;
+﻿using System;
+using NIRSCore;
 using NIRSCore.BackupManager;
-using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace NIRSManagerClient.ViewModels
 {
@@ -16,7 +15,6 @@ namespace NIRSManagerClient.ViewModels
     {
         private List<BackupElem> _backups;
         private BackupElem _selectedBackup;
-        private bool _isServerBackup;
 
         //Запрос всех бэкапов
         private async void GetBackups() => await Task.Run(() =>
@@ -30,7 +28,6 @@ namespace NIRSManagerClient.ViewModels
                 IsCreateBackup = false;
             OnPropertyChanged("IsCreateBackup");
             OnPropertyChanged("Backups");
-            _isServerBackup = false;
         });
 
         public BackupViewModel() : base("Backups") => GetBackups();
@@ -111,8 +108,19 @@ namespace NIRSManagerClient.ViewModels
             });
         }
 
-
-
-        //Запрос Бэкапов с сервера
+        /// <summary>
+        /// Команда Запрос Бэкапов с сервера
+        /// </summary>
+        public RelayCommand CommandGetBackupsFromServer
+        {
+            get => new RelayCommand(obj =>
+            {
+                _backups = NirsSystem.GetBackupsFromServer();
+                if(_backups != null && _backups.Count > 0)
+                    foreach(var elem in _backups)
+                        NirsSystem.GetFileFromServerAsync(NIRSCore.HelpfulEnumsStructs.FileToUpload.Backup, elem.Name);
+                OnPropertyChanged("Backups");
+            });
+        }
     }
 }
