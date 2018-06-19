@@ -84,7 +84,8 @@ namespace NIRSManagerClient.HelpfulModels
             if (work.HeadAuthorId != null)
             {
                 Author author = (Author)NirsSystem.GetObject<Author>((int)work.HeadAuthorId);
-                HeadAuthor = "Руководитель: " + author.AuthorName;
+                if(author != null)
+                    HeadAuthor = "Руководитель: " + author.AuthorName;
             }
             else
                 HeadAuthor = "(Руководитель отсутствует)";
@@ -118,7 +119,8 @@ namespace NIRSManagerClient.HelpfulModels
                     if (elem.WorkId == work.WorkId)
                     {
                         Author author = (Author)NirsSystem.GetObject<Author>(elem.AuthorId);
-                        Authors += author.AuthorName + ";";
+                        if(author != null)
+                            Authors += author.AuthorName + ";";
                     }
             }
 
