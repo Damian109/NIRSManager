@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using NIRSCore.DataBaseModels;
 using NIRSManagerClient.Views;
+using System.IO;
 
 namespace NIRSManagerClient.HelpfulModels
 {
@@ -75,7 +76,11 @@ namespace NIRSManagerClient.HelpfulModels
         {
             AuthorId = author.AuthorId;
             AuthorName = author.AuthorName;
-            PhotoPath = Environment.CurrentDirectory + author.PhotoPath;
+
+            if (File.Exists(Environment.CurrentDirectory + author.PhotoPath))
+                PhotoPath = Environment.CurrentDirectory + author.PhotoPath;
+            else
+                PhotoPath = Environment.CurrentDirectory + "\\data\\author.png";
 
             if (author.OrganizationId != null)
             {
