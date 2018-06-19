@@ -99,7 +99,13 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public string PhotoPath
         {
-            get => Environment.CurrentDirectory + _author.PhotoPath;
+            get
+            {
+                if (File.Exists(Environment.CurrentDirectory + _author.PhotoPath))
+                    return Environment.CurrentDirectory + _author.PhotoPath;
+                else
+                    return Environment.CurrentDirectory + "\\data\\author.png";
+            }
             set
             {
                 _author.PhotoPath = value;
@@ -305,11 +311,46 @@ namespace NIRSManagerClient.ViewModels
         {
             get => new RelayCommand(obj =>
             {
+                //Создание списков бывших связей
+                List<CoAuthor> coAuthors = (List<CoAuthor>)NirsSystem.GetListObject<CoAuthor>();
+                List<CoAuthor> saveCA = coAuthors.Where(u => u.AuthorId == _author.AuthorId).ToList();
+
+                List<Work> works = (List<Work>)NirsSystem.GetListObject<Work>();
+                List<Work> saveW = works.Where(u => u.HeadAuthorId == _author.AuthorId).ToList();
+
                 //Создание команды выполнения операции
-                RelayCommand done = new RelayCommand(objDone => NirsSystem.DeleteObject(_author), null);
+                RelayCommand done = new RelayCommand(objDone =>
+                {
+                    if (saveCA != null)
+                        foreach (var elem in saveCA)
+                            NirsSystem.DeleteObject(elem);
+
+                    if (saveW != null)
+                        foreach (var elem in saveW)
+                        {
+                            elem.HeadAuthorId = null;
+                            NirsSystem.UpdateObject(elem);
+                        }
+
+                    NirsSystem.DeleteObject(_author);
+                }, null);
 
                 //Создание команды отмены операции
-                RelayCommand undone = new RelayCommand(objUnDone => NirsSystem.AddObject(_author), null);
+                RelayCommand undone = new RelayCommand(objUnDone =>
+                {
+                    if (saveCA != null)
+                        foreach (var elem in saveCA)
+                            NirsSystem.AddObject(elem);
+
+                    if (saveW != null)
+                        foreach (var elem in saveW)
+                        {
+                            elem.HeadAuthorId = _author.AuthorId;
+                            NirsSystem.UpdateObject(elem);
+                        }
+
+                    NirsSystem.AddObject(_author);
+                }, null);
 
                 //Создание операции
                 Operation operation = new Operation("Удален автор", done, undone);
@@ -325,15 +366,6 @@ namespace NIRSManagerClient.ViewModels
         /// </summary>
         public RelayCommand CommandLoadPhoto
         {
-            //
-            //
-            //
-            //
-            //
-            //\
-            //
-            //
-            //
             get => new RelayCommand(obj =>
             {
                 //Начальная инициализация диалогового окна
@@ -348,13 +380,24 @@ namespace NIRSManagerClient.ViewModels
 
                 if(result == true)
                 {
-                    PhotoPath = dialog.FileName;
-                    string newPath = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.AuthorId + "author.png";
-                    //File.
-                    if (File.Exists(newPath))
-                        File.Delete(newPath);
+                    FileInfo file = new FileInfo(dialog.FileName);
+
+                    bool existFile = true;
+                    int numFile = 0;
+                    string newPath = "";
+
+                    while(existFile)
+                    {
+                        newPath = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.AuthorId +
+                            "-author" + numFile.ToString() + file.Extension;
+                        if (!File.Exists(newPath))
+                            existFile = false;
+                        else
+                            numFile++;
+                    }
+
                     File.Copy(dialog.FileName, newPath);
-                    PhotoPath = "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.AuthorId + "author.png";
+                    PhotoPath = "\\data\\" + NirsSystem.GetLogin() + "\\photos\\" + _author.AuthorId + "-author" + numFile.ToString() + file.Extension;
                 }
             });
         }
