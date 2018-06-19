@@ -132,7 +132,7 @@ namespace NIRSCore
             };
             fileProgramSettings.Write();
             if(sync)
-                Synchronization(true);
+                Synchronization(true).GetAwaiter();
 
             //Уничтожение файлов
             string[] masTemp = Directory.GetFiles(Environment.CurrentDirectory + "\\data\\" + _login + "\\temp\\");
