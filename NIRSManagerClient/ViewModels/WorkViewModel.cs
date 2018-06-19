@@ -148,15 +148,12 @@ namespace NIRSManagerClient.ViewModels
 
                 if (result == true)
                 {
-                    string ext = ".pdf";
-                    if (dialog.FileName.Contains(".docx"))
-                        ext = ".docx";
+                    FileInfo file = new FileInfo(dialog.FileName);
+                    string path = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\Documents\\" +
+                    _work.WorkId + "-" + _work.WorkName + file.Extension;
 
-                    string newPath = Environment.CurrentDirectory + "\\data\\" + NirsSystem.GetLogin() + "\\Documents\\" + _work.WorkId + ext;
-                    if (File.Exists(newPath))
-                        File.Delete(newPath);
-                    File.Copy(dialog.FileName, newPath);
-                    _work.WorkPath = "\\data\\" + NirsSystem.GetLogin() + "\\Documents\\" + _work.WorkId + ext;
+                    if(!File.Exists(path))
+                        File.Copy(dialog.FileName, path);
                 }
             });
         }
