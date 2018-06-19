@@ -1,4 +1,5 @@
 ﻿using NIRSCore;
+using System.Linq;
 using System.Windows;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,23 +78,10 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
         /// </summary>
         public RelayCommand CommandSync
         {
-            get => new RelayCommand(obj =>
-            {
-                Sync();
-                /*while(_status == 10)
-                {
-                    if(_status == 0)
-                    {
-                        ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
-                        window = new ExtensionView(NirsSystem.OpenUserSettings());
-                    }
-                }*/
-            });
+            get => new RelayCommand(obj => Sync().GetAwaiter());
         }
 
-        private int _status = 10;
-
-        private async void Sync() => await Task.Run(() =>
+        private async Task<bool> Sync()
         {
             IsDone = Visibility.Visible;
             IsDoneS = Visibility.Visible;
@@ -101,7 +89,7 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
             OnPropertyChanged("IsDoneS");
             StatusString = "Выполняется синхронизация";
             OnPropertyChanged("StatusString");
-            int status = NirsSystem.Synchronization();
+            int status = await NirsSystem.Synchronization();
             switch (status)
             {
                 case 1:
@@ -121,7 +109,9 @@ namespace NIRSManagerClient.ViewModels.SettingsViewModels
             IsDone = Visibility.Hidden;
             OnPropertyChanged("StatusString");
             OnPropertyChanged("IsDone");
-            _status = 0;
-        });
+            ExtensionView window = Application.Current.Windows.OfType<ExtensionView>().FirstOrDefault();
+            window = new ExtensionView(NirsSystem.OpenUserSettings());
+            return true;
+        }
     }
 }
