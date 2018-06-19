@@ -138,8 +138,11 @@ namespace NIRSCore
             string[] masTemp = Directory.GetFiles(Environment.CurrentDirectory + "\\data\\" + _login + "\\temp\\");
 
             //Создание резервной копии
-            if (DateTime.Now - User.LastBackup > TimeSpan.FromDays(User.BackupIntervals))
-                CreateBackup();
+            if(User.BackupIntervals != 0)
+            {
+                if (DateTime.Now - User.LastBackup > TimeSpan.FromDays(User.BackupIntervals))
+                    CreateBackup();
+            }
 
             foreach (var f in masTemp)
             {
