@@ -126,6 +126,13 @@ namespace NIRSCore.ErrorManager
         /// Получение списка новых возникших ошибок
         /// </summary>
         /// <returns></returns>
-        public int GetCountNewErrors() => _nirsErrors.Count(u => u.IsNew == true);
+        public int GetCountNewErrors()
+        {
+            int t = 0;
+            foreach (var elem in _nirsErrors)
+                if (elem.IsNew)
+                    t++;
+            return t;
+        }
     }
 }

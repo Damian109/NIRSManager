@@ -69,7 +69,7 @@ namespace NIRSCore.BackupManager
                 File.Copy(path + "\\database.db", path + "\\temp\\database.db");
             else
             {
-                File.Copy(path + "\\database.mdf", path + "\\temp//database.mdf");
+                File.Copy(path + "\\database.mdf", path + "\\temp\\database.mdf");
                 File.Copy(path + "\\database_log.ldf", path + "\\temp\\database_log.ldf");
             }
 
