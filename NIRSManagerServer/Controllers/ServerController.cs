@@ -131,14 +131,14 @@ namespace NIRSManagerServer.Controllers
                                     UserTable user = databaseContext.UserTables.FirstOrDefault(u => u.Login == list.Login);
                                     if (user.DateEditSetting == null || elem.DateChange - user.DateEditSetting.Value > TimeSpan.FromMinutes(1))
                                     {
-                                        if (System.IO.File.Exists(mainPath + "\\" + elem.NameFile))
-                                            elem.IsDownload = true; 
-                                    }
-                                    else if(user.DateEditSetting.Value - elem.DateChange > TimeSpan.FromMinutes(1))
-                                    {
                                         user.DateEditSetting = DateTime.Now;
                                         databaseContext.SaveChanges();
                                         elem.IsUpload = true;
+                                    }
+                                    else if(user.DateEditSetting.Value - elem.DateChange > TimeSpan.FromMinutes(1))
+                                    {
+                                        if (System.IO.File.Exists(mainPath + "\\" + elem.NameFile))
+                                            elem.IsDownload = true;
                                     }
                                     if (mainFileNames.Contains(elem.NameFile))
                                         mainFileNames.Remove(elem.NameFile);
